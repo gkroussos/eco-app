@@ -14,13 +14,17 @@ import android.util.Log;
  */
 public class EcoSQLiteOpenHelper extends SQLiteOpenHelper {
 	public final static int VERSION = 1;
-	public static final String DB_NAME = "ecoapp.db";
-	public final static String TABLE_LOCATIONS = "locations";
-	public final static String LOC_ID = "id";
-	public final static String LOC_NAME = "name";
-	public final static String LOC_COORDINATE = "coordinate";
-	public final static String TABLE_LOCPUBDATE = "locpubdate";
-	public final static String PDATE = "pdate";
+	public final static String DB_NAME = "ecoapp.db";
+	public final static String TABLE_SITES = "sites";
+	public final static String SITE_ID = "id";
+	public final static String SITE_NAME = "sname";
+	public final static String SITE_DESCRIPTION = "description";
+	public final static String SITE_TYPE = "type";
+	public final static String SITE_LATITUDE = "latitude";
+	public final static String SITE_LONGITUDE = "longitude";
+	public final static String SITE_ICON = "icon";
+	public final static String TABLE_SITES_VERSION = "sites_version";
+	public final static String SITE_VERSION = "version";
 
 	public EcoSQLiteOpenHelper(Context context) {
 		super(context, DB_NAME, null, VERSION);
@@ -41,22 +45,26 @@ public class EcoSQLiteOpenHelper extends SQLiteOpenHelper {
 	}
 
 	protected void dropAndCreate(SQLiteDatabase db) {
-		db.execSQL("drop table if exists " + TABLE_LOCATIONS + ";");
-		db.execSQL("drop table if exists " + TABLE_LOCPUBDATE + ";");
+		db.execSQL("drop table if exists " + TABLE_SITES + ";");
+		db.execSQL("drop table if exists " + TABLE_SITES_VERSION + ";");
 		createTables(db);
 	}
 	
 	protected void createTables(SQLiteDatabase db) {
 		db.execSQL(
-				"create table " + TABLE_LOCATIONS +" (" +
-				LOC_ID + " integer primary key not null," +
-				LOC_NAME + " text," +
-				LOC_COORDINATE + " text" +
+				"create table " + TABLE_SITES +" (" +
+				SITE_ID + " integer primary key autoincrement not null," +
+				SITE_NAME + " text," +
+				SITE_DESCRIPTION + " text," +
+				SITE_TYPE + " text," +
+				SITE_LATITUDE + " double," +
+				SITE_LONGITUDE + " double," +
+				SITE_ICON + " text" +
 				");"
 			);
 		db.execSQL(
-				"create table " + TABLE_LOCPUBDATE +" (" +
-				PDATE + " text" +
+				"create table " + TABLE_SITES_VERSION +" (" +
+				SITE_VERSION + " double" +
 				");"
 			);
 	}

@@ -3,10 +3,8 @@ package uk.ac.dcs.bbk.ecoapp;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -19,6 +17,7 @@ import org.xml.sax.XMLReader;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -28,7 +27,7 @@ import android.util.Log;
 import org.xml.sax.Attributes;
 
 import uk.ac.dcs.bbk.ecoapp.db.EcoSQLiteOpenHelper;
-import uk.ac.dcs.bbk.ecoapp.db.Location;
+import uk.ac.dcs.bbk.ecoapp.db.Site;
 
 import android.sax.EndElementListener;
 import android.sax.EndTextElementListener;
@@ -38,12 +37,17 @@ import android.widget.TextView;
 
 public class EcoAppActivity extends Activity {
 
-	private ArrayList<Location> locList = new ArrayList<Location>();
+	private ArrayList<Site> sitesList = new ArrayList<Site>();
 	private EcoSQLiteOpenHelper eOpenHelper;
 	private SQLiteDatabase sqlDB;
 	private ProgressBar updateDbBar;
-	private String pubDateString = null;
-	private Location location;
+	private String versionString = null;
+	private Site site;
+	private String versionUrl = null;
+	private String dataUrl = null;
+	private Class<ViewAsListActivity> targetActivity = ViewAsListActivity.class;
+	private static int GET_VERSION = 0;
+	private static int GET_DATA = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,194 +62,269 @@ public class EcoAppActivity extends Activity {
 		updateDbBar = (ProgressBar) this.findViewById(R.id.updateDbBar);
 		updateDbBar.setIndeterminate(true);
 
+		// get the XML data properties
+		Properties p = new Properties();
 		try {
+			p.load(this.getResources().openRawResource(R.raw.data));
+			versionUrl = p.getProperty("url.version");
+			Log.i("data version url", versionUrl);
 
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			Log.i("SAXParser", "Start parsing");
-			SAXParser parser = factory.newSAXParser();
-			XMLReader xmlreader = parser.getXMLReader();
-			URL url = new URL(
-					"http://www.dcs.bbk.ac.uk/~qhuang01/locations.xml");
-			InputSource is = new InputSource(url.openStream());
-			xmlreader.setContentHandler(getRootElement().getContentHandler());
-			xmlreader.parse(is);
-			Log.i("SAXParser", "End parsing");
-		} catch (ParserConfigurationException e) {
+			dataUrl = p.getProperty("url.data");
+			Log.i("data url", dataUrl);
+
+		} catch (NotFoundException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
+			Log.e("Property file not found", e1.getMessage());
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {// cannot access the Internet, go to list view directly
-			// TODO Auto-generated catch block
-			Log.e("No network", e.getMessage());
-			Intent intent = new Intent(EcoAppActivity.this,
-					ViewAsListActivity.class);
-			startActivity(intent);
-			EcoAppActivity.this.finish();
+			Log.e("Property file IO error", e1.getMessage());
 		}
+
+		// get data version
+		xmlParser(versionUrl, GET_VERSION);
 
 		try {
 			eOpenHelper = new EcoSQLiteOpenHelper(this);
 			sqlDB = eOpenHelper.getWritableDatabase();
-			SimpleDateFormat formatter = new SimpleDateFormat(
-					"HH:mm:ss dd/MM/yyyy");
 
-			String localDateString = null;
+			double localVersion = 0;
 			if (sqlDB.isOpen()) {
-				// fetch the local pubdate
+				// fetch the local sites version
 				Cursor cursor = sqlDB.query(
-						EcoSQLiteOpenHelper.TABLE_LOCPUBDATE,
-						new String[] { EcoSQLiteOpenHelper.PDATE }, null, null,
-						null, null, EcoSQLiteOpenHelper.PDATE + " desc");
+						EcoSQLiteOpenHelper.TABLE_SITES_VERSION,
+						new String[] { EcoSQLiteOpenHelper.SITE_VERSION },
+						null, null, null, null, null);
 				if (cursor != null) {
 					cursor.moveToFirst();
 					if (!cursor.isAfterLast()) {
 						do {
-							localDateString = cursor.getString(0);
+							localVersion = cursor.getDouble(0);
 						} while (cursor.moveToNext());
-
 					}
 					cursor.close();
 				}
 			}
 
-			Date localDate = null;
-			if (localDateString != null) {
-				localDate = formatter.parse(localDateString);
-				Log.i("LocalDate", localDateString);
+			Log.i("localVersion", localVersion + "");
+
+			double siteVersion = 0;
+			if (versionString != null) {
+				siteVersion = Double.parseDouble(versionString);
+				Log.i("siteVersion", versionString);
 			}
 
-			Date pubDate = null;
-			if (pubDateString != null) {
-				pubDate = formatter.parse(pubDateString);
-				Log.i("pubDate", pubDateString);
-			}
-
-			// there are some new data fetched from the server
-			if (pubDate != null
-					&& ((localDate == null || localDate.before(pubDate)) && locList
-							.size() > 0)) {
+			// the local data version is out of date
+			if (siteVersion > 0 && localVersion < siteVersion) {
 
 				updateDbBar.setIndeterminate(false);
 
-				updateDbBar.setMax(locList.size());
+				// get data
+				xmlParser(dataUrl, GET_DATA);
 
-				int rsPro = 0;
+				// there do have some new sites data
+				if (sitesList.size() > 0) {
+					updateDbBar.setMax(sitesList.size());
 
-				eOpenHelper.onCreate(sqlDB);
-				for (int i = 0; i < locList.size(); i++) {
+					int rsPro = 0;
 
-					Location loc = locList.get(i);
-					ContentValues cv = new ContentValues();
-					cv.put(EcoSQLiteOpenHelper.LOC_ID, loc.getId());
-					cv.put(EcoSQLiteOpenHelper.LOC_NAME, loc.getName());
-					cv.put(EcoSQLiteOpenHelper.LOC_COORDINATE,
-							loc.getCoordinate());
-					long rs = sqlDB.insert(EcoSQLiteOpenHelper.TABLE_LOCATIONS,
-							null, cv);
+					// reset the database
+					eOpenHelper.onCreate(sqlDB);
+					for (int i = 0; i < sitesList.size(); i++) {
 
-					if (rs != -1) {
-						updateDbBar.setProgress(i);
-						rsPro++;
+						Site loc = sitesList.get(i);
+						ContentValues cv = new ContentValues();
+						cv.put(EcoSQLiteOpenHelper.SITE_NAME, loc.getName());
+						cv.put(EcoSQLiteOpenHelper.SITE_DESCRIPTION,
+								loc.getDescription());
+						cv.put(EcoSQLiteOpenHelper.SITE_TYPE, loc.getType());
+						cv.put(EcoSQLiteOpenHelper.SITE_LATITUDE,
+								loc.getLatitude());
+						cv.put(EcoSQLiteOpenHelper.SITE_LONGITUDE,
+								loc.getLongitude());
+						cv.put(EcoSQLiteOpenHelper.SITE_ICON, loc.getIcon());
+						long rs = sqlDB.insert(EcoSQLiteOpenHelper.TABLE_SITES,
+								null, cv);
+
+						if (rs != -1) {
+							updateDbBar.setProgress(i);
+							rsPro++;
+						}
+
 					}
 
-				}
+					// all new data has been inserted into tables
+					if (rsPro == sitesList.size()) {
+						// update the local data version
+						ContentValues vcv = new ContentValues();
+						vcv.put(EcoSQLiteOpenHelper.SITE_VERSION, siteVersion);
+						sqlDB.insert(EcoSQLiteOpenHelper.TABLE_SITES_VERSION,
+								null, vcv);
 
-				// all new data has been inserted into tables
-				if (rsPro == locList.size()) {
-					// update the local pubdate
-					ContentValues dcv = new ContentValues();
-					dcv.put(EcoSQLiteOpenHelper.PDATE, pubDateString);
-					long rs1 = sqlDB.insert(
-							EcoSQLiteOpenHelper.TABLE_LOCPUBDATE, null, dcv);
-					// insert successfully
-					if (rs1 != -1) {
-						// go to the list view
-						Intent intent = new Intent(EcoAppActivity.this,
-								ViewAsListActivity.class);
-						startActivity(intent);
-						EcoAppActivity.this.finish();
 					}
 				}
 
-			} else {// no new data, go to the list view directly
-				Intent intent = new Intent(EcoAppActivity.this,
-						ViewAsListActivity.class);
-				startActivity(intent);
-				EcoAppActivity.this.finish();
 			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("Eco App Error", e.getMessage());
 		} finally {
 			if (sqlDB != null && sqlDB.isOpen()) {
 				sqlDB.close();
 			}
 		}
 
+		gotoTargetActivity();
+
 	}
 
 	/**
-	 * XML parser, fetch data from XML
+	 * parse XML file
 	 * 
-	 * @return the root XML element
+	 * @param urlString
+	 *            - URLs of the XML files
+	 * @param type
+	 *            - 0: get version; 1: get data
 	 */
-	private RootElement getRootElement() {
+	private void xmlParser(String urlString, int type) {
+		try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			Log.i("SAXParser", "Start parsing");
+			SAXParser parser = factory.newSAXParser();
+			XMLReader xmlreader = parser.getXMLReader();
+			URL url = new URL(urlString);
+			InputSource is = new InputSource(url.openStream());
+			if (type == EcoAppActivity.GET_VERSION) {
+				xmlreader.setContentHandler(getVersionRootElement()
+						.getContentHandler());
+			} else if (type == EcoAppActivity.GET_DATA) {
+				xmlreader.setContentHandler(getDataRootElement()
+						.getContentHandler());
+			}
+			xmlreader.parse(is);
+			Log.i("SAXParser", "End parsing");
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			Log.e("ParserConfigurationException", e.getMessage());
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			Log.e("SAXException", e.getMessage());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			Log.e("MalformedURLException", e.getMessage());
+		} catch (IOException e) {// cannot access the Internet
+			// TODO Auto-generated catch block
+			Log.e("No network", e.getMessage());
+		}
+	}
 
-		RootElement rootElement = new RootElement("locations");
-		Element pdElement = rootElement.getChild("pubdate");
-		pdElement.setEndTextElementListener(new EndTextElementListener() {
+	/**
+	 * Go to target Activity
+	 */
+	private void gotoTargetActivity() {
+		Intent intent = new Intent(EcoAppActivity.this, targetActivity);
+		startActivity(intent);
+		EcoAppActivity.this.finish();
+	}
+
+	/**
+	 * version XML parser, fetch data version from XML
+	 * 
+	 * @return a root XML element
+	 */
+	private RootElement getVersionRootElement() {
+
+		RootElement rootElement = new RootElement("ecoapp");
+		Element verElement = rootElement.getChild("dataversion");
+		verElement.setEndTextElementListener(new EndTextElementListener() {
 			@Override
 			public void end(String body) {
-				pubDateString = body;
+				versionString = body;
 			}
 		});
 
-		Element locElement = rootElement.getChild("location");
-		locElement.setStartElementListener(new StartElementListener() {
+		return rootElement;
+
+	}
+
+	/**
+	 * data XML parser, fetch data from XML
+	 * 
+	 * @return a root XML element
+	 */
+	private RootElement getDataRootElement() {
+
+		RootElement rootElement = new RootElement("sites");
+
+		Element siteElement = rootElement.getChild("site");
+		siteElement.setStartElementListener(new StartElementListener() {
 			@Override
 			public void start(Attributes attributes) {
-				// Log.i("locElement", "start");
-				location = new Location();
+				site = new Site();
 			}
 		});
-		locElement.setEndElementListener(new EndElementListener() {
+		siteElement.setEndElementListener(new EndElementListener() {
 			@Override
 			public void end() {
-				locList.add(location);
+				sitesList.add(site);
 			}
 		});
 
-		Element idElement = locElement.getChild("id");
-		idElement.setEndTextElementListener(new EndTextElementListener() {
-			@Override
-			public void end(String body) {
-				location.setId(Integer.parseInt(body));
-			}
-		});
-
-		Element nameElement = locElement.getChild("name");
+		Element nameElement = siteElement.getChild("name");
 		nameElement.setEndTextElementListener(new EndTextElementListener() {
 			@Override
 			public void end(String body) {
-				location.setName(body);
+				site.setName(body);
 			}
 		});
 
-		Element coorElement = locElement.getChild("coordinate");
-		coorElement.setEndTextElementListener(new EndTextElementListener() {
+		Element descElement = siteElement.getChild("description");
+		descElement.setEndTextElementListener(new EndTextElementListener() {
 			@Override
 			public void end(String body) {
-				location.setCoordinate(body);
+				site.setDescription(body);
 			}
 		});
+
+		Element typeElement = siteElement.getChild("type");
+		typeElement.setEndTextElementListener(new EndTextElementListener() {
+			@Override
+			public void end(String body) {
+				site.setType(body);
+			}
+		});
+
+		Element locElement = siteElement.getChild("location");
+		locElement.setEndTextElementListener(new EndTextElementListener() {
+			@Override
+			public void end(String body) {
+				double latitude = 0, longitude = 0;
+				String[] coordinates = null;
+				try {
+					coordinates = body.split(",");
+					latitude = Double.parseDouble(coordinates[0]);
+					Log.i("latitude", latitude + "");
+					longitude = Double.parseDouble(coordinates[1]);
+					Log.i("longitude", longitude + "");
+				} catch (NullPointerException e) {
+					// TODO Auto-generated catch block
+					Log.e("coordinates empty error", e.toString());
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					Log.e("coordinates format error", e1.toString());
+				}
+				site.setLatitude(latitude);
+				site.setLongitude(longitude);
+			}
+		});
+
+		Element iconElement = siteElement.getChild("icon");
+		iconElement.setEndTextElementListener(new EndTextElementListener() {
+			@Override
+			public void end(String body) {
+				site.setIcon(body);
+			}
+		});
+
 		return rootElement;
 
 	}

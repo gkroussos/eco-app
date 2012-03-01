@@ -9,18 +9,18 @@
     android:layout_width="wrap_content" 
     android:layout_height="wrap_content" 
     android:layout_marginTop="150dp"
-    android:layout_gravity="center_horizontal|center"
+    android:layout_gravity="center_horizontal|center_vertical"
     android:padding="12dp"
-    android:textColor="#ffffffff"
+    android:textColor="#ffffff"
     android:textSize="26dp"
-	android:text="inmidtown" />
+	android:text="@string/inmidtown" />
 	
 <TextView
     android:id="@+id/textView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="100dp"
-    android:textColor="#ffffffff"
+    android:textColor="#ffffff"
     android:padding="12dp"
     android:layout_gravity="center_horizontal|center" />
 

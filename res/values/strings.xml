@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, EcoAppActivity!</string>
     <string name="app_name">EcoApp</string>
+    <string name="inmidtown">inmidtown</string>
 </resources>
