@@ -53,7 +53,7 @@ public class EcoAppActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ecoapp);
-
+		//For Ray
 		// the loading text
 		TextView textView = (TextView) this.findViewById(R.id.textView);
 		textView.setText("loading");
