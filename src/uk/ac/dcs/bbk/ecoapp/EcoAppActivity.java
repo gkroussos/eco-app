@@ -14,6 +14,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -48,12 +49,21 @@ public class EcoAppActivity extends Activity {
 	private Class<ViewAsListActivity> targetActivity = ViewAsListActivity.class;
 	private static int GET_VERSION = 0;
 	private static int GET_DATA = 1;
-
+	private GoogleAnalyticsTracker tracker;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ecoapp);
-		//For Ray
+		// For Ray 
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.startNewSession("UA-29500489-1", this);
+		tracker.trackPageView("UserOpenApp");
+		tracker.trackEvent(
+	            "Clicks",  // Category
+	            "Button",  // Action
+	            "clicked", // Label
+	            77);       // Value
+		tracker.dispatch(); 
 		// the loading text
 		TextView textView = (TextView) this.findViewById(R.id.textView);
 		textView.setText("loading");
