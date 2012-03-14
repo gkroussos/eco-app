@@ -46,11 +46,13 @@ public class EcoAppActivity extends Activity {
 	private Site site;
 	private String versionUrl = null;
 	private String dataUrl = null;
-	private Class<ViewAsListActivity> targetActivity = ViewAsListActivity.class;
+	private Class<ViewAsListActivity> listActivity = ViewAsListActivity.class;
+	private Class<ViewAsMapActivity> mapActivity = ViewAsMapActivity.class;
 	private static int GET_VERSION = 0;
 	private static int GET_DATA = 1;
 	private GoogleAnalyticsTracker tracker;
 	protected int splashTime = 3000; // Milliseconds to display the loading screen
+	private boolean networkAvailable = true; // Network availability
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -212,6 +214,7 @@ public class EcoAppActivity extends Activity {
 			Log.e("MalformedURLException", e.getMessage());
 		} catch (IOException e) {// cannot access the Internet
 			// TODO Auto-generated catch block
+			networkAvailable = false;
 			Log.e("No network", e.getMessage());
 		}
 	}
@@ -224,8 +227,13 @@ public class EcoAppActivity extends Activity {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				finish();
-				startActivity(new Intent(EcoAppActivity.this, targetActivity));
+				//finish();
+				if (networkAvailable) {
+					startActivity(new Intent(EcoAppActivity.this, mapActivity));
+				} else {
+					startActivity(new Intent(EcoAppActivity.this, listActivity));
+				}
+				
 				EcoAppActivity.this.finish();
 			}
 		}, splashTime);
