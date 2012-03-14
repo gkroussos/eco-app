@@ -22,6 +22,7 @@ import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.sax.Element;
 import android.sax.RootElement;
 import android.util.Log;
@@ -34,7 +35,6 @@ import android.sax.EndElementListener;
 import android.sax.EndTextElementListener;
 import android.sax.StartElementListener;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 public class EcoAppActivity extends Activity {
 
@@ -50,23 +50,22 @@ public class EcoAppActivity extends Activity {
 	private static int GET_VERSION = 0;
 	private static int GET_DATA = 1;
 	private GoogleAnalyticsTracker tracker;
+	protected int splashTime = 3000; // Milliseconds to display the loading screen
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ecoapp);
-		// For Ray 
+		
+		// For Ray
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.startNewSession("UA-29500489-1", this);
 		tracker.trackPageView("UserOpenApp");
-		tracker.trackEvent(
-	            "Clicks",  // Category
-	            "Button",  // Action
-	            "clicked", // Label
-	            77);       // Value
-		tracker.dispatch(); 
-		// the loading text
-		TextView textView = (TextView) this.findViewById(R.id.textView);
-		textView.setText("loading");
+		tracker.trackEvent("Clicks", // Category
+				"Button", // Action
+				"clicked", // Label
+				77); // Value
+		tracker.dispatch();
 
 		// the progress bar
 		updateDbBar = (ProgressBar) this.findViewById(R.id.updateDbBar);
@@ -100,10 +99,7 @@ public class EcoAppActivity extends Activity {
 			double localVersion = 0;
 			if (sqlDB.isOpen()) {
 				// fetch the local sites version
-				Cursor cursor = sqlDB.query(
-						EcoSQLiteOpenHelper.TABLE_SITES_VERSION,
-						new String[] { EcoSQLiteOpenHelper.SITE_VERSION },
-						null, null, null, null, null);
+				Cursor cursor = sqlDB.query(EcoSQLiteOpenHelper.TABLE_SITES_VERSION, new String[] { EcoSQLiteOpenHelper.SITE_VERSION }, null, null, null, null, null);
 				if (cursor != null) {
 					cursor.moveToFirst();
 					if (!cursor.isAfterLast()) {
@@ -144,16 +140,12 @@ public class EcoAppActivity extends Activity {
 						Site loc = sitesList.get(i);
 						ContentValues cv = new ContentValues();
 						cv.put(EcoSQLiteOpenHelper.SITE_NAME, loc.getName());
-						cv.put(EcoSQLiteOpenHelper.SITE_DESCRIPTION,
-								loc.getDescription());
+						cv.put(EcoSQLiteOpenHelper.SITE_DESCRIPTION, loc.getDescription());
 						cv.put(EcoSQLiteOpenHelper.SITE_TYPE, loc.getType());
-						cv.put(EcoSQLiteOpenHelper.SITE_LATITUDE,
-								loc.getLatitude());
-						cv.put(EcoSQLiteOpenHelper.SITE_LONGITUDE,
-								loc.getLongitude());
+						cv.put(EcoSQLiteOpenHelper.SITE_LATITUDE, loc.getLatitude());
+						cv.put(EcoSQLiteOpenHelper.SITE_LONGITUDE, loc.getLongitude());
 						cv.put(EcoSQLiteOpenHelper.SITE_ICON, loc.getIcon());
-						long rs = sqlDB.insert(EcoSQLiteOpenHelper.TABLE_SITES,
-								null, cv);
+						long rs = sqlDB.insert(EcoSQLiteOpenHelper.TABLE_SITES, null, cv);
 
 						if (rs != -1) {
 							updateDbBar.setProgress(i);
@@ -167,8 +159,7 @@ public class EcoAppActivity extends Activity {
 						// update the local data version
 						ContentValues vcv = new ContentValues();
 						vcv.put(EcoSQLiteOpenHelper.SITE_VERSION, siteVersion);
-						sqlDB.insert(EcoSQLiteOpenHelper.TABLE_SITES_VERSION,
-								null, vcv);
+						sqlDB.insert(EcoSQLiteOpenHelper.TABLE_SITES_VERSION, null, vcv);
 
 					}
 				}
@@ -204,11 +195,9 @@ public class EcoAppActivity extends Activity {
 			URL url = new URL(urlString);
 			InputSource is = new InputSource(url.openStream());
 			if (type == EcoAppActivity.GET_VERSION) {
-				xmlreader.setContentHandler(getVersionRootElement()
-						.getContentHandler());
+				xmlreader.setContentHandler(getVersionRootElement().getContentHandler());
 			} else if (type == EcoAppActivity.GET_DATA) {
-				xmlreader.setContentHandler(getDataRootElement()
-						.getContentHandler());
+				xmlreader.setContentHandler(getDataRootElement().getContentHandler());
 			}
 			xmlreader.parse(is);
 			Log.i("SAXParser", "End parsing");
@@ -228,12 +217,19 @@ public class EcoAppActivity extends Activity {
 	}
 
 	/**
-	 * Go to target Activity
+	 * Go to target Activity after 'Delayed' time
 	 */
 	private void gotoTargetActivity() {
-		Intent intent = new Intent(EcoAppActivity.this, targetActivity);
-		startActivity(intent);
-		EcoAppActivity.this.finish();
+
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				finish();
+				startActivity(new Intent(EcoAppActivity.this, targetActivity));
+				EcoAppActivity.this.finish();
+			}
+		}, splashTime);
+
 	}
 
 	/**
