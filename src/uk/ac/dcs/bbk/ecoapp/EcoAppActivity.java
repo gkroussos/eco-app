@@ -18,6 +18,8 @@ import org.xml.sax.XMLReader;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -57,7 +59,8 @@ public class EcoAppActivity extends Activity {
 	private static int GET_VERSION = 0;
 	private static int GET_DATA = 1;
 	private GoogleAnalyticsTracker tracker;
-	protected int splashTime = 4000; // Milliseconds to display the loading screen
+	protected int splashTime = 4000; // Milliseconds to display the loading
+										// screen
 	private static int CONNECT_TIMEOUT = 4000;
 	private boolean networkAvailable = true; // Network availability
 	private MediaPlayer mp;
@@ -80,6 +83,12 @@ public class EcoAppActivity extends Activity {
 		networkAvailable = this.checkNetworkAvailability(EcoAppActivity.this);
 
 		if (networkAvailable) {
+
+			// start the location logging service
+			if (!isLocationLoggingServiceRunning()) {
+				this.startService(new Intent(this, LocationLoggingService.class));
+				Log.i("LocationLoggingService", "Start service from Loading Activity.");
+			}
 
 			// For Ray
 			tracker = GoogleAnalyticsTracker.getInstance();
@@ -381,6 +390,16 @@ public class EcoAppActivity extends Activity {
 			return true;
 		}
 
+	}
+
+	private boolean isLocationLoggingServiceRunning() {
+		ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+		for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+			if ("uk.ac.dcs.bbk.ecoapp.LocationLoggingService".equals(service.service.getClassName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
