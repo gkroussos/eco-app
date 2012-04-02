@@ -92,7 +92,7 @@ public class EcoAppActivity extends Activity {
 
 			// For Ray
 			tracker = GoogleAnalyticsTracker.getInstance();
-			tracker.startNewSession("UA-29500489-1", this);
+			tracker.startNewSession("UA-30293248-1", this);
 			tracker.trackPageView("UserOpenApp");
 			tracker.trackEvent("Clicks", // Category
 					"Button", // Action
