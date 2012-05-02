@@ -16,16 +16,16 @@
 
         <TextView 
             android:id="@+id/SiteName"
-      		android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-      		android:gravity="center"/>
+      	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+      	    android:gravity="center"/>
 
-  		<TextView 
-  		    android:id="@+id/SiteDescription" 
-      		android:layout_width="wrap_content" 
-      		android:layout_height="wrap_content"
-      		android:layout_marginLeft="10px" 
-      		android:textColor="#0099CC"/>
+  	<TextView 
+  	    android:id="@+id/SiteDescription" 
+      	    android:layout_width="wrap_content" 
+      	    android:layout_height="wrap_content"
+      	    android:layout_marginLeft="10px" 
+            android:textColor="#0099CC"/>
   		
     </LinearLayout>
     
