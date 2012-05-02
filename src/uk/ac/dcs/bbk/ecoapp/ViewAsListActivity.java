@@ -214,9 +214,19 @@ public class ViewAsListActivity extends ListActivity {
 	// Search Button Click
 	public void onSearch(View v){
 		
-		// Do something when the button is clicked
-	    Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
-		
+		onSearchRequested();
+           
+	}
+	
+	@Override
+    	public boolean onSearchRequested() {
+        	return super.onSearchRequested();
+    	}
+    	
+	@Override
+	public void onNewIntent(Intent intent) {
+	    super.onNewIntent(intent);      
+	    setIntent(intent);
+	   // handleIntent(intent);
 	}	
-
 }
