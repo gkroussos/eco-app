@@ -1,21 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="#ffffff">
-
-	<ListView
-		android:id="@id/android:list"
-		android:layout_width="fill_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1"
-		android:drawSelectorOnTop="false" />
-		
-	<TextView
-		android:id="@id/android:empty"
+	android:orientation="vertical">
+	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Cannot find the sites data!" />
+		android:orientation="horizontal">
+		
+		<ImageButton 
+	    		android:layout_width="275dp"
+        		android:layout_height="50dp"
+        		android:background="@drawable/inmidtown_bar" />
+		<ImageButton
+		    	android:id="@+id/searchbtn" 
+	    		android:layout_width="wrap_content"
+        		android:layout_height="50dp"
+        		android:background="@drawable/search"
+        		android:onClick="onSearch" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
 
+	    <Button
+        	android:id="@+id/homebtn"
+        	android:layout_width="107dp"
+        	android:layout_height="50dp"
+        	android:padding="10dp"
+        	android:background="@drawable/android_button"
+        	android:text="@string/buttonHome"
+        	android:onClick="onSetHome"/>
+	    <Button
+        	android:id="@+id/mapbtn"
+        	android:layout_width="107dp"
+        	android:layout_height="50dp"
+        	android:padding="10dp"
+        	android:background="@drawable/android_button"
+        	android:text="@string/buttonMap"
+        	android:onClick="onSetMap"/>
+	    <Button
+        	android:id="@+id/mebtn"
+        	android:layout_width="107dp"
+        	android:layout_height="50dp"
+        	android:padding="10dp"
+        	android:background="@drawable/android_button"
+        	android:text="@string/buttonMe"
+        	android:onClick="onSetMe"/>
+	    
+	</LinearLayout>	
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		
+		<ImageButton
+		        android:id="@+id/nearbybtn" 
+	    		android:layout_width="wrap_content"
+        		android:layout_height="30dp"
+        		android:background="@drawable/title_bar" />
+	</LinearLayout>
+	<FrameLayout
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+		
+		<ListView
+			android:id="@android:id/list"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:background="#FFFFF9" />
+
+	</FrameLayout>
+	
 </LinearLayout>
