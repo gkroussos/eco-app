@@ -7,6 +7,7 @@
         android:id="@+id/SiteIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+<<<<<<< HEAD
 
     <LinearLayout
         android:orientation="vertical"
@@ -22,11 +23,29 @@
 
         <TextView 
   		android:id="@+id/SiteDescription" 
+=======
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dip"
+        android:layout_weight="1"
+        android:layout_height="fill_parent">
+
+        <TextView 
+            android:id="@+id/SiteName"
+      		android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+      		android:gravity="center"/>
+
+        <TextView 
+  		    android:id="@+id/SiteDescription" 
+>>>>>>> view as list part by Chatitze
       		android:layout_width="wrap_content" 
       		android:layout_height="wrap_content"
       		android:layout_marginLeft="10px" 
       		android:textColor="#0099CC"/>
         
+<<<<<<< HEAD
   	<TextView 
   	   	android:id="@+id/SiteDistance" 
       		android:layout_width="wrap_content" 
@@ -34,6 +53,8 @@
       		android:layout_marginLeft="10px" 
       		android:textColor="#0099CC"/>
   		
+=======
+>>>>>>> view as list part by Chatitze
     </LinearLayout>
     
     <ImageView

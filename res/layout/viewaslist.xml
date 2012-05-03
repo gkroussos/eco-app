@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
@@ -73,5 +74,56 @@
 			android:background="#FFFFF9" />
 
 	</FrameLayout>
+=======
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+   <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="horizontal" >
+    
+    <!-- Buttons -->
+
+    <Button
+        android:id="@+id/buttonHome"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonHome"
+        android:textSize="20sp" />
+
+
+    <Button
+        android:id="@+id/buttonMap"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonMap"
+        android:textSize="20sp" />
+
+
+    <Button
+        android:id="@+id/buttonAboutUs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonAboutUs"
+        android:textSize="20sp" />
+
+    </LinearLayout>
+    
+   <ListView
+		android:id="@id/android:list"
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:drawSelectorOnTop="false" />
+	<TextView
+		android:id="@id/android:empty"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Cannot find the sites data!" />
+>>>>>>> view as list part by Chatitze
 	
 </LinearLayout>
