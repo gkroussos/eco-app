@@ -23,18 +23,12 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-<<<<<<< HEAD
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-=======
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
->>>>>>> view as list part by Chatitze
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -62,42 +56,13 @@ public class ViewAsListActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.viewaslist2);
+		setContentView(R.layout.viewaslist);
 
 		getCurrentLocation();
 		
 		initListView();
 		this.setListAdapter(listItemAdapter);
 		
-<<<<<<< HEAD
-	}
-
-	private void getCurrentLocation(){
-		
-	  // Define a listener that responds to location updates -- new code from here:
-          LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                makeUseOfNewLocation(location);
-            }
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-            public void onProviderEnabled(String provider) {}
-            public void onProviderDisabled(String provider) {}
-          };
- 
-          try {
-            // Acquire a reference to the system Location Manager
-            LocationManager locationManager =
-                (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-            // Register the listener with the Location Manager to receive location updates
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            // Register the listener with the Location Manager to receive location updates
-    		//locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-          } catch (SecurityException e) {
-             // requires ACCESS_FINE_LOCATION permission
-             // v.setText(e.getMessage());
-          }
-=======
 		//-------------------------- list item click --------------------------
 		//try
 		  ListView lv = getListView();
@@ -121,21 +86,9 @@ public class ViewAsListActivity extends ListActivity {
 		      }
 		  });
 		//--------------------------- list item click -------------------------
->>>>>>> view as list part by Chatitze
 
 		
 	}
-	
-	private void makeUseOfNewLocation(Location loc) {
-        	TextView v = (TextView)this.findViewById(R.id.SiteName);
-       		// String text = "lat: " + loc.getLatitude() + ", long: " + loc.getLongitude();
-        	text = "lat: " + loc.getLatitude() + ", long: " + loc.getLongitude();
-        	v.setText(text);
-        
-        	currentLatitude  = loc.getLatitude();
-        	currentLongitude = loc.getLongitude();
-        
-    	}
 
 	private void getCurrentLocation(){
 		
@@ -214,12 +167,7 @@ public class ViewAsListActivity extends ListActivity {
 			}
 			sqlDB.close();
 		}
-		
-		double dx;//horizontal difference 
-		double dy;//vertical difference 
 
-		// sorting according to my current location
-		
 		double dx;//horizontal difference 
 		double dy;//vertical difference 
 
@@ -227,10 +175,6 @@ public class ViewAsListActivity extends ListActivity {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("SiteName", sitesList.get(i).getName());
 			map.put("SiteDescription", sitesList.get(i).getDescription());
-<<<<<<< HEAD
-			map.put("SiteIcon", R.drawable.ic_launcher);
-			//map.put("SiteButton", R.drawable.ic_launcher);
-=======
 			
 			String imgUrl = sitesList.get(i).getIcon();
 			// imgUrl = "http://www.dcs.bbk.ac.uk/~qhuang01/video_chat.png";
@@ -239,37 +183,22 @@ public class ViewAsListActivity extends ListActivity {
 			} else {
 				map.put("SiteIcon", R.drawable.default_logo);
 			}
->>>>>>> view as list part by Chatitze
 			
 			dx   = currentLongitude - sitesList.get(i).getLongitude();        //horizontal difference 
 			dy   = currentLatitude  - sitesList.get(i).getLatitude();         //vertical difference 
 			distance    = Math.sqrt( dx*dx + dy*dy ); //distance using Pythagoras theorem
-<<<<<<< HEAD
-			map.put("SiteDistance", distance);
-=======
 			map.put("SiteDistance", new Double(distance));
->>>>>>> view as list part by Chatitze
 			
 			listItems.add(map);
 			
 		}
 
-<<<<<<< HEAD
-		// sort a map according to distance 
-//		Comparator comparator = Collections.checkedSortedMap(listItems, "SiteDistance");
-//		Collections.sort(listItems,comparator);
-		
-		listItemAdapter = new SimpleAdapter(this, listItems,
-				R.layout.list_item, new String[] { "SiteName", "SiteIcon", "SiteDescription", "SiteButton" },
-				new int[] { R.id.SiteName, R.id.SiteIcon, R.id.SiteDescription, R.id.SiteButton });
-=======
 		// sort a map according to distance 		
 		Collections.sort ( listItems , new HashMapComparator2 () ) ;
 		
 		listItemAdapter = new SimpleAdapter(this, listItems,
-				R.layout.list_item, new String[] { "SiteName","SiteDescription", "SiteIcon", "ArrowButton" },
-				new int[] { R.id.SiteName, R.id.SiteDescription, R.id.SiteIcon, R.id.ArrowButton });
->>>>>>> view as list part by Chatitze
+				R.layout.list_item, new String[] { "SiteName","SiteDescription", "SiteIcon", "SiteDistance", "ArrowButton" },
+				new int[] { R.id.SiteName, R.id.SiteDescription, R.id.SiteIcon, R.id.SiteDistance, R.id.ArrowButton });
 		
 		listItemAdapter.setViewBinder(new ViewBinder() {
 			public boolean setViewValue(View view, Object data,
@@ -282,59 +211,6 @@ public class ViewAsListActivity extends ListActivity {
 					return false;
 			}
 		});
-<<<<<<< HEAD
-
-	}
-	
-	
-	public void onSetHome(View v){
-		// Do something when the button is clicked
-	    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-	    
-	    //set button image
-	    //v.setBackgroundDrawable(getResources().getDrawable(R.drawable.highlightednodrop));
-	    
-	}
-	
-	public void onSetMe(View v){
-		
-		// Do something when the button is clicked
-	    Toast.makeText(this, "Me", Toast.LENGTH_SHORT).show();
-	    
-		//set button image
-	    //v.setBackgroundDrawable(getResources().getDrawable(R.drawable.highlightednodrop));
-	}
-
-	public void onSetMap(View v){
-		
-		startActivity(new Intent(ViewAsListActivity.this, mapActivity));
-		
-		ViewAsListActivity.this.finish();
-		
-		// Do something when the button is clicked
-	    Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
-	   
-	}
-	
-	// Search Button Click
-	public void onSearch(View v){
-		
-		onSearchRequested();
-           
-	}
-	
-	@Override
-    	public boolean onSearchRequested() {
-        	return super.onSearchRequested();
-    	}
-    	
-	@Override
-	public void onNewIntent(Intent intent) {
-	    super.onNewIntent(intent);      
-	    setIntent(intent);
-	   // handleIntent(intent);
-	}	
-=======
 
 	}
 	
@@ -415,5 +291,4 @@ public class ViewAsListActivity extends ListActivity {
     }
 
 
->>>>>>> view as list part by Chatitze
 }
