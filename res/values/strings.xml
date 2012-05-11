@@ -7,4 +7,21 @@
     <string name="buttonMap">Map</string>
     <string name="buttonAboutUs">About Us</string>
     <string name="buttonExpand">Details</string>
+    <string name="aboutUs">About Us</string>
+    <string name="aboutUsHeader">Your Business Improvement District</string>
+    <string name="aboutUsDetail">
+    inmidtown represents the interests of 560 businesses in Holborn, 
+    Bloomsbury and St Giles. Our brief as a BID is to enhance the commercial 
+    viability of the area and help it realise its full economic potential.  
+    We deliver tangible benefits for our members by providing practical, 
+    cost-effective services such as recycling and joint procurement. 
+    We also aim to add value to the work of Camden Council and Transport 
+    for London in the areas of street management, public realm and transport. 
+    As well as seeking to influence and encourage local business leaders and 
+    key decision makers at the Council and in the Mayor’s Office, we work 
+    closely with organisations such as the Midtown Business Club.
+
+    Our aim; the objective of inmidtown is to make Bloomsbury, Holborn and St Giles a quality environment 
+	in which to work and live, a vibrant area to visit and a profitable place to do business.
+    </string>
 </resources>
