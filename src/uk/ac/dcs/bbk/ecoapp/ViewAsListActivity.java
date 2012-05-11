@@ -48,6 +48,7 @@ public class ViewAsListActivity extends ListActivity {
 	private SimpleAdapter listItemAdapter;
 	private String text;
 	private Class<ViewAsMapActivity> mapActivity = ViewAsMapActivity.class;
+	private Class<ViewAboutUsActivity> aboutUsActivity = ViewAboutUsActivity.class;
 	double currentLatitude;
 	double currentLongitude;
 	double distance;
@@ -63,31 +64,22 @@ public class ViewAsListActivity extends ListActivity {
 		initListView();
 		this.setListAdapter(listItemAdapter);
 		
-		//-------------------------- list item click --------------------------
-		//try
+		//list item click
 		  ListView lv = getListView();
 		  lv.setTextFilterEnabled(true);
-		 // lv.setClickable(true); // new
+		  lv.setClickable(true); // new
 
 		  lv.setOnItemClickListener(new OnItemClickListener() {
 		  
 			  public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-			  	
-			//	  Object o = parent.getItemAtPosition(2);
-			//	  String urltext2 = o.toString();
 				  
-				//  TextView textView = (TextView) lv.findViewById(R.id.SiteDescription);
-				  TextView textView = (TextView) parent.findViewById(R.id.SiteDescription);
+				  TextView textView = (TextView) parent.getChildAt(position).findViewById(R.id.SiteDescription);
 				  String urltext = textView.getText().toString(); 
-				    
-				 
+
 				  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
 				  startActivity(browserIntent); 
 		      }
 		  });
-		//--------------------------- list item click -------------------------
-
-		
 	}
 
 	private void getCurrentLocation(){
@@ -120,12 +112,8 @@ public class ViewAsListActivity extends ListActivity {
 	}
 	
 	private void makeUseOfNewLocation(Location loc) {
-		// show my curent location in the first list items SiteName
-     //   TextView v = (TextView)this.findViewById(R.id.SiteName);
-     //   text = "lat: " + loc.getLatitude() + ", long: " + loc.getLongitude();
-     //   v.setText(text);
-        
-        currentLatitude  = loc.getLatitude();
+		
+		currentLatitude  = loc.getLatitude();
         currentLongitude = loc.getLongitude();
         
     }
@@ -167,7 +155,7 @@ public class ViewAsListActivity extends ListActivity {
 			}
 			sqlDB.close();
 		}
-
+	
 		double dx;//horizontal difference 
 		double dy;//vertical difference 
 
@@ -197,8 +185,8 @@ public class ViewAsListActivity extends ListActivity {
 		Collections.sort ( listItems , new HashMapComparator2 () ) ;
 		
 		listItemAdapter = new SimpleAdapter(this, listItems,
-				R.layout.list_item, new String[] { "SiteName","SiteDescription", "SiteIcon", "SiteDistance", "ArrowButton" },
-				new int[] { R.id.SiteName, R.id.SiteDescription, R.id.SiteIcon, R.id.SiteDistance, R.id.ArrowButton });
+				R.layout.list_item, new String[] { "SiteName","SiteDescription", "SiteIcon","ArrowButton" },
+				new int[] { R.id.SiteName, R.id.SiteDescription, R.id.SiteIcon, R.id.ArrowButton });
 		
 		listItemAdapter.setViewBinder(new ViewBinder() {
 			public boolean setViewValue(View view, Object data,
@@ -219,25 +207,16 @@ public class ViewAsListActivity extends ListActivity {
 		// Do something when the button is clicked
 	    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
 	    
-	    //set button image
-	    //v.setBackgroundDrawable(getResources().getDrawable(R.drawable.highlightednodrop));
-	    
 	}
 	public void onArrowBtn(View v){
 		// Do something when the button is clicked
-	    Toast.makeText(this, "Arrow", Toast.LENGTH_SHORT).show();
-	    
-	    //set button image
-	    //v.setBackgroundDrawable(getResources().getDrawable(R.drawable.highlightednodrop));
-	    
+	   // Toast.makeText(this, "Arrow", Toast.LENGTH_SHORT).show();   
 	}
 	
 	
 	public void onSetAboutUs(View v){
 		
-		// Do something when the button is clicked
-	    Toast.makeText(this, "About Us", Toast.LENGTH_SHORT).show();
-	    
+		startActivity(new Intent(ViewAsListActivity.this, aboutUsActivity));    
 	}
 
 	public void onSetMap(View v){
