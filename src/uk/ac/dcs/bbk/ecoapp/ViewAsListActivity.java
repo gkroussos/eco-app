@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Comparator;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+
 import uk.ac.dcs.bbk.ecoapp.db.EcoSQLiteOpenHelper;
 import uk.ac.dcs.bbk.ecoapp.db.Site;
 import android.app.AlertDialog;
@@ -49,13 +52,20 @@ public class ViewAsListActivity extends ListActivity {
 	private String text;
 	private Class<ViewAsMapActivity> mapActivity = ViewAsMapActivity.class;
 	private Class<ViewAboutUsActivity> aboutUsActivity = ViewAboutUsActivity.class;
+	private GoogleAnalyticsTracker tracker2;
 	double currentLatitude;
 	double currentLongitude;
 	double distance;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
+		tracker2 = GoogleAnalyticsTracker.getInstance();
+		tracker2.startNewSession("UA-30293248-1", this);
+		tracker2.trackPageView("UserAtListPage");
+		/*tracker2.trackEvent("AtListPage", // Category
+				"PageView", // Action
+				"AtListPage", // Label
+				0); // Value */
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewaslist);
 
@@ -75,7 +85,12 @@ public class ViewAsListActivity extends ListActivity {
 				  
 				  TextView textView = (TextView) parent.getChildAt(position).findViewById(R.id.SiteDescription);
 				  String urltext = textView.getText().toString(); 
-
+				  tracker2.trackEvent(
+				    		"AtListPage", // category
+				    		"Click", // Action
+				    		"ListItem", // Label
+				    		position //value
+				    		);
 				  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
 				  startActivity(browserIntent); 
 		      }
@@ -206,7 +221,12 @@ public class ViewAsListActivity extends ListActivity {
 	public void onSetHome(View v){
 		// Do something when the button is clicked
 	    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-	    
+	    tracker2.trackEvent(
+	    		"AtListPage", // category
+	    		"Click", // Action
+	    		"Home", // Label
+	    		0 //value
+	    		);
 	}
 	public void onArrowBtn(View v){
 		// Do something when the button is clicked
@@ -215,12 +235,22 @@ public class ViewAsListActivity extends ListActivity {
 	
 	
 	public void onSetAboutUs(View v){
-		
+		tracker2.trackEvent(
+	    		"AtListPage", // category
+	    		"Click", // Action
+	    		"AboutUs", // Label
+	    		0 //value
+	    		);
 		startActivity(new Intent(ViewAsListActivity.this, aboutUsActivity));    
 	}
 
 	public void onSetMap(View v){
-		
+		tracker2.trackEvent(
+	    		"AtListPage", // category
+	    		"Click", // Action
+	    		"Map", // Label
+	    		0 //value
+	    		);
 		startActivity(new Intent(ViewAsListActivity.this, mapActivity));
 		//ViewAsListActivity.this.finish();
 		
