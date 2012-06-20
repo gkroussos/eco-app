@@ -69,7 +69,7 @@ public class EcoAppActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ecoapp);
-
+		
 		// the progress bar
 		updateDbBar = (ProgressBar) this.findViewById(R.id.updateDbBar);
 		updateDbBar.setIndeterminate(true);
@@ -92,13 +92,13 @@ public class EcoAppActivity extends Activity {
 
 			// For Ray
 			tracker = GoogleAnalyticsTracker.getInstance();
-			tracker.startNewSession("UA-29500489-1", this);
-			tracker.trackPageView("UserOpenApp");
-			tracker.trackEvent("Clicks", // Category
-					"Button", // Action
-					"clicked", // Label
-					77); // Value
-			tracker.dispatch();
+			tracker.startNewSession("UA-30293248-1", this);
+			tracker.trackPageView("UserOpenEcoApp");
+			/*tracker.trackEvent("Button", // Category
+					"PageView", // Action
+					"OpenApp", // Label
+					0); // Value */
+			tracker.dispatch(); 
 
 			// get the XML data properties
 			Properties p = new Properties();
@@ -259,9 +259,9 @@ public class EcoAppActivity extends Activity {
 			public void run() {
 
 				if (networkAvailable) {
-					startActivity(new Intent(EcoAppActivity.this, mapActivity));
-				} else {
 					startActivity(new Intent(EcoAppActivity.this, listActivity));
+				} else {
+					startActivity(new Intent(EcoAppActivity.this, mapActivity));
 				}
 
 				EcoAppActivity.this.finish();

@@ -10,7 +10,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" 
+        android:theme="@android:style/Theme.NoTitleBar">
         
         <receiver android:name=".BootStateReceiver">
             <intent-filter>
@@ -32,6 +35,14 @@
 
         <activity android:name=".ViewAsMapActivity" android:label="@string/app_name" />
         
+        <activity android:name=".ViewAboutUsActivity" android:label="@string/app_name" />
+        
+        <activity android:name=".SearchActivity" android:launchMode="singleTop" >
+             <intent-filter>
+                 <action android:name="android.intent.action.SEARCH" />
+             </intent-filter>
+        </activity>
+
         <service android:name=".LocationLoggingService" android:enabled="true" />
         
     </application>
