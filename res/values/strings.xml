@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, EcoAppActivity!</string>
-    <string name="app_name">EcoApp</string>
+    <string name="app_name">inmidtown</string>
     <string name="logo">Logo</string>
     <string name="buttonHome">Home</string>
     <string name="buttonMap">Map</string>

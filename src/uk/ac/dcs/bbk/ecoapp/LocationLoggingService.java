@@ -15,11 +15,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.InputSource;
@@ -49,7 +52,7 @@ import android.util.Log;
 public class LocationLoggingService extends Service {
 
 	private final static float minDistance = 10;
-	private final static int CONNECT_TIMEOUT = 4000;
+	private final static int CONNECT_TIMEOUT = 3000;
 	private boolean networkAvailable = true;
 	private boolean isThreadDisabled;
 	private boolean isXMLParsed = false;
@@ -62,6 +65,7 @@ public class LocationLoggingService extends Service {
 	private int loggingFrequencySecs = 600;
 	private int loggingUpdateMins = 60;
 	private String loggingURI;
+	private Criteria criteria;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -99,17 +103,18 @@ public class LocationLoggingService extends Service {
 
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-		Criteria criteria = new Criteria();
+		criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		criteria.setAltitudeRequired(false);
 		criteria.setBearingRequired(false);
-		criteria.setCostAllowed(true);
 		criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
 
-		provider = locationManager.getBestProvider(criteria, true);
-		Log.i("Provider", provider);
-
-		locationManager.requestLocationUpdates(provider, loggingFrequencySecs * 1000, minDistance, locationListener);
+		if (locationManager != null) {
+			provider = locationManager.getBestProvider(criteria, true);
+		}
+		if (provider != null) {
+			locationManager.requestLocationUpdates(provider, loggingFrequencySecs * 1000, minDistance, locationListener);
+		}
 
 		new Thread(new Runnable() {
 			@Override
@@ -122,6 +127,7 @@ public class LocationLoggingService extends Service {
 					}
 					try {
 						Thread.sleep(loggingUpdateMins * 60 * 1000);
+						Log.d("LocationLoggingConf Sleep", loggingUpdateMins + " mins");
 					} catch (InterruptedException e) {
 						Log.e("LocationLoggingConf", e.getMessage());
 					}
@@ -134,12 +140,13 @@ public class LocationLoggingService extends Service {
 			public void run() {
 				while (!isThreadDisabled) {
 					networkAvailable = checkNetworkAvailability(LocationLoggingService.this);
-					if (networkAvailable && isXMLParsed) {
+					if (networkAvailable && isXMLParsed && locationManager != null && provider != null && locationManager.isProviderEnabled(provider)) {
 						location = locationManager.getLastKnownLocation(provider);
-						updateLocation(location);
+						updateLocation(location, provider);
 					}
 					try {
 						Thread.sleep(loggingFrequencySecs * 1000);
+						Log.d("LocationLogging Sleep", loggingFrequencySecs + " secs");
 					} catch (InterruptedException e) {
 						Log.e("LocationLoggingUp", e.getMessage());
 					}
@@ -153,24 +160,21 @@ public class LocationLoggingService extends Service {
 
 		@Override
 		public void onProviderDisabled(String provider) {
-			updateLocation(null);
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) {
-			updateLocation(location);
 		}
 
 		@Override
 		public void onLocationChanged(Location loc) {
-			// TODO Auto-generated method stub
-			location = loc;
+			if (loc != null) {
+				location = loc;
+			}
 		}
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-			// TODO Auto-generated method stub
-
 		}
 
 	};
@@ -260,7 +264,7 @@ public class LocationLoggingService extends Service {
 
 	}
 
-	private void updateLocation(Location location) {
+	private void updateLocation(Location location, String lprovider) {
 		String jString;
 		if (location != null) {
 
@@ -270,13 +274,12 @@ public class LocationLoggingService extends Service {
 			ArrayList<Double> loc = new ArrayList<Double>();
 			loc.add(lat);
 			loc.add(lng);
-			
+
 			JSONObject jObject = new JSONObject();
-			DefaultHttpClient httpClient = new DefaultHttpClient();
 
 			try {
 				jObject.put("loc", loc);
-				jObject.put("src", provider);
+				jObject.put("src", lprovider);
 				jObject.put("time", currentTime);
 				jObject.put("ID", "" + randomId);
 			} catch (JSONException e) {
@@ -287,11 +290,17 @@ public class LocationLoggingService extends Service {
 			jString = jObject.toString();
 
 			HttpPost httpost = new HttpPost(loggingURI);
+			HttpParams httpParameters = new BasicHttpParams();
+			int timeoutConnection = 3000;
 			try {
+				HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+				HttpConnectionParams.setSoTimeout(httpParameters, timeoutConnection);
+				DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+
 				httpost.setEntity(new StringEntity(jString));
 				httpost.setHeader("Accept", "application/json");
 				httpost.setHeader("Content-Type", "application/json");
-				HttpResponse response = (HttpResponse)httpClient.execute(httpost);
+				BasicHttpResponse response = (BasicHttpResponse) httpClient.execute(httpost);
 				Log.i("updateLocation", "response: " + response.getStatusLine().getStatusCode());
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
@@ -301,11 +310,11 @@ public class LocationLoggingService extends Service {
 				Log.e("ClientProtocolException", e.getMessage());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				Log.e("IOException", e.getMessage());
+				Log.e("updateLocation IOException", e.getMessage());
 			}
 
 		} else {
-			jString = "location inaccessible";
+			jString = "no location, didn't post";
 		}
 
 		Log.i("updateLocation", "post: " + jString + "; url: " + loggingURI);
