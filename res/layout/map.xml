@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+<!-- android:layout_width="match_parent"
+    android:layout_height="match_parent"-->
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageButton 
+	    		android:layout_width="275dp"
+        		android:layout_height="50dp"
+        		android:background="@drawable/inmidtown_bar" />
+		<ImageButton
+		    	android:id="@+id/searchbtn" 
+	    		android:layout_width="wrap_content"
+        		android:layout_height="50dp"
+        		android:background="@drawable/search"
+        		android:onClick="onSearch" />
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+	    <Button
+        	android:id="@+id/homebtn"
+        	android:layout_width="107dp"
+        	android:layout_height="50dp"
+        	android:padding="10dp"
+        	android:background="@drawable/android_button"
+        	android:text="@string/buttonHome"
+        	android:onClick="onSetHome"/>
+	    <Button
+        	android:id="@+id/mapbtn"
+        	android:layout_width="107dp"
+        	android:layout_height="50dp"
+        	android:padding="10dp"
+        	android:background="@drawable/android_button"
+        	android:text="@string/buttonMap"
+        	android:onClick="onSetMap"/>
+	    <Button
+        	android:id="@+id/aboutusbtn"
+        	android:layout_width="107dp"
+        	android:layout_height="50dp"
+        	android:padding="10dp"
+        	android:background="@drawable/android_button"
+        	android:text="@string/buttonAboutUs"
+        	android:onClick="onSetAboutUs"/>
+	    
+	</LinearLayout>	
+    <com.google.android.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="0vbHFURodfa771u2dmV5-rMAD8zpWL0vXF3ckrw"
+        android:clickable="true" 
+        android:enabled="true">
+    </com.google.android.maps.MapView>
+
+</LinearLayout>
