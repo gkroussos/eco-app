@@ -13,21 +13,52 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/aboutUs"
-        android:textSize="25dip"/>
+        android:layout_marginLeft="5dp" 
+        android:layout_marginTop="7dp" 
+        android:textSize="15sp"/>
 		
 		<TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/aboutUsHeader"
-        android:layout_marginLeft="10px"
-		android:textSize="20dip"
-        android:textColor="#0099CC"/>
+        android:text="@string/aboutUsDetail1"
+        android:layout_marginLeft="10dp" 
+        android:textSize="12sp"/>
 		
 		<TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/aboutUsDetail"
-        android:layout_marginLeft="10px" 
-        android:textColor="#0099CC"/>
+        android:text="@string/aboutUsDetail2"
+        android:layout_marginLeft="10dp" 
+        android:layout_marginTop="8dp" 
+        android:textSize="12sp"/>
+		
+		<TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/aboutUsDetail3"
+        android:layout_marginLeft="10dp" 
+        android:layout_marginTop="8dp" 
+        android:textSize="12sp"/>
 
+		<TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/theAppTitle"
+        android:layout_marginLeft="5dp" 
+        android:layout_marginTop="7dp" 
+        android:textSize="15sp"/>
+		
+		<TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/theApp"
+        android:layout_marginLeft="10dp" 
+        android:textSize="12sp"/>
+		
+		<TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/credits"
+        android:layout_marginLeft="10dp" 
+        android:textSize="12sp"/>		
 </LinearLayout>

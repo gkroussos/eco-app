@@ -1,39 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:baselineAlignBottom="true"
+    >
+
+    <!--  Site Icon -->
 
     <ImageView
-        android:id="@+id/SiteIcon"
+        android:id="@+id/site_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dip"
-        android:layout_weight="1"
-        android:layout_height="fill_parent">
-
-        <TextView 
-            	android:id="@+id/SiteName"
-      		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-      		android:gravity="center"/>
-
-        <TextView 
-  		android:id="@+id/SiteDescription" 
-      		android:layout_width="wrap_content" 
-      		android:layout_height="wrap_content"
-      		android:layout_marginLeft="10px" 
-      		android:textColor="#0099CC"/>
-  		
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/icon" />
     
+    <!-- Button linking to detail view -->
     <ImageView
-        android:id="@+id/ArrowButton"
+        android:id="@+id/arrow_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_gravity="right" 
         android:background="@drawable/arrowbtn"
-        android:onClick="onArrowBtn"/>          
+        android:layout_alignParentRight="true"
+		android:layout_alignBaseline="@id/site_icon"
+        android:onClick="onArrowBtn"/>
+
+    <!-- Two rows of text -->
+
+        <TextView
+            android:id="@+id/site_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/site_icon"
+            android:layout_toRightOf="@id/site_icon"
+            android:layout_toLeftOf="@id/arrow_button"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="Hello" />
+
+        <TextView
+            android:id="@+id/site_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/site_name"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/site_icon"
+            android:gravity="center_vertical"
+            android:textColor="#0099CC"
+            android:textSize="12sp"
+            android:layout_alignBottom="@id/site_icon"  
+            android:text="Hello there Dave"/>
     
-</LinearLayout>
+</RelativeLayout>

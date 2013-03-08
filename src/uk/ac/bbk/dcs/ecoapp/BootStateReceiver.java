@@ -1,4 +1,4 @@
-package uk.ac.dcs.bbk.ecoapp;
+package uk.ac.bbk.dcs.ecoapp;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

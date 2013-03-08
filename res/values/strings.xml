@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, EcoAppActivity!</string>
     <string name="app_name">inmidtown</string>
@@ -8,20 +8,32 @@
     <string name="buttonAboutUs">About Us</string>
     <string name="buttonExpand">Details</string>
     <string name="aboutUs">About Us</string>
-    <string name="aboutUsHeader">Your Business Improvement District</string>
-    <string name="aboutUsDetail">
+    <string name="aboutUsHeader"></string>
+    <string name="aboutUsDetail1">
     inmidtown represents the interests of 560 businesses in Holborn, 
-    Bloomsbury and St Giles. Our brief as a BID is to enhance the commercial 
-    viability of the area and help it realise its full economic potential.  
+    Bloomsbury and St. Giles.   
     We deliver tangible benefits for our members by providing practical, 
     cost-effective services such as recycling and joint procurement. 
+    </string>
+    <string name="aboutUsDetail2">
     We also aim to add value to the work of Camden Council and Transport 
     for London in the areas of street management, public realm and transport. 
     As well as seeking to influence and encourage local business leaders and 
     key decision makers at the Council and in the Mayor’s Office, we work 
     closely with organisations such as the Midtown Business Club.
-
-    Our aim; the objective of inmidtown is to make Bloomsbury, Holborn and St Giles a quality environment 
+    </string>
+    <string name="aboutUsDetail3">
+    Our aim is to make Bloomsbury, Holborn and St. Giles a quality environment 
 	in which to work and live, a vibrant area to visit and a profitable place to do business.
     </string>
+    <string name="theAppTitle">
+        The Eco App
+    </string> 
+    <string name="theApp">
+        The Eco App has been designed and developed by the Mobile and Ubiquitous Computing students at the Department of Computer Science, Birkbeck College, University of London. 
+    </string> 
+    <string name="credits">
+        Concept and UI design: Hesseltje S van Goor and Tracey Field; Software Development: Giorgio Huang, Chatitze Moumin and David McRobert; Analytics: Ray Su; Illustrations: William Jesus Maria Jose Bates; Sound: Philip Wickens; TAs: Richard Brownlow and Long Chen; Lecturer: George Roussos  
+    </string>  
+    <string name="placeholder">Place holder for content descripion</string>        
 </resources>

@@ -1,0 +1,46 @@
+
+ Guide to Content
+ ----------------
+ Packages:
+  uk.ac.bbk.dcs.ecoapp            - assorted utilities and views which haven;t found a better home yet
+  uk.ac.bbk.dcs.ecoapp.activity   - Key activities for the application
+  uk.ac.bbk.dcs.ecoapp.db         - Database related classes
+  uk.ac.bbk.dcs.ecoapp.db.xml     - XML parsing classes in support of the remote database reader
+  uk.ac.bbk.dcs.ecoapp.utility    - Utility support classes. Currently an asycnronous image loader
+
+Activities:
+ SplashScreenActivity       - First activity. Displays splash screen and checks and possibly updates local database
+ ListViewActivity           - Displays list of Sites
+ MapViewActivity            - Displays Sites overlaid on a Map
+ DetailViewActivity         - Shows detail view of a Site
+ AboutUsActivity            - Static text content describing InMidtown organisation
+
+Dave Durbin Updates
+-------------------
+Extracted XML parsing to separate set of classes in new package uk.ac.bbk.dcs.ecoapp.db.xml
+  DataVersionContentHandler is a SAX ContentHandler subclass for the version XML
+  SiteListContentHandler is a SAX ContentHandler for the Site list XML
+  
+ Created DatabaseUpdater and DatabaseUpdaterListener classes in uk.ac.bbk.dcs.ecoapp.db to isolate update 
+ specific code in its own class and break the tight coupling between the progress bar and update which previoulsy existed in 
+ the EcoAppActivity class
+ 
+ Removed redundant main.xml and renamed all activity and Layouts to have consitent and meaningful names
+ 
+ Renamed EcoAppActivity to SplashScreenActivity and refactored code to improve readability.
+ 
+ Created uk.ac.bbk.dcs.ecoapp.activity package and moved all Activities into it.
+ 
+ Modified EcoAppSQLiteDatabaseOpenHelper to add a method to return the list of all Sites and then removed redundant 
+ code from the various views in which it appeared.
+ 
+ Seasoned liberally with comments
+ Current Known Problems
+ ----------------------
+ Maps not correctly downloading patches - seems to be an API key issue based on Googling/Stack Overflow. API v1 (the one in use) 
+ has been deprecated as of Dec 2012 and no new keys to be issued from 3rd March 2013 (about when the app stopped working though I would have
+ thought it should have continued to be OK)
+ Site icons not being loaded - they never were. I've implemented an Async loader class but not put it to work yet
+ 
+ 
+ 

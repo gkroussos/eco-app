@@ -1,11 +1,15 @@
-package uk.ac.dcs.bbk.ecoapp;
+package uk.ac.bbk.dcs.ecoapp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -14,20 +18,6 @@ import java.util.Random;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import android.app.Service;
 import android.content.Context;
@@ -49,10 +39,22 @@ import android.sax.RootElement;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import uk.ac.bbk.dcs.ecoapp.R;
+
+
 public class LocationLoggingService extends Service {
 
 	private final static float minDistance = 10;
 	private final static int CONNECT_TIMEOUT = 3000;
+	private final static int SERVER_UDP_PORT = 80;
+	private final static int LOCAL_UDP_PORT = 5678;
 	private boolean networkAvailable = true;
 	private boolean isThreadDisabled;
 	private boolean isXMLParsed = false;
@@ -66,6 +68,8 @@ public class LocationLoggingService extends Service {
 	private int loggingUpdateMins = 60;
 	private String loggingURI;
 	private Criteria criteria;
+	private DatagramSocket udpSocket;
+	private InetAddress serverAddress;
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -117,7 +121,6 @@ public class LocationLoggingService extends Service {
 		}
 
 		new Thread(new Runnable() {
-			@Override
 			public void run() {
 				while (!isThreadDisabled) {
 					networkAvailable = checkNetworkAvailability(LocationLoggingService.this);
@@ -136,7 +139,6 @@ public class LocationLoggingService extends Service {
 		}).start();
 
 		new Thread(new Runnable() {
-			@Override
 			public void run() {
 				while (!isThreadDisabled) {
 					networkAvailable = checkNetworkAvailability(LocationLoggingService.this);
@@ -158,22 +160,18 @@ public class LocationLoggingService extends Service {
 
 	private final LocationListener locationListener = new LocationListener() {
 
-		@Override
 		public void onProviderDisabled(String provider) {
 		}
 
-		@Override
 		public void onProviderEnabled(String provider) {
 		}
 
-		@Override
 		public void onLocationChanged(Location loc) {
 			if (loc != null) {
 				location = loc;
 			}
 		}
 
-		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 		}
 
@@ -227,7 +225,6 @@ public class LocationLoggingService extends Service {
 
 		Element typeElement = clientElement.getChild("type");
 		typeElement.setEndTextElementListener(new EndTextElementListener() {
-			@Override
 			public void end(String body) {
 				loggingType = body;
 			}
@@ -235,7 +232,6 @@ public class LocationLoggingService extends Service {
 
 		Element frequency_secsElement = clientElement.getChild("frequency_secs");
 		frequency_secsElement.setEndTextElementListener(new EndTextElementListener() {
-			@Override
 			public void end(String body) {
 				loggingFrequencySecs = Integer.parseInt(body);
 				Log.i("frequency_secs", "" + loggingFrequencySecs);
@@ -244,7 +240,6 @@ public class LocationLoggingService extends Service {
 
 		Element update_minsElement = clientElement.getChild("update_mins");
 		update_minsElement.setEndTextElementListener(new EndTextElementListener() {
-			@Override
 			public void end(String body) {
 				loggingUpdateMins = Integer.parseInt(body);
 				Log.i("update_mins", "" + loggingUpdateMins);
@@ -253,7 +248,6 @@ public class LocationLoggingService extends Service {
 
 		Element URIElement = clientElement.getChild("URI");
 		URIElement.setEndTextElementListener(new EndTextElementListener() {
-			@Override
 			public void end(String body) {
 				loggingURI = body;
 				Log.i("URI", loggingURI);
@@ -288,8 +282,25 @@ public class LocationLoggingService extends Service {
 			}
 
 			jString = jObject.toString();
-
-			HttpPost httpost = new HttpPost(loggingURI);
+			
+			try {
+				udpSocket = new DatagramSocket(LOCAL_UDP_PORT);
+				serverAddress = InetAddress.getByName(loggingURI);
+				DatagramPacket dataPacket = new DatagramPacket(jString.getBytes(), jString.getBytes().length, serverAddress, SERVER_UDP_PORT);
+				udpSocket.send(dataPacket);
+				udpSocket.close();
+			} catch (SocketException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			/*HttpPost httpost = new HttpPost(loggingURI);
 			HttpParams httpParameters = new BasicHttpParams();
 			int timeoutConnection = 3000;
 			try {
@@ -311,13 +322,13 @@ public class LocationLoggingService extends Service {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				Log.e("updateLocation IOException", e.getMessage());
-			}
+			}*/
 
 		} else {
 			jString = "no location, didn't post";
 		}
 
-		Log.i("updateLocation", "post: " + jString + "; url: " + loggingURI);
+		Log.i("updateLocation", "post: " + jString + "; url: " + serverAddress);
 
 	}
 

@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="uk.ac.dcs.bbk.ecoapp"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="4" />
+      package="uk.ac.bbk.dcs.ecoapp"
+      android:versionCode="3"
+      android:versionName="2.0">
+    <uses-sdk 
+        android:targetSdkVersion="11"
+        android:minSdkVersion="11"/>
     
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION"/>
-    
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name" 
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:allowBackup="true">
+<!--         android:theme="@android:style/Theme.NoTitleBar" -->
         
         <uses-library android:name="com.google.android.maps"/>
+        
+        
+        <meta-data
+            android:name="com.google.android.maps.vv3.API_KEY"
+            android:value="AIzaSyAfPj8BkofIkJji-wBehw6ZIsrF-6CvVPw" 
+            />
         
         <receiver android:name=".BootStateReceiver">
             <intent-filter>
@@ -24,7 +32,7 @@
             </intent-filter>
         </receiver>
         
-        <activity android:name=".EcoAppActivity"
+        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.SplashScreenActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait"
                   android:noHistory="true">
@@ -34,13 +42,13 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".ViewAsListActivity" android:label="@string/app_name" />
+        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.ListViewActivity" android:label="@string/app_name" android:screenOrientation="portrait" />
 
-        <activity android:name=".ViewAsMapActivity" android:label="@string/app_name" />
+        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.MapViewActivity" android:label="@string/app_name" android:screenOrientation="portrait" />
         
-        <activity android:name=".ViewAboutUsActivity" android:label="@string/app_name" />
+        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.AboutUsActivity" android:label="@string/app_name" android:screenOrientation="portrait" />
         
-        <activity android:name=".SearchActivity" android:launchMode="singleTop" >
+        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.SearchActivity" android:launchMode="singleTop" >
              <intent-filter>
                  <action android:name="android.intent.action.SEARCH" />
              </intent-filter>
