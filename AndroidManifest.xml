@@ -20,12 +20,6 @@
         
         <uses-library android:name="com.google.android.maps"/>
         
-        
-        <meta-data
-            android:name="com.google.android.maps.vv3.API_KEY"
-            android:value="AIzaSyAfPj8BkofIkJji-wBehw6ZIsrF-6CvVPw" 
-            />
-        
         <receiver android:name=".BootStateReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -73,7 +73,7 @@ public class MapViewActivity extends  MapActivity {
 
 		// TODO: Replace these with lazy loaded Site Images
 		//Drawable marker = this.getResources().getDrawable(R.drawable.flag);
-		Drawable marker = getResources().getDrawable(R.drawable.default_logo);
+		Drawable marker = getResources().getDrawable(R.drawable.site_icon);
 
 		marker.setBounds(0, 0, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());
 		//AddressOverlay addressOverlay = new AddressOverlay(siteToGo, marker, this);

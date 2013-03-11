@@ -13,7 +13,7 @@
 
     <LinearLayout
         android:id="@+id/banner"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="fill_horizontal"
@@ -22,23 +22,22 @@
         <ImageView
             android:id="@+id/banner_logo"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:layout_weight="622"
             android:adjustViewBounds="true"
             android:contentDescription="@string/placeholder"
             android:scaleType="fitCenter"
-            android:src="@drawable/inmidtown_bar" />
+            android:background="@drawable/inmidtown_bar" />
 
         <ImageButton
             android:id="@+id/search_button"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
+            android:layout_height="wrap_content"
+            android:layout_weight="98"
+            android:background="@drawable/search"
             android:contentDescription="@string/placeholder"
             android:onClick="onSearch"
-            android:scaleType="fitCenter"
-            android:src="@drawable/search" />
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 
@@ -61,6 +60,7 @@
             android:layout_weight="1"
             android:onClick="onSetHome"
             android:scaleType="fitXY"
+            android:background="@drawable/android_button"
             android:text="@string/buttonHome" />
 
         <Button
@@ -72,6 +72,7 @@
             android:gravity="center"
             android:onClick="onSetMap"
             android:scaleType="fitXY"
+            android:background="@drawable/android_button"
             android:text="@string/buttonMap" />
 
         <Button
@@ -82,6 +83,7 @@
             android:layout_weight="1"
             android:onClick="onSetAboutUs"
             android:scaleType="fitXY"
+            android:background="@drawable/android_button"
             android:text="@string/buttonAboutUs" />
 
     </LinearLayout>
