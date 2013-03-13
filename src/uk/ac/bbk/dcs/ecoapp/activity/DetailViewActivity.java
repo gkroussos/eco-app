@@ -1,16 +1,17 @@
 package uk.ac.bbk.dcs.ecoapp.activity;
 
 import uk.ac.bbk.dcs.ecoapp.R;
-import uk.ac.bbk.dcs.ecoapp.db.Site;
-import uk.ac.bbk.dcs.ecoapp.utility.AsynchImageLoader;
+import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
+import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DetailViewActivity extends Activity {
 	/** Logo */
-	ImageView	siteLogo_;
+	ImageView	siteIconView_;
 
 	/** Site name */
 	TextView 	siteNameView_;
@@ -18,25 +19,21 @@ public class DetailViewActivity extends Activity {
 	/** Site description*/
 	TextView	siteDescriptionView_;
 
-	/** Site address */
-	TextView	siteAddressView_;
+	/** Site type */
+	TextView	siteTypeView_;
 
-	/** Site telephone */
-	TextView	siteTelephoneView_;
-
-	/** URL */
-	TextView	siteURLView_;
+	/** Site Link*/
+	TextView	siteLinkView_;
 
 	/**
 	 * Bind the local fields to layout components
 	 */
 	private void bindFields( ) {
-		siteLogo_ = (ImageView) findViewById(R.id.site_logo);
+		siteIconView_ = (ImageView) findViewById(R.id.site_icon);
 		siteNameView_ = (TextView) findViewById(R.id.site_name);
 		siteDescriptionView_ = (TextView) findViewById(R.id.site_description);
-		siteAddressView_ = (TextView) findViewById(R.id.site_address);
-		siteTelephoneView_ = (TextView) findViewById(R.id.site_telephone);
-		siteURLView_ = (TextView) findViewById(R.id.site_url);
+		siteTypeView_ = (TextView) findViewById(R.id.site_type);
+		siteLinkView_ = (TextView) findViewById(R.id.site_url);
 	}
 
 
@@ -45,11 +42,16 @@ public class DetailViewActivity extends Activity {
 	 * Set a new Site to display
 	 * @param site The Site
 	 */
-	protected void setSite( Site site ) {
+	protected void setSite( ParcelableSite site ) {
+		
 		// Handle icon
-		AsynchImageLoader.getSingletonInstance().loadToImageView(site.getIcon(), siteLogo_);
+		// TODO: Implement the Asynch loader 
+//		AsynchImageLoader.getSingletonInstance().loadToImageView(site.getIcon(), siteLogo_);
+//		siteIconView_.setText(site.getName( ));
 		siteNameView_.setText(site.getName( ));
 		siteDescriptionView_.setText( site.getDescription());
+		siteTypeView_.setText( site.getType());
+		siteLinkView_.setText( site.getLink());
 	}
 	
 	/**
@@ -64,10 +66,14 @@ public class DetailViewActivity extends Activity {
 		// Bind fields
 		bindFields( );
 
-		// Retrieve the current Site
-		Site currentSite = (Site)savedInstanceState.get("current site");
-		if( currentSite != null ) {
-			setSite( currentSite );
+		// Retrieve the intent that launched this activity
+		Intent intent = getIntent();
+		
+		// Get the current site form the intent (should be stored as an extra)
+		ParcelableSite ps = (ParcelableSite) intent.getParcelableExtra(ActivityConstants.EXTRA_SITE_NAME);
+
+		if( ps != null ) {
+			setSite( ps );
 		}
 	}
 }

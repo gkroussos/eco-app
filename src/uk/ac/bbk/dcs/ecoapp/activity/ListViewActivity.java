@@ -1,20 +1,18 @@
 package uk.ac.bbk.dcs.ecoapp.activity;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import uk.ac.bbk.dcs.ecoapp.R;
+import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
+import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
+import uk.ac.bbk.dcs.ecoapp.activity.helper.SiteAdapter;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
 import uk.ac.bbk.dcs.ecoapp.db.Site;
-import android.app.LauncherActivity.ListItem;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,11 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.Toast;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
@@ -48,11 +42,8 @@ implements LocationListener
 	/** List of sites from the local database */
 	private List<Site> 					siteList_;
 
-	/** List of Site data for mapping to ListItems */
-	private List<Map<String, Object>>	listItems_;
-
 	/** List adapter for the list of items */
-	SimpleAdapter						listAdapter_;
+	SiteAdapter						listAdapter_;
 
 	/** Last known latitude or 0.0 */
 	Location							lastKnownLocation_;
@@ -98,51 +89,17 @@ implements LocationListener
 
 		// Set up location listener
 		listenForLocationChanges();
-
 	}
 
 	/**
-	 * Construct a HashMap from the Site for use with the SimpleAdapter
-	 * @param site The Site
-	 * @return A Map containing the key values of the site 
-	 */
-	private Map<String, Object> siteToMap( Site site) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-
-		map.put("SiteName", site.getName());
-		map.put("SiteDescription", site.getDescription());
-
-		// TODO: Put a lazy loaded icon in this map instead
-		map.put("SiteIcon", R.drawable.icon);
-
-		map.put("SiteDistance", Double.valueOf(site.getDistance()));
-		map.put("ArrowButton", R.drawable.arrowbtn);
-
-		return map;
-	}
-	
-	/**
-	 * Construct a List of Maps for the list adapter
-	 * @param siteList The source Sites
-	 * @return A List<Map<
-	 */
-	private List<Map<String, Object>> getListItemsFromSiteList( List<Site> siteList ) {
-		// Allocate space for opne entry per Site
-		List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>( siteList.size() );
-		for( Site site : siteList ) {
-			listItems.add(siteToMap(site));
-		}
-		
-		return listItems;
-	}
-
-	/**
-	 * For each Site in the list, work out how far the Site is from the last known location
-	 * if it's set, and set this as a distance on the site
+	 * Sort the provided list of sites based on distance from the current location updating the
+	 * distance field of the sites as a side effect.
+	 * 
 	 * @param siteList A List of Sites 
+	 * @return true if the sort order of the list changed, otherwise false
 	 */
-	private void sortSitesAccordingToDistance( List<Site> siteList ) {
-		// Current lat and long or 0 if no known location
+	private boolean sortSitesAccordingToDistance( List<Site> siteList ) {
+		// First update the distances for each site in the list
 		double currentLatitude = 0.0;
 		double currentLongitude = 0.0;
 
@@ -166,6 +123,15 @@ implements LocationListener
 				site.setDistance(distance);
 			}
 		}
+		
+
+		// Make a note of the existing sort order
+		int[] siteIds = new int[siteList_.size()];
+		int i=0;
+		for( Site site : siteList_) {
+			siteIds[i] = site.getId();
+			++i;
+		}
 
 		// Now perform a sort
 		Collections.sort ( siteList_ , new Comparator<Site> (){
@@ -178,6 +144,19 @@ implements LocationListener
 				return 0;
 			}
 		}) ;
+		
+		// Finally, check whether the sort order has changed
+		boolean sortOrderChanged = false;
+		i=0;
+		for( Site site : siteList_) {
+			if( siteIds[i] != site.getId() ) {
+				sortOrderChanged = true;
+				break;
+			}
+			++i;
+		}
+		
+		return sortOrderChanged;
 	}
 
 	/**
@@ -193,29 +172,9 @@ implements LocationListener
 	 * Initialise the list view by reading a list oif Sites form 
 	 */
 	private void initListView() {
-		// Construct listItems or populate from siteList
-		listItems_ = getListItemsFromSiteList(siteList_);
-		
 		// Construct an adapter for the List  
-		listAdapter_ = new SimpleAdapter(this, listItems_, R.layout.list_item, 
-				new String[] { "SiteName","SiteDescription", "SiteIcon","ArrowButton" },
-				new int[] { R.id.site_name, R.id.site_description, R.id.site_icon, R.id.arrow_button});
-
-
-		// Create  a ViewBinder to handle ImageViews as SimpleAdapter doesn't
-		// TODO: May make sense to subclass SimpleAdpater or implement a new Adapter to get
-		// around maintaining two lists (one of Sites and one of 
-		listAdapter_.setViewBinder(
-				new ViewBinder() {
-
-					public boolean setViewValue(View view, Object data, String textRepresentation) {
-						if (view instanceof ImageView && data instanceof Bitmap) {
-							((ImageView)view).setImageBitmap((Bitmap) data);
-							return true;
-						} else
-							return false;
-					}
-				});
+		listAdapter_ = new SiteAdapter(this, android.R.id.list, siteList_);
+		
 		setListAdapter(listAdapter_);
 
 		//list item click
@@ -266,22 +225,27 @@ implements LocationListener
 	 * @param v
 	 */
 	public void onArrowBtn(View v){
-		// v should be an arrowButton, the parent should be the list item
-		ListItem li = (ListItem) v.getParent();
-
-		String siteName = null;
-
+		// Get the site associated with this button
+		Site site = (Site) v.getTag();
+		
 		// Extract the Site name from the listItem
+		String siteName = "unknown";
+		if( site != null ) {
+			siteName = site.getName( );
+		}
+		
+		// Log it
 		tracker_.trackEvent(
 				"AtListPage", // category
 				"Click", // Action
-				"ListItem" + siteName, // Label
+				"ListItem(" + siteName + ")", // Label
 				0 //value
 				);
 
-		// Now navigate to that view - passing the selected site name
+		// Now navigate to the detail view - passing the selected site name
 		Intent intent =new Intent(this, DetailViewActivity.class);
-		intent.putExtra("SITE_NAME", siteName);
+		ParcelableSite ps = new ParcelableSite( site );
+		intent.putExtra(ActivityConstants.EXTRA_SITE_NAME, ps);
 		startActivity(intent);    
 	}
 
@@ -349,23 +313,23 @@ implements LocationListener
 	}
 
 	/**
-	 * Stash changed location details and resort Site list
-	 * @param location
+	 * Respond to change in location by re-sorting the list of Sites according to 
+	 * distance from the new Location. If the sort order has changed then we redraw the list
+	 * @param newLocation The new location
 	 */
-	public void onLocationChanged(Location location) {
-		// Called when a new location is found by the network location provider.
+	public void onLocationChanged(Location newLocation) {
+		// Lock on the lcoation mutex to ensure we're not trying to access the location while we change it
 		synchronized( locationMutex_ ) {
-			lastKnownLocation_ = location;
+			lastKnownLocation_ = newLocation;
 
 			// Re-sort the list of sites based on new distances
-			sortSitesAccordingToDistance(siteList_);
+			boolean sortOrderChanged = sortSitesAccordingToDistance(siteList_);
 
-			// Regenerate the list for display
-			listItems_ = getListItemsFromSiteList(siteList_);
-
-			// Notify listeners that data has changed
-			// TODO Is this necessary?
-			listAdapter_.notifyDataSetChanged( );
+			// Notify listeners that data has changed (only if it did)
+			if( sortOrderChanged ) {
+				// This will force a redraw
+				listAdapter_.notifyDataSetChanged( );
+			}
 		}
 
 	}
