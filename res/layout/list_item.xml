@@ -2,11 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal"
     android:baselineAlignBottom="true"
-    >
+    android:orientation="horizontal" >
 
-    <!--  Site Icon -->
+    <!-- Site Icon -->
 
     <ImageView
         android:id="@+id/site_icon"
@@ -14,43 +13,44 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:contentDescription="@string/site_icon"
         android:src="@drawable/icon" />
-    
+
     <!-- Button linking to detail view -->
-    <ImageView
+
+    <ImageButton
         android:id="@+id/arrow_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right" 
-        android:background="@drawable/arrowbtn"
+        android:layout_alignBaseline="@id/site_icon"
         android:layout_alignParentRight="true"
-		android:layout_alignBaseline="@id/site_icon"
-        android:onClick="onArrowBtn"/>
+        android:layout_gravity="right"
+        android:background="@drawable/arrowbtn"
+        android:contentDescription="@string/arrow_button"
+        android:onClick="onArrowBtn" />
 
     <!-- Two rows of text -->
 
-        <TextView
-            android:id="@+id/site_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/site_icon"
-            android:layout_toRightOf="@id/site_icon"
-            android:layout_toLeftOf="@id/arrow_button"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:text="Hello" />
+    <TextView
+        android:id="@+id/site_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/site_icon"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@id/arrow_button"
+        android:layout_toRightOf="@id/site_icon"
+        android:gravity="center_vertical" />
 
-        <TextView
-            android:id="@+id/site_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/site_name"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/site_icon"
-            android:gravity="center_vertical"
-            android:textColor="#0099CC"
-            android:textSize="12sp"
-            android:layout_alignBottom="@id/site_icon"  
-            android:text="Hello there Dave"/>
-    
+    <TextView
+        android:id="@+id/site_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/site_icon"
+        android:layout_below="@id/site_name"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@id/arrow_button"
+        android:layout_toRightOf="@id/site_icon"
+        android:gravity="center_vertical"
+        android:textColor="#0099CC"
+        android:textSize="12sp" />
 </RelativeLayout>
