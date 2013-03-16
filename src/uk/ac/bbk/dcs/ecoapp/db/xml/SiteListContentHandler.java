@@ -7,7 +7,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import uk.ac.bbk.dcs.ecoapp.db.Site;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 
 
 /**
@@ -39,7 +39,8 @@ public class SiteListContentHandler extends  DefaultHandler {
 	private static final String TAG_LINK = "link";
 	private static final String TAG_LOCATION = "location";
 	private static final String TAG_ICON = "icon";
-	private static final List<String> RECOGNISED_ELEMENTS = Arrays.asList(TAG_NAME, TAG_DESCRIPTION, TAG_TYPE, TAG_LINK, TAG_LOCATION, TAG_ICON);
+	private static final String TAG_CARBON_SAVING = "carbonSaving";
+	private static final List<String> RECOGNISED_ELEMENTS = Arrays.asList(TAG_NAME, TAG_DESCRIPTION, TAG_TYPE, TAG_LINK, TAG_LOCATION, TAG_ICON, TAG_CARBON_SAVING);
 	
 	/** True if we're in a recognised tag, otherwise false */
 	private boolean 	inRecognisedElement_;
@@ -141,6 +142,8 @@ public class SiteListContentHandler extends  DefaultHandler {
 				currentSite_.setLink(elementContent_);
 			} else if ( TAG_ICON.equals(localName) ) {
 				currentSite_.setIcon(elementContent_);
+			} else if ( TAG_CARBON_SAVING.equals(localName) ) {
+				currentSite_.setCarbonSaving(  Float.valueOf(elementContent_).floatValue());
 			}
 			
 			// Clear the flag
