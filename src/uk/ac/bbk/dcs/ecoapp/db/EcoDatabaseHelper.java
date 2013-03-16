@@ -6,6 +6,8 @@ package uk.ac.bbk.dcs.ecoapp.db;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.bbk.dcs.ecoapp.model.Site;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

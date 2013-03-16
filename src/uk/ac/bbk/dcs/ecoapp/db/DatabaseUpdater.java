@@ -19,6 +19,7 @@ import org.xml.sax.XMLReader;
 
 import uk.ac.bbk.dcs.ecoapp.db.xml.DataVersionContentHandler;
 import uk.ac.bbk.dcs.ecoapp.db.xml.SiteListContentHandler;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
