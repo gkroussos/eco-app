@@ -1,6 +1,6 @@
 package uk.ac.bbk.dcs.ecoapp.activity.helper;
 
-import uk.ac.bbk.dcs.ecoapp.db.Site;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 import android.os.Parcel;
 import android.os.Parcelable;
 

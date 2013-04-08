@@ -2,7 +2,7 @@ package uk.ac.bbk.dcs.ecoapp;
 
 import java.util.ArrayList;
 
-import uk.ac.bbk.dcs.ecoapp.db.Site;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;

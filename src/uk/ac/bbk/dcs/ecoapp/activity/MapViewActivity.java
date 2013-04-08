@@ -12,7 +12,7 @@ import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.SiteItemizedOverlay;
 import uk.ac.bbk.dcs.ecoapp.SiteOverlayItem;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
-import uk.ac.bbk.dcs.ecoapp.db.Site;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 import uk.ac.bbk.dcs.ecoapp.utility.AsynchImageLoader;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -72,7 +72,7 @@ public class MapViewActivity extends  MapActivity {
 		}
 
 		// TODO: Replace these with lazy loaded Site Images
-		//Drawable marker = this.getResources().getDrawable(R.drawable.flag);
+		// Drawable marker = getResources().getDrawable(R.drawable.flag);
 		Drawable marker = getResources().getDrawable(R.drawable.site_icon);
 
 		marker.setBounds(0, 0, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());

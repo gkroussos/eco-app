@@ -3,7 +3,7 @@ package uk.ac.bbk.dcs.ecoapp;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 
-import uk.ac.bbk.dcs.ecoapp.db.Site;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 
 public class SiteOverlayItem extends OverlayItem {
     public final GeoPoint point;

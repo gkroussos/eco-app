@@ -3,7 +3,7 @@ package uk.ac.bbk.dcs.ecoapp.activity.helper;
 import java.util.List;
 
 import uk.ac.bbk.dcs.ecoapp.R;
-import uk.ac.bbk.dcs.ecoapp.db.Site;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

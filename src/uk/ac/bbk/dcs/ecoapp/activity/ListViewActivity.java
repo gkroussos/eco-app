@@ -9,7 +9,7 @@ import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SiteAdapter;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
-import uk.ac.bbk.dcs.ecoapp.db.Site;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
