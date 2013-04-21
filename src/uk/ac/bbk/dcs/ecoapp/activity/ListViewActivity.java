@@ -34,6 +34,7 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
  * Users may also tap on the icon to the right of the list item to see a details view for the company
  * 
  * @author Dave Durbin
+ * @author William Linden
  *
  */
 public class ListViewActivity extends ListActivity
@@ -267,6 +268,23 @@ implements LocationListener
 		startActivity(new Intent(this, AboutUsActivity.class));    
 	}
 
+	/** 
+	 * Go to the Facebook view
+	 * @param v
+	 */
+	public void onFacebook(View v){
+		// Update analytics
+		tracker_.trackEvent(
+				"AtListPage", // category
+				"Click", // Action
+				"Facebook", // Label
+				0 //value
+				);
+
+		// Go to Facebook view
+		startActivity(new Intent(this, FacebookActivity.class));    
+	}
+	
 	/**
 	 * Handle click on Map button by navigating to the Map view
 	 * @param v
@@ -318,7 +336,7 @@ implements LocationListener
 	 * @param newLocation The new location
 	 */
 	public void onLocationChanged(Location newLocation) {
-		// Lock on the lcoation mutex to ensure we're not trying to access the location while we change it
+		// Lock on the lacation mutex to ensure we're not trying to access the location while we change it
 		synchronized( locationMutex_ ) {
 			lastKnownLocation_ = newLocation;
 

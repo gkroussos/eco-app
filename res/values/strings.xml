@@ -37,5 +37,8 @@
     <string name="credits">
         Concept and UI design: Hesseltje S van Goor and Tracey Field; Software Development: Giorgio Huang, Chatitze Moumin and David McRobert; Analytics: Ray Su; Illustrations: William Jesus Maria Jose Bates; Sound: Philip Wickens; TAs: Richard Brownlow and Long Chen; Lecturer: George Roussos  
     </string>  
-    <string name="placeholder">Place holder for content descripion</string>        
+    <string name="placeholder">Place holder for content descripion</string>
+    <string name="buttonFacebook">Facebook</string>
+    <string name="facebookAppId">537394989644448</string>
+    <string name="facebookAppSecret">a86acad3f1186eab42bd1d6173833f7b</string>        
 </resources>

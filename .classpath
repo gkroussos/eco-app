@@ -5,5 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/libGoogleAnalytics.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="lib" path="D:/java-libraries/restfb-1.6.12/restfb-1.6.12.jar"/>
+	<classpathentry kind="lib" path="D:/java-libraries/lombok.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

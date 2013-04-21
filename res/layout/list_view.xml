@@ -76,6 +76,17 @@
             android:text="@string/buttonMap" />
 
         <Button
+            android:id="@+id/facebook_button"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/android_button"
+            android:onClick="onFacebook"
+            android:scaleType="fitXY"
+            android:text="@string/buttonFacebook" />
+
+        <Button
             android:id="@+id/aboutusbtn"
             style="@style/button_style"
             android:layout_width="0dp"

@@ -1,10 +1,10 @@
 package uk.ac.bbk.dcs.ecoapp.activity;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.net.HttpURLConnection;
+//import java.net.MalformedURLException;
+//import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +13,11 @@ import uk.ac.bbk.dcs.ecoapp.SiteItemizedOverlay;
 import uk.ac.bbk.dcs.ecoapp.SiteOverlayItem;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
 import uk.ac.bbk.dcs.ecoapp.model.Site;
-import uk.ac.bbk.dcs.ecoapp.utility.AsynchImageLoader;
+//import uk.ac.bbk.dcs.ecoapp.utility.AsynchImageLoader;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+//import android.graphics.Bitmap;
+//import android.graphics.BitmapFactory;
+//import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -57,7 +57,7 @@ public class MapViewActivity extends  MapActivity {
 	protected void mapSite() { 
 		ArrayList<SiteOverlayItem> siteItems = new ArrayList<SiteOverlayItem>();
 		List<Overlay> mapOverlays = mapView.getOverlays();
-		Site siteToGo = new Site();
+		Site siteToGo; // = new Site();
 
 		siteToGo = siteList_.get(0);
 
