@@ -282,7 +282,7 @@ implements LocationListener
 				);
 
 		// Go to Facebook view
-		startActivity(new Intent(this, FacebookActivity.class));    
+		startActivity(new Intent(this, SocialActivity.class));    
 	}
 	
 	/**

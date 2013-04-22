@@ -44,11 +44,9 @@ public class FacebookAccessor {
 		
 		int count = 0;
 		
-		Page page = facebookClient.fetchObject("GoToMidtown", Page.class);
+		//Page page = facebookClient.fetchObject("GoToMidtown", Page.class);
 		// ID: 292361304193814
-		
-		Log.i(TAG,"Page likes: " + page.getLikes());
-		
+		//Log.i(TAG,"Page likes: " + page.getLikes());
 		
 		// Finding FB ID: https://graph.facebook.com/wrlinden --> 654937022
 		// GoToInMidtown --> 292361304193814
@@ -64,13 +62,12 @@ public class FacebookAccessor {
 		  for (FBWallPost fbp : allFbWallPosts) {
 			  if (fbp.getMessage() != null && fbp.getMessage().length() > 0)
 				  fbWallPosts.add(fbp);
-			  
-			  //Log.i(TAG,"EcoApp Post: " + fbp);
 		  }
 		  
 		} catch (FacebookException e) {
-			  // Looks like this API method didn't really return a list of users
+			  // A problem - log and get out graciously
 			Log.i(TAG,"Error EcoApp: " + e.getStackTrace());
+			return null;
 		}
 		
 

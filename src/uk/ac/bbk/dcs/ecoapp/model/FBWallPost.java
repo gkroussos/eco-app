@@ -1,7 +1,5 @@
 package uk.ac.bbk.dcs.ecoapp.model;
 
-// Using project Lombok for boiler plate (getters & setters) from http://projectlombok.org/download.html
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
