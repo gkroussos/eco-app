@@ -5,20 +5,26 @@ import com.restfb.types.Post;
 
 
 import uk.ac.bbk.dcs.ecoapp.R;
+import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
+import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SiteAdapter;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SocialAdapter;
 import uk.ac.bbk.dcs.ecoapp.model.FBWallPost;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
 import uk.ac.bbk.dcs.ecoapp.model.SocialPost;
 import uk.ac.bbk.dcs.ecoapp.utility.FacebookAccessor;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.List;
-
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 
 /**
@@ -34,12 +40,18 @@ public class SocialActivity  extends ListActivity  {
 	private SocialPostsTask socialPostsTask; 
 	private static SocialAdapter socialAdapter;
 	private static List<SocialPost> currentSocialPosts; // social posts shown on UI
+	GoogleAnalyticsTracker tracker;
+	
+	
 //	static List<SocialPost> socialPosts;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.social_view);	
+		tracker = GoogleAnalyticsTracker.getInstance();
+		tracker.startNewSession("UA-30293248-1", this);
+		tracker.trackPageView("UserAtSocialPage");
 		
 		// Construct an adapter for the List  
 		//socialAdapter = new SocialAdapter(this, android.R.id.list, socialPosts);
@@ -93,10 +105,10 @@ public class SocialActivity  extends ListActivity  {
 			if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
 			
 				List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
-				int count = 1;
+				/*int count = 1;
 				for (SocialPost post : socialPosts) {
 					Log.i(TAG,count++ + "] "+ post.toString());
-				}
+				}*/
 				return socialPosts;
 			}
 			Log.i(TAG,"Skipping currentSocialPosts are already present");
@@ -131,11 +143,45 @@ public class SocialActivity  extends ListActivity  {
 	
 	}
 	
+	/* Action Listeners / UI callbacks */
 	
-	public void showDetails() {
+	/**
+	 * Respond to ArrowButton click on a list item by showing that item in a details view
+	 * @param view
+	 */
+	public void onArrowBtn(View view){
+		// Get the site associated with this button
+		SocialPost post = (SocialPost) view.getTag();
+		Log.i(TAG," onArrowBtn fired!!!! "+ post.toString());
+		// Extract the Site name from the listItem
+		String link = "unknown";
+		if( post != null ) {
+			link = post.getPermalink();
+		}
 		
+		// Log it
+		tracker.trackEvent(
+				"AtSocialPage", // category
+				"Click", // Action
+				"ListItem(" + link + ")", // Label
+				0 //value
+				);
+		// No need for an entire Activity here. Simply use a Dialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(post.getMessage())
+		       .setTitle(post.getCreated_time())
+		       .setPositiveButton("close", null); // don't require an actionListner 
+		AlertDialog dialog = builder.create();
+		dialog.show();
+		
+		
+		// Now navigate to the detail view - passing the selected site name
+		/*Intent intent =new Intent(this, DetailViewActivity.class);
+		ParcelableSite ps = new ParcelableSite( post );
+		intent.putExtra(ActivityConstants.EXTRA_SITE_NAME, ps);
+		startActivity(intent);*/    
 	}
-	
+
 	
 	
 }

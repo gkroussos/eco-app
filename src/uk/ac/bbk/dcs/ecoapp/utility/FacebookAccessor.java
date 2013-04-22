@@ -32,9 +32,7 @@ public class FacebookAccessor {
 
 	
 	public List<? extends SocialPost> getFBWallPosts() {
-		
-		//String APP_ID = "537394989644448";
-		//String APP_SECRET = "a86acad3f1186eab42bd1d6173833f7b";
+
 		AccessToken accessToken =
 				  new DefaultFacebookClient().obtainAppAccessToken(APP_ID, APP_SECRET);
 		

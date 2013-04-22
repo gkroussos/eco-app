@@ -53,6 +53,8 @@
         android:gravity="center_vertical"
         android:maxLines="@integer/OneLiner"
         android:textColor="#0099CC"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:textIsSelectable="true"  
+        />"
 
 </RelativeLayout>
