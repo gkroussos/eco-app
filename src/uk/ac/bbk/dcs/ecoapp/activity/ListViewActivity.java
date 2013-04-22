@@ -170,7 +170,7 @@ implements LocationListener
 	}
 
 	/**
-	 * Initialise the list view by reading a list oif Sites form 
+	 * Initialise the list view by reading a list of Sites form 
 	 */
 	private void initListView() {
 		// Construct an adapter for the List  

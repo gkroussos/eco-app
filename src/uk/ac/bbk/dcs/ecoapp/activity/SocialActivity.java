@@ -33,6 +33,7 @@ public class SocialActivity  extends ListActivity  {
 	protected static final String TAG =  "EcoApp:SocialActivity";
 	private SocialPostsTask socialPostsTask; 
 	private static SocialAdapter socialAdapter;
+	private static List<SocialPost> currentSocialPosts; // social posts shown on UI
 //	static List<SocialPost> socialPosts;
 
 	@Override
@@ -72,7 +73,7 @@ public class SocialActivity  extends ListActivity  {
     }
 	
 	/**
-	 * Inner class to create threat running in background of main UI thread
+	 * Inner class to create thread running in background of main UI thread
 	 * @author William Linden
 	 */
 	private static class SocialPostsTask extends AsyncTask <Void, Void, List<SocialPost>> {
@@ -89,30 +90,24 @@ public class SocialActivity  extends ListActivity  {
 		@Override
 		protected List<SocialPost> doInBackground(Void... params) {
 			
+			if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
 			
-			List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
-			int count = 1;
-			for (SocialPost post : socialPosts) {
-				Log.i(TAG,count++ + "] "+ post.toString());
+				List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
+				int count = 1;
+				for (SocialPost post : socialPosts) {
+					Log.i(TAG,count++ + "] "+ post.toString());
+				}
+				return socialPosts;
 			}
-			
-			// Construct an adapter for the List  
-			/*socialAdapter = new SocialAdapter(socialActivity, android.R.id.list, socialPosts);
-			//
-			socialActivity.setListAdapter(socialAdapter);
-
-			//list item click
-			ListView lv = socialActivity.getListView();
-			lv.setTextFilterEnabled(true);
-			*/
-			
-			return socialPosts;
+			Log.i(TAG,"Skipping currentSocialPosts are already present");
+			return null;
 		}
 
 		@Override
         protected void onPostExecute(List<SocialPost> socialPosts) {
-			// Construct an adapter for the List  
-			socialAdapter = new SocialAdapter(socialActivity, android.R.id.list, socialPosts);
+			// Construct an adapter for the List  only update if in bound List<SocialPost> has been updated ie not null
+			if (socialPosts != null) currentSocialPosts = socialPosts;
+			socialAdapter = new SocialAdapter(socialActivity, android.R.id.list, currentSocialPosts);
 			//
 			socialActivity.setListAdapter(socialAdapter);
 
@@ -134,6 +129,11 @@ public class SocialActivity  extends ListActivity  {
 	     }
 */
 	
+	}
+	
+	
+	public void showDetails() {
+		
 	}
 	
 	

@@ -20,11 +20,11 @@
             android:id="@+id/banner_logo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="622"
+            android:layout_weight="620.79"
             android:adjustViewBounds="true"
+            android:background="@drawable/inmidtown_bar"
             android:contentDescription="@string/placeholder"
-            android:scaleType="fitCenter"
-            android:background="@drawable/inmidtown_bar" />
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/search_button"
@@ -53,5 +53,6 @@
         android:layout_height="fill_parent"
         android:layout_below="@id/nearby_button"
         android:background="#FFFFF9"
+        
         android:cacheColorHint="#00000000"/>
 </LinearLayout>

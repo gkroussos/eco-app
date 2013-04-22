@@ -30,8 +30,8 @@ public class DetailViewActivity extends Activity {
 	 */
 	private void bindFields( ) {
 		siteIconView_ = (ImageView) findViewById(R.id.site_icon);
-		siteNameView_ = (TextView) findViewById(R.id.site_name);
-		siteDescriptionView_ = (TextView) findViewById(R.id.site_description);
+		siteNameView_ = (TextView) findViewById(R.id.social_type);
+		siteDescriptionView_ = (TextView) findViewById(R.id.social_message);
 		siteTypeView_ = (TextView) findViewById(R.id.site_type);
 		siteLinkView_ = (TextView) findViewById(R.id.site_url);
 	}

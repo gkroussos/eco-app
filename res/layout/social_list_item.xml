@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAlignBottom="true"
+    android:orientation="horizontal" >
+
+    <!-- Site Icon -->
+
+    <ImageView
+        android:id="@+id/social_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/site_icon"
+        android:src="@drawable/fb_icon" />
+
+    <!-- Button linking to detail view -->
+
+    <ImageButton
+        android:id="@+id/social_arrow_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/social_message"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:background="@drawable/arrowbtn"
+        android:baselineAlignBottom="true"
+        android:contentDescription="@string/arrow_button"
+        android:cropToPadding="false"
+        android:onClick="onArrowBtn" />
+
+    <!-- Two rows of text -->
+
+    <TextView
+        android:id="@+id/social_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/site_icon"
+        android:layout_toLeftOf="@id/social_arrow_button"
+        android:layout_toRightOf="@+id/social_icon"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/social_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/site_icon"
+        android:layout_below="@id/social_type"
+        android:layout_toLeftOf="@id/social_arrow_button"
+        android:layout_toRightOf="@+id/social_icon"
+        android:gravity="center_vertical"
+        android:maxLines="@integer/OneLiner"
+        android:textColor="#0099CC"
+        android:textSize="12sp" />
+
+</RelativeLayout>
