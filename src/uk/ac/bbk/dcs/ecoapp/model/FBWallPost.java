@@ -1,5 +1,6 @@
 package uk.ac.bbk.dcs.ecoapp.model;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,18 +11,12 @@ import com.restfb.Facebook;
 /**
  * @author William Linden
  * 
- * Custom class representing a post obtained via FQL
+ * Custom class representing a facebook post obtained via FQL
+ * Should extract interface and allow for specific implementation (Interface SocialPost / impl FBWallPost / impl TwitterPost
  *
  */
-public class FBWallPost {
-	
-	
-	// Holds results from an "executeFqlQuery" call.
-	// You need to write this class yourself!
-	// Be aware that FQL fields don't always map to Graph API Object fields.
-	// SELECT created_time,message,permalink FROM stream WHERE source_id=292361304193814 LIMIT 50
-
-	 
+public class FBWallPost implements SocialPost {
+		 
 	  @Facebook @Getter @Setter
 	  String created_time;
 	  

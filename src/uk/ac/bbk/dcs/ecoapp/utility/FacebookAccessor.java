@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.bbk.dcs.ecoapp.model.FBWallPost;
+import uk.ac.bbk.dcs.ecoapp.model.SocialPost;
 
 import android.R;
 import android.content.Context;
@@ -24,11 +25,13 @@ public class FacebookAccessor {
 	private final String APP_ID = "537394989644448";
 	private final String APP_SECRET = "a86acad3f1186eab42bd1d6173833f7b";
 	private final String INMIDTOWN_FB_ID = "292361304193814";
+	private SocialPost test = new FBWallPost();
+			
 	private List<FBWallPost> fbWallPosts = new ArrayList<FBWallPost>();
 
 
 	
-	public List<FBWallPost> getFBWallPosts() {
+	public List<? extends SocialPost> getFBWallPosts() {
 		
 		//String APP_ID = "537394989644448";
 		//String APP_SECRET = "a86acad3f1186eab42bd1d6173833f7b";
@@ -42,7 +45,7 @@ public class FacebookAccessor {
 		
 
 		
-		int count = 0;
+		//int count = 0;
 		
 		//Page page = facebookClient.fetchObject("GoToMidtown", Page.class);
 		// ID: 292361304193814
