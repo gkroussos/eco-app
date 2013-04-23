@@ -43,5 +43,6 @@
         <item name="android:topOffset">0dp</item>
         <item name="android:bottomOffset">0dp</item>
         </style>
+    <color name="white">#ffffff</color>
 
 </resources>

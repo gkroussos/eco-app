@@ -10,48 +10,33 @@
      <include 	android:layout_width="wrap_content"
   				android:layout_height="wrap_content" 
   				layout="@layout/header_include" />
+
+     <!-- ProgressBar
+         android:id="@+id/progressBar"
+         style="?android:attr/progressBarStyleSmallInverse"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_marginTop="170dp"
+         android:visibility="gone" / -->
     
-    <!-- LinearLayout
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:layout_alignParentTop="true"
-        android:gravity="fill_horizontal"
-        android:orientation="horizontal" >
+    <!-- The list view itself -->
 
-        <ImageView
-            android:id="@+id/banner_logo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="620.79"
-            android:adjustViewBounds="true"
-            android:background="@drawable/inmidtown_bar"
-            android:contentDescription="@string/placeholder"
-            android:scaleType="fitStart" 
+     <RelativeLayout
+         android:id="@+id/progressLayout"
+         android:layout_width="match_parent"
+         android:layout_height="250dp"
+         android:background="@color/white" >
 
-            />
+         <ProgressBar
+             android:id="@+id/progressBar"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerHorizontal="true"
+             android:layout_centerVertical="true"
+             android:visibility="visible" />
+         
+     </RelativeLayout>
 
-        <ImageButton
-            android:id="@+id/search_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="98"
-            android:background="@drawable/search"
-            android:contentDescription="@string/placeholder"
-            android:onClick="onSearch"
-            android:scaleType="fitCenter" />
-
-    </LinearLayout -->
-
-
- <!--  LinearLayout
-     android:id="@+id/content"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:layout_alignParentBottom="true" 
-
-</LinearLayout-->
-    <!-- Finally the list view itself -->
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

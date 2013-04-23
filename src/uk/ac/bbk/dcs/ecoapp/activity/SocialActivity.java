@@ -27,6 +27,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +49,9 @@ public class SocialActivity  extends ListActivity  {
 	private SocialAdapter socialAdapter;
 	private static List<SocialPost> currentSocialPosts; // social posts shown on UI
 	GoogleAnalyticsTracker tracker;
+	// UI Elements
+	private ProgressBar progressBar;
+	private RelativeLayout progressLayout;
 	
 	
 //	static List<SocialPost> socialPosts;
@@ -58,7 +63,8 @@ public class SocialActivity  extends ListActivity  {
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.startNewSession("UA-30293248-1", this);
 		tracker.trackPageView("UserAtSocialPage");
-		
+		progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
+		progressLayout = (RelativeLayout) this.findViewById(R.id.progressLayout);
 		// Construct an adapter for the List  
 		//socialAdapter = new SocialAdapter(this, android.R.id.list, socialPosts);
 		
@@ -141,6 +147,12 @@ public class SocialActivity  extends ListActivity  {
 			
 		}*/
 
+		@Override
+		protected void onPreExecute(){
+			progressLayout.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.VISIBLE);
+		    }
+		 
 		
 		// Fork a thread off, hit social sites asynchronously to build 
 		// Build in progress indicator (spinning circle?)
@@ -171,6 +183,8 @@ public class SocialActivity  extends ListActivity  {
 			//list item click
 			ListView lv = socialActivity.getListView();
 			lv.setTextFilterEnabled(true);
+			progressBar.setVisibility(View.GONE);
+			progressLayout.setVisibility(View.GONE);
 			
 			/* // ALSO Not registering clicks... 
 			lv.setOnItemClickListener(new OnItemClickListener() {
