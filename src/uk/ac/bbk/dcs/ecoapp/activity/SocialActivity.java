@@ -16,6 +16,8 @@ import uk.ac.bbk.dcs.ecoapp.utility.FacebookAccessor;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -35,15 +37,14 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 /**
  * This class is an Activity representing recent Social posts (currently Facebook only) by InMidTown
  * 
- * 
  * @author William Linden
  *
  */
 public class SocialActivity  extends ListActivity  {
 
 	protected static final String TAG =  "EcoApp:SocialActivity";
-	private SocialPostsTask socialPostsTask; 
-	private static SocialAdapter socialAdapter;
+	//private SocialPostsTask socialPostsTask; 
+	private SocialAdapter socialAdapter;
 	private static List<SocialPost> currentSocialPosts; // social posts shown on UI
 	GoogleAnalyticsTracker tracker;
 	
@@ -61,7 +62,7 @@ public class SocialActivity  extends ListActivity  {
 		// Construct an adapter for the List  
 		//socialAdapter = new SocialAdapter(this, android.R.id.list, socialPosts);
 		
-		//setListAdapter(socialAdapter);
+		setListAdapter(socialAdapter);
 
 		//list item click
 		//ListView lv = getListView();
@@ -73,7 +74,7 @@ public class SocialActivity  extends ListActivity  {
 		
 		 ListView lv = getListView();
 	        //lv.setClickable(true);
-	        //
+	        /* // Not registering clisk!!! 
 			lv.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
@@ -88,12 +89,13 @@ public class SocialActivity  extends ListActivity  {
 					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
 					startActivity(browserIntent); 
 				}
-			});  
-		
+			});
+			*/  
+			new SocialPostsTask(this).execute();
 		
 		// This bit to avoid activity / view problems with multi threading and re-orientation of device (Especially when dialog showing)
 		// Method is deprecated, should be using ActivityFragment | Leave for now 
-		 socialPostsTask = (SocialPostsTask) getLastNonConfigurationInstance();
+		 /*socialPostsTask = (SocialPostsTask) getLastNonConfigurationInstance();
 	        if(socialPostsTask == null) {
 	            socialPostsTask = new SocialPostsTask();
 	        }
@@ -101,28 +103,10 @@ public class SocialActivity  extends ListActivity  {
 	        if(socialPostsTask.getStatus() == AsyncTask.Status.PENDING) {
 	            socialPostsTask.execute();
 	        }
-	    
-	         /*
-	        ListView lv = getListView();
-	        lv.setClickable(true);
-	        //
-			lv.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-					String urltext = currentSocialPosts.get(position).getPermalink();
-					Log.i(TAG,"Entering onItemClick!!!!!!");
-					tracker.trackEvent(
-							"AtSocialPage", // category
-							"Click", // Action
-							"ListItem", // Label
-							position //value
-							);
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
-					startActivity(browserIntent); 
-				}
-			});  */
+	    */
+	        
 	        	}
-/*// Not registering
+/* // Not registering clicks... 
 	@Override
 	protected void onListItemClick (ListView lv, View view, int position, long id){
 		super.onListItemClick(lv, view, position, id);
@@ -130,20 +114,26 @@ public class SocialActivity  extends ListActivity  {
 	        Log.i(TAG,"Position:" +position+"");
 		//Toast.makeText(getApplicationContext(), ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
     }
-*/
-	
+	*/
+
+	/*
     @Override
     public Object onRetainNonConfigurationInstance() {
         return socialPostsTask;
     }
-	
+	*/
 	/**
 	 * Inner class to create thread running in background of main UI thread
 	 * @author William Linden
 	 */
-	private static class SocialPostsTask extends AsyncTask <Void, Void, List<SocialPost>> {
+	private class SocialPostsTask extends AsyncTask <Void, Void, List<SocialPost>> {
 		
-		public SocialActivity socialActivity;
+		public SocialPostsTask(SocialActivity socialActivity) {
+			this.socialActivity = socialActivity;
+		}
+		
+		private SocialActivity socialActivity;
+
 		private FacebookAccessor fbAccessor = new FacebookAccessor();
 		/*protected Connection<Post> doInBackground(String... token) {
 			final FacebookClient facebookClient = new DefaultFacebookClient(token[0]);
@@ -182,6 +172,24 @@ public class SocialActivity  extends ListActivity  {
 			ListView lv = socialActivity.getListView();
 			lv.setTextFilterEnabled(true);
 			
+			/* // ALSO Not registering clicks... 
+			lv.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+					String urltext = currentSocialPosts.get(position).getPermalink();
+					Log.i(TAG,"Entering onItemClick!!!!!!");
+					tracker.trackEvent(
+							"AtSocialPage", // category
+							"Click", // Action
+							"ListItem", // Label
+							position //value
+							);
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
+					startActivity(browserIntent); 
+				}
+			})*/;  
+			
+			
 			
         }
 		
@@ -207,10 +215,10 @@ public class SocialActivity  extends ListActivity  {
 	 * @param view
 	 */
 	public void onArrowBtn(View view){
-		// Get the site associated with this button
-		SocialPost post = (SocialPost) view.getTag();
-		Log.i(TAG," onArrowBtn fired!!!! "+ post.toString());
-		// Extract the Site name from the listItem
+		// Get the post associated with this button
+		final SocialPost post = (SocialPost) view.getTag();
+
+		// Extract the permalink and use for analytics 
 		String link = (post != null) ? post.getPermalink() : "unknown";
 		
 		// Log it
@@ -225,9 +233,17 @@ public class SocialActivity  extends ListActivity  {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(post.getMessage())
 		       .setTitle(post.getCreated_time())
-		       .setPositiveButton(R.string.closeBtnText, null); // don't require an actionListner 
+		       .setPositiveButton(R.string.closeBtnText, null) // don't require an actionListner 
+		       .setNegativeButton(R.string.openFacebookText, new DialogInterface.OnClickListener() {
+		    	   public void onClick(DialogInterface dialog, int id) {
+		    		   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getPermalink()));
+		    			startActivity(browserIntent); 
+		    	   }
+        });
 		AlertDialog dialog = builder.create();
 		dialog.show();
+		
+		
 		
 		
 		// Now navigate to the detail view - passing the selected site name

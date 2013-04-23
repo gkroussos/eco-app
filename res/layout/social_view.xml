@@ -7,11 +7,10 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
- 
     <LinearLayout
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="49dp"
         android:layout_alignParentTop="true"
         android:gravity="fill_horizontal"
         android:orientation="horizontal" >
@@ -24,7 +23,9 @@
             android:adjustViewBounds="true"
             android:background="@drawable/inmidtown_bar"
             android:contentDescription="@string/placeholder"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitStart" 
+
+            />
 
         <ImageButton
             android:id="@+id/search_button"
