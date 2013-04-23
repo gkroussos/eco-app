@@ -186,7 +186,7 @@ implements LocationListener
 		lv.setClickable(true);
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
-
+			
 			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 				String urltext = siteList_.get(position).getLink();
 

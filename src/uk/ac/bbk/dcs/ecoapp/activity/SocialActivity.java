@@ -17,11 +17,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
@@ -66,7 +71,27 @@ public class SocialActivity  extends ListActivity  {
 		//new SocialPosts().execute("BAACEdEose0cBALlUe79sJLWISCZCr132MkMuMBWYbjBYFOvoffaBh21m8ETb0uMtQi2YIKEiz4AEjwJouEUxz9RE75zWwljRwVs1oxAMVciH7erEyqkJR9TvLK7b17eCVFs15DENCZBiup9HXREMvi2dZAXczPxNRUWXVqHluK0EXZCy1gBORZA2OtgxUEANkcARTYGziKwZDZD");
 		//new SocialPostsTask().execute();
 		
-		// This bit to avoid activity / view problems with multi threading and re-orientation of device
+		 ListView lv = getListView();
+	        //lv.setClickable(true);
+	        //
+			lv.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+					String urltext = currentSocialPosts.get(position).getPermalink();
+					Log.i(TAG,"Entering onItemClick!!!!!!");
+					tracker.trackEvent(
+							"AtSocialPage", // category
+							"Click", // Action
+							"ListItem", // Label
+							position //value
+							);
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
+					startActivity(browserIntent); 
+				}
+			});  
+		
+		
+		// This bit to avoid activity / view problems with multi threading and re-orientation of device (Especially when dialog showing)
 		// Method is deprecated, should be using ActivityFragment | Leave for now 
 		 socialPostsTask = (SocialPostsTask) getLastNonConfigurationInstance();
 	        if(socialPostsTask == null) {
@@ -77,8 +102,36 @@ public class SocialActivity  extends ListActivity  {
 	            socialPostsTask.execute();
 	        }
 	    
-	}
-
+	         /*
+	        ListView lv = getListView();
+	        lv.setClickable(true);
+	        //
+			lv.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+					String urltext = currentSocialPosts.get(position).getPermalink();
+					Log.i(TAG,"Entering onItemClick!!!!!!");
+					tracker.trackEvent(
+							"AtSocialPage", // category
+							"Click", // Action
+							"ListItem", // Label
+							position //value
+							);
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
+					startActivity(browserIntent); 
+				}
+			});  */
+	        	}
+/*// Not registering
+	@Override
+	protected void onListItemClick (ListView lv, View view, int position, long id){
+		super.onListItemClick(lv, view, position, id);
+		 int place=position;
+	        Log.i(TAG,"Position:" +position+"");
+		//Toast.makeText(getApplicationContext(), ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+    }
+*/
+	
     @Override
     public Object onRetainNonConfigurationInstance() {
         return socialPostsTask;
@@ -99,6 +152,8 @@ public class SocialActivity  extends ListActivity  {
 		}*/
 
 		
+		// Fork a thread off, hit social sites asynchronously to build 
+		// Build in progress indicator (spinning circle?)
 		@Override
 		protected List<SocialPost> doInBackground(Void... params) {
 			
@@ -126,6 +181,8 @@ public class SocialActivity  extends ListActivity  {
 			//list item click
 			ListView lv = socialActivity.getListView();
 			lv.setTextFilterEnabled(true);
+			
+			
         }
 		
 		
@@ -154,10 +211,7 @@ public class SocialActivity  extends ListActivity  {
 		SocialPost post = (SocialPost) view.getTag();
 		Log.i(TAG," onArrowBtn fired!!!! "+ post.toString());
 		// Extract the Site name from the listItem
-		String link = "unknown";
-		if( post != null ) {
-			link = post.getPermalink();
-		}
+		String link = (post != null) ? post.getPermalink() : "unknown";
 		
 		// Log it
 		tracker.trackEvent(
@@ -166,11 +220,12 @@ public class SocialActivity  extends ListActivity  {
 				"ListItem(" + link + ")", // Label
 				0 //value
 				);
-		// No need for an entire Activity here. Simply use a Dialog
+		
+		// No need for an entire Activity/View here. Simply use a Dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(post.getMessage())
 		       .setTitle(post.getCreated_time())
-		       .setPositiveButton("close", null); // don't require an actionListner 
+		       .setPositiveButton(R.string.closeBtnText, null); // don't require an actionListner 
 		AlertDialog dialog = builder.create();
 		dialog.show();
 		

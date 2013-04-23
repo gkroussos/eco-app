@@ -14,8 +14,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/site_icon"
-        android:src="@drawable/fb_icon" />
-
+        android:src="@drawable/fb_icon" 
+        android:focusable="false"
+        />
+    		
     <!-- Button linking to detail view -->
 
     <ImageButton
@@ -40,7 +42,9 @@
         android:layout_alignTop="@id/site_icon"
         android:layout_toLeftOf="@id/social_arrow_button"
         android:layout_toRightOf="@+id/social_icon"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical" 
+		android:focusable="false"
+        />
 
     <TextView
         android:id="@+id/social_message"
@@ -54,7 +58,7 @@
         android:maxLines="@integer/OneLiner"
         android:textColor="#0099CC"
         android:textSize="12sp"
-        android:textIsSelectable="true"  
-        />"
+		android:focusable="false"  
+        />
 
 </RelativeLayout>
