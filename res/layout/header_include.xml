@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+     <!--
+    Top banner contains logo and search button. 
+    It's aligned to the top of the parent, occupies the full width.
+    The left part (banner)  is aligned to the left of the parent
+    The right part (search button) is aligned to the right of the parent
+    They are weighted 6/1 -->
+    <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentTop="true"
+        android:gravity="fill_horizontal"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/banner_logo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="620.79"
+            android:adjustViewBounds="true"
+            android:background="@drawable/inmidtown_bar"
+            android:contentDescription="@string/placeholder"
+            android:scaleType="fitStart" 
+
+            />
+
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="98"
+            android:background="@drawable/search"
+            android:contentDescription="@string/placeholder"
+            android:onClick="onSearch"
+            android:scaleType="fitCenter" />
+
+    </LinearLayout>
+
+    <!--
+    Next block is a set of three buttons, distributed equally 
+    and below the banner
+    -->
+
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/banner"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/home_button"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onSetHome"
+            android:scaleType="fitXY"
+            android:background="@drawable/android_button"
+            android:text="@string/buttonHome" />
+
+        <Button
+            android:id="@+id/map_button"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="onSetMap"
+            android:scaleType="fitXY"
+            android:background="@drawable/android_button"
+            android:text="@string/buttonMap" />
+
+        <Button
+            android:id="@+id/social_button"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/android_button"
+            android:onClick="onSocial"
+            android:scaleType="fitXY"
+            android:text="@string/buttonSocial" />
+
+        <Button
+            android:id="@+id/aboutusbtn"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onSetAboutUs"
+            android:scaleType="fitXY"
+            android:background="@drawable/android_button"
+            android:text="@string/buttonAboutUs" />
+
+    </LinearLayout>
+    
+</merge>

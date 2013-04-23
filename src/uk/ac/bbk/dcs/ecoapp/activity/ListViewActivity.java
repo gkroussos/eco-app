@@ -10,6 +10,7 @@ import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SiteAdapter;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
 import uk.ac.bbk.dcs.ecoapp.model.Site;
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -265,23 +266,24 @@ implements LocationListener
 				);
 
 		// Go to AboutUs
-		startActivity(new Intent(this, AboutUsActivity.class));    
+		startActivity(new Intent(this, AboutUsActivity.class));
+
 	}
 
 	/** 
-	 * Go to the Facebook view
+	 * Go to the Social view
 	 * @param v
 	 */
-	public void onFacebook(View v){
+	public void onSocial(View v){
 		// Update analytics
 		tracker_.trackEvent(
 				"AtListPage", // category
 				"Click", // Action
-				"Facebook", // Label
+				"Social", // Label
 				0 //value
 				);
 
-		// Go to Facebook view
+		// Go to Social view / Activity
 		startActivity(new Intent(this, SocialActivity.class));    
 	}
 	

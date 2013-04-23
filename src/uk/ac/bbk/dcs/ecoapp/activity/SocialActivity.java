@@ -255,4 +255,75 @@ public class SocialActivity  extends ListActivity  {
 
 	
 	
+	public void onSetHome(View v){
+		tracker.trackEvent(
+				"AtSocialPage", // category
+				"Click", // Action
+				"Home", // Label
+				0 //value
+				);
+		// Go to "home" ie ListViewActivity
+		startActivity(new Intent(this, ListViewActivity.class));  
+	}
+
+	/** 
+	 * Go to the about us view
+	 * @param v
+	 */
+	public void onSetAboutUs(View v){
+		// Update analytics
+		tracker.trackEvent(
+				"AtSocialPage", // category
+				"Click", // Action
+				"AboutUs", // Label
+				0 //value
+				);
+
+		// Go to AboutUs
+		startActivity(new Intent(this, AboutUsActivity.class));
+
+	}
+
+	/** 
+	 * Go to the Social view
+	 * @param v
+	 */
+	public void onSocial(View v){
+		// Update analytics
+		tracker.trackEvent(
+				"AtSocialPage", // category
+				"Click", // Action
+				"Social", // Label
+				0 //value
+				);
+
+		// Flash a Toast notice
+		Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+		  
+	}
+	
+	/**
+	 * Handle click on Map button by navigating to the Map view
+	 * @param v
+	 */
+	public void onSetMap(View v){
+		tracker.trackEvent(
+				"AtSocialPage", // category
+				"Click", // Action
+				"Map", // Label
+				0 //value
+				);
+		startActivity(new Intent(this, MapViewActivity.class));
+	}
+
+	/**
+	 * Handle click on search button by launching search
+	 * @param v
+	 */
+	public void onSearch(View v){
+		onSearchRequested();
+	}
+
+	
+	
 }

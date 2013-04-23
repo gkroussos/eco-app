@@ -4,54 +4,11 @@
 	android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-<!-- android:layout_width="match_parent"
-    android:layout_height="match_parent"-->
-	<LinearLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		<ImageButton 
-	    		android:layout_width="275dp"
-        		android:layout_height="50dp"
-        		android:background="@drawable/inmidtown_bar" />
-		<ImageButton
-		    	android:id="@+id/searchbtn" 
-	    		android:layout_width="wrap_content"
-        		android:layout_height="50dp"
-        		android:background="@drawable/search"
-        		android:onClick="onSearch" />
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal">
-
-	    <Button
-        	android:id="@+id/homebtn"
-        	android:layout_width="107dp"
-        	android:layout_height="50dp"
-        	android:padding="10dp"
-        	android:background="@drawable/android_button"
-        	android:text="@string/buttonHome"
-        	android:onClick="onSetHome"/>
-	    <Button
-        	android:id="@+id/mapbtn"
-        	android:layout_width="107dp"
-        	android:layout_height="50dp"
-        	android:padding="10dp"
-        	android:background="@drawable/android_button"
-        	android:text="@string/buttonMap"
-        	android:onClick="onSetMap"/>
-	    <Button
-        	android:id="@+id/aboutusbtn"
-        	android:layout_width="107dp"
-        	android:layout_height="50dp"
-        	android:padding="10dp"
-        	android:background="@drawable/android_button"
-        	android:text="@string/buttonAboutUs"
-        	android:onClick="onSetAboutUs"/>
-	    
-	</LinearLayout>	
+    <!--  Including Header containing banner / logo / buttons -->
+    <include 	android:layout_width="wrap_content"
+  				android:layout_height="wrap_content" 
+  				layout="@layout/header_include" />
+    
     <com.google.android.maps.MapView
         android:id="@+id/map"
         android:layout_width="fill_parent"
@@ -61,6 +18,7 @@
         android:enabled="true">
     </com.google.android.maps.MapView>
 
-    <!--  Dave / George or Georgio API key: 0h6r-458CjSQuv9Sfg_lS-G5O4c1Ybh10hJ7Owg -->
+    <!--  Dave / George or Georgio API key: 0h6r-458CjSQuv9Sfg_lS-G5O4c1Ybh10hJ7Owg 
+    	  William: 0KReFLib53XRzBbxuieJPOSTPmUT7KzwWnwUEmg     -->
     
 </LinearLayout>

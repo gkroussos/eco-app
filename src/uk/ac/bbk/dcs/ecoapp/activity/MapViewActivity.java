@@ -121,5 +121,13 @@ public class MapViewActivity extends  MapActivity {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	/** 
+	 * Go to the Social view
+	 * @param v
+	 * Just dropping code in. This whole class probably requires GoogleAnalytics added into it
+	 */
+	public void onSocial(View v){
+		startActivity(new Intent(this, SocialActivity.class));    
+	}
+	
 }
