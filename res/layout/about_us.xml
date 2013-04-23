@@ -4,10 +4,10 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 	
-		<ImageButton 
-	    	android:layout_width="wrap_content"
-        	android:layout_height="50dp"
-        	android:background="@drawable/inmidtown_bar" />
+	<!--  Including Header containing banner / logo / buttons -->
+    <include 	android:layout_width="wrap_content"
+  				android:layout_height="wrap_content" 
+  				layout="@layout/header_include" />
 		
 		<TextView
         android:layout_width="fill_parent"

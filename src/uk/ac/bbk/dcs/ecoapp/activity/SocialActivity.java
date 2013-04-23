@@ -254,6 +254,9 @@ public class SocialActivity  extends ListActivity  {
 	}
 
 	
+	/***
+	 * OnClickListeners / UI interaction
+	 * */
 	
 	public void onSetHome(View v){
 		tracker.trackEvent(
