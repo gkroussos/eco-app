@@ -11,8 +11,9 @@ import android.widget.Toast;
 
 /**
  * This Activity is simply an about screen displaying information about InMidtown
- * @author 
- *
+ * @author George Roussos - And Others from Birkbeck UK
+ * @author William Linden
+ * 
  */
 public class AboutUsActivity extends Activity  {
 
@@ -43,7 +44,7 @@ public class AboutUsActivity extends Activity  {
 				"Home", // Label
 				0 //value
 				);
-		// Go to "home" ie ListViewActivity
+		// Go to "Home" (ListViewActivity)
 		startActivity(new Intent(this, ListViewActivity.class));  
 	}
 
@@ -60,9 +61,8 @@ public class AboutUsActivity extends Activity  {
 				0 //value
 				);
 
-		// Go to AboutUs
-		startActivity(new Intent(this, AboutUsActivity.class));
-
+		// Make a Hello World Joke
+		Toast.makeText(this, "Toasted", Toast.LENGTH_SHORT).show();
 	}
 
 	/** 
@@ -78,8 +78,9 @@ public class AboutUsActivity extends Activity  {
 				0 //value
 				);
 
-		// Flash a Toast notice
-		Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+
+		// Go to Social
+		startActivity(new Intent(this, SocialActivity.class));
 		  
 	}
 	

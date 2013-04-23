@@ -301,7 +301,7 @@ public class SocialActivity  extends ListActivity  {
 				);
 
 		// Flash a Toast notice
-		Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Social", Toast.LENGTH_SHORT).show();
 		  
 	}
 	
