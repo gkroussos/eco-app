@@ -13,8 +13,8 @@ import com.restfb.Facebook;
 /**
  * @author William Linden
  * 
- * Custom class representing a facebook post obtained via FQL
- * Should extract interface and allow for specific implementation (Interface SocialPost / impl FBWallPost / impl TwitterPost
+ * Custom implementation of SocialPost.java representing a facebook post obtained via FQL
+ * (Interface SocialPost / impl FBWallPost / t.b.c impl TwitterPost)
  *
  */
 public class FBWallPost implements SocialPost {

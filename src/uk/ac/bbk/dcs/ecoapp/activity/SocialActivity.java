@@ -1,22 +1,11 @@
 package uk.ac.bbk.dcs.ecoapp.activity;
 
-import com.restfb.Connection;
-import com.restfb.types.Post;
-
-
 import uk.ac.bbk.dcs.ecoapp.R;
-import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
-import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
-import uk.ac.bbk.dcs.ecoapp.activity.helper.SiteAdapter;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SocialAdapter;
-import uk.ac.bbk.dcs.ecoapp.model.FBWallPost;
-import uk.ac.bbk.dcs.ecoapp.model.Site;
 import uk.ac.bbk.dcs.ecoapp.model.SocialPost;
 import uk.ac.bbk.dcs.ecoapp.utility.FacebookAccessor;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,14 +13,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
@@ -45,16 +30,12 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 public class SocialActivity  extends ListActivity  {
 
 	protected static final String TAG =  "EcoApp:SocialActivity";
-	//private SocialPostsTask socialPostsTask; 
 	private SocialAdapter socialAdapter;
 	private static List<SocialPost> currentSocialPosts; // social posts shown on UI
 	GoogleAnalyticsTracker tracker;
 	// UI Elements
 	private ProgressBar progressBar;
 	private RelativeLayout progressLayout;
-	
-	
-//	static List<SocialPost> socialPosts;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -201,25 +182,9 @@ public class SocialActivity  extends ListActivity  {
 					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
 					startActivity(browserIntent); 
 				}
-			})*/;  
+			})*/;  		
 			
-			
-			
-        }
-		
-		
-		
-		/*
-		 protected void onPostExecute(Connection<Post> feed) {
-	         
-			 for (List<Post> myFeedConnectionPage : feed)
-			      for (Post post : myFeedConnectionPage)
-			        Log.i(TAG,"Post from my feed: " + post);
-			 
-			 //mImageView.setImageBitmap(result);
-	     }
-*/
-	
+        }	
 	}
 	
 	/* Action Listeners / UI callbacks */
@@ -256,15 +221,7 @@ public class SocialActivity  extends ListActivity  {
         });
 		AlertDialog dialog = builder.create();
 		dialog.show();
-		
-		
-		
-		
-		// Now navigate to the detail view - passing the selected site name
-		/*Intent intent =new Intent(this, DetailViewActivity.class);
-		ParcelableSite ps = new ParcelableSite( post );
-		intent.putExtra(ActivityConstants.EXTRA_SITE_NAME, ps);
-		startActivity(intent);*/    
+
 	}
 
 	
