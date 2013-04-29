@@ -24,7 +24,7 @@
         android:id="@+id/social_arrow_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/social_message"
+        android:layout_alignBottom="@+id/social_icon"
         android:layout_alignParentRight="true"
         android:layout_gravity="right"
         android:background="@drawable/arrowbtn"
@@ -40,25 +40,29 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/site_icon"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         android:layout_toLeftOf="@id/social_arrow_button"
         android:layout_toRightOf="@+id/social_icon"
-        android:gravity="center_vertical" 
-		android:focusable="false"
-        />
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:maxLines="@integer/OneLiner"
+        android:textSize="@dimen/textsize_smaller" />
 
     <TextView
         android:id="@+id/social_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/site_icon"
+        android:layout_alignBottom="@+id/social_icon"
         android:layout_below="@id/social_type"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         android:layout_toLeftOf="@id/social_arrow_button"
         android:layout_toRightOf="@+id/social_icon"
+        android:focusable="false"
         android:gravity="center_vertical"
         android:maxLines="@integer/OneLiner"
         android:textColor="#0099CC"
-        android:textSize="12sp"
-		android:focusable="false"  
-        />
+        android:textSize="@dimen/textsize_medium" />
 
 </RelativeLayout>

@@ -39,6 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/site_icon"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         android:layout_toLeftOf="@id/arrow_button"
         android:layout_toRightOf="@+id/site_icon"
         android:gravity="center_vertical" />
@@ -49,6 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/site_icon"
         android:layout_below="@id/site_name"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         android:layout_toLeftOf="@id/arrow_button"
         android:layout_toRightOf="@+id/site_icon"
         android:gravity="center_vertical"
