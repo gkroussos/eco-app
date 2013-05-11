@@ -39,6 +39,7 @@ public class SocialActivity  extends ListActivity  {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.i(TAG,"Creating SocialActivity");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.social_view);	
 		tracker = GoogleAnalyticsTracker.getInstance();
@@ -93,7 +94,47 @@ public class SocialActivity  extends ListActivity  {
 	    */
 	        
 	        	}
-/* // Not registering clicks... 
+
+	@Override
+	protected void onResume()
+	{
+		Log.i(TAG,"Resuming SocialActivity");
+	   super.onResume();
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		Log.i(TAG,"Pausung SocialActivity");
+	   super.onPause();
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		Log.i(TAG,"Stopping SocialActivity");
+	   super.onStop();
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		Log.i(TAG,"Starting SocialActivity");
+	   super.onStart();
+	}
+	
+	@Override
+	protected void onRestart()
+	{
+		Log.i(TAG,"Restarting SocialActivity");
+	   super.onRestart();
+	}
+	
+	
+	
+	
+	
+	/* // Not registering clicks... 
 	@Override
 	protected void onListItemClick (ListView lv, View view, int position, long id){
 		super.onListItemClick(lv, view, position, id);
@@ -143,10 +184,6 @@ public class SocialActivity  extends ListActivity  {
 			if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
 			
 				List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
-				/*int count = 1;
-				for (SocialPost post : socialPosts) {
-					Log.i(TAG,count++ + "] "+ post.toString());
-				}*/
 				return socialPosts;
 			}
 			Log.i(TAG,"Skipping currentSocialPosts are already present");
@@ -237,7 +274,10 @@ public class SocialActivity  extends ListActivity  {
 				0 //value
 				);
 		// Go to "home" ie ListViewActivity
-		startActivity(new Intent(this, ListViewActivity.class));  
+		
+		Intent intent = new Intent(this, ListViewActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
 	}
 
 	/** 
@@ -254,8 +294,9 @@ public class SocialActivity  extends ListActivity  {
 				);
 
 		// Go to AboutUs
-		startActivity(new Intent(this, AboutUsActivity.class));
-
+		Intent intent = new Intent(this, AboutUsActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
 	}
 
 	/** 
@@ -287,7 +328,10 @@ public class SocialActivity  extends ListActivity  {
 				"Map", // Label
 				0 //value
 				);
-		startActivity(new Intent(this, MapViewActivity.class));
+		
+		Intent intent = new Intent(this, MapViewActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
 	}
 
 	/**

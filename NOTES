@@ -42,6 +42,9 @@ Extracted XML parsing to separate set of classes in new package uk.ac.bbk.dcs.ec
  has been deprecated as of Dec 2012 and no new keys to be issued from 3rd March 2013 (about when the app stopped working though I would have
  thought it should have continued to be OK)
  Site icons not being loaded - they never were. I've implemented an Async loader class but not put it to work yet
+ Note by William Linden:
+ I managed to generate keys using the old API, looks like it was still possible and it seems to work now, even on phones.
+ 
  
  Notes on Lombok
  ---------------

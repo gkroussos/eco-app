@@ -45,7 +45,10 @@ public class AboutUsActivity extends Activity  {
 				0 //value
 				);
 		// Go to "Home" (ListViewActivity)
-		startActivity(new Intent(this, ListViewActivity.class));  
+		Intent intent = new Intent(this, ListViewActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
+  
 	}
 
 	/** 
@@ -80,8 +83,9 @@ public class AboutUsActivity extends Activity  {
 
 
 		// Go to Social
-		startActivity(new Intent(this, SocialActivity.class));
-		  
+		Intent intent = new Intent(this, SocialActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);		  
 	}
 	
 	/**
@@ -95,7 +99,9 @@ public class AboutUsActivity extends Activity  {
 				"Map", // Label
 				0 //value
 				);
-		startActivity(new Intent(this, MapViewActivity.class));
+		Intent intent = new Intent(this, MapViewActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
 	}
 
 	/**

@@ -27,8 +27,8 @@ ToDo
 ----
 
 + But Bee Icon Back (make transparent version for maps)
-- Add more detailed Lombok Comment
-- Insert JAR for Eclipse install into source control (not in Libs)
++ Add more detailed Lombok Comment
++ Insert JAR for Eclipse install into source control (not in Libs)
 - Resume previous activity, don't recreate
 - Time stamp smaller | post bigger
 - Add names to beggining of Dev names

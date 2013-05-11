@@ -1,10 +1,5 @@
 package uk.ac.bbk.dcs.ecoapp.activity;
 
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.net.HttpURLConnection;
-//import java.net.MalformedURLException;
-//import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +8,7 @@ import uk.ac.bbk.dcs.ecoapp.SiteItemizedOverlay;
 import uk.ac.bbk.dcs.ecoapp.SiteOverlayItem;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
 import uk.ac.bbk.dcs.ecoapp.model.Site;
-//import uk.ac.bbk.dcs.ecoapp.utility.AsynchImageLoader;
 import android.content.Intent;
-//import android.graphics.Bitmap;
-//import android.graphics.BitmapFactory;
-//import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +20,14 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-
+/**
+ * This class is an Activity representing recent Social posts (currently Facebook only) by InMidTown
+ * 
+ * @author Georgio
+ * @author Dave Durbin
+ * @author William Linden
+ *
+ */
 public class MapViewActivity extends  MapActivity {
 	/** List of known Sites */
 	private List<Site> 			siteList_;
@@ -95,12 +93,29 @@ public class MapViewActivity extends  MapActivity {
 
 	}
 	public void onSetHome(View v){
-		startActivity(new Intent(MapViewActivity.this, ListViewActivity.class));
+		Intent intent = new Intent(this, ListViewActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
 	}
 
 	public void onSetAboutUs(View v){
-		startActivity(new Intent(MapViewActivity.this, AboutUsActivity.class));    
+		Intent intent = new Intent(this, AboutUsActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
+   
 	}
+	
+	/** 
+	 * Go to the Social view
+	 * @param v
+	 * Just dropping code in. This whole class probably requires GoogleAnalytics added into it
+	 */
+	public void onSocial(View v){
+		Intent intent = new Intent(this, SocialActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
+	}
+
 
 	public void onSetMap(View v){
 		Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
@@ -120,14 +135,6 @@ public class MapViewActivity extends  MapActivity {
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-	/** 
-	 * Go to the Social view
-	 * @param v
-	 * Just dropping code in. This whole class probably requires GoogleAnalytics added into it
-	 */
-	public void onSocial(View v){
-		startActivity(new Intent(this, SocialActivity.class));    
 	}
 	
 }

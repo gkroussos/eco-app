@@ -248,6 +248,7 @@ implements LocationListener
 		Intent intent =new Intent(this, DetailViewActivity.class);
 		ParcelableSite ps = new ParcelableSite( site );
 		intent.putExtra(ActivityConstants.EXTRA_SITE_NAME, ps);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(intent);    
 	}
 
@@ -266,8 +267,9 @@ implements LocationListener
 				);
 
 		// Go to AboutUs
-		startActivity(new Intent(this, AboutUsActivity.class));
-
+		Intent intent = new Intent(this, AboutUsActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
 	}
 
 	/** 
@@ -284,7 +286,10 @@ implements LocationListener
 				);
 
 		// Go to Social view / Activity
-		startActivity(new Intent(this, SocialActivity.class));    
+		Intent intent = new Intent(this, SocialActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
+  
 	}
 	
 	/**
@@ -298,7 +303,10 @@ implements LocationListener
 				"Map", // Label
 				0 //value
 				);
-		startActivity(new Intent(ListViewActivity.this, MapViewActivity.class));
+		
+		Intent intent = new Intent(ListViewActivity.this, MapViewActivity.class);  
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
+		startActivity(intent);
 	}
 
 	/**
