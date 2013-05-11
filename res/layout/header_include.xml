@@ -30,13 +30,13 @@
             />
 
         <ImageButton
-            android:id="@+id/search_button"
+            android:id="@+id/refresh_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="98"
-            android:background="@drawable/search"
+            android:background="@drawable/placeholder"
             android:contentDescription="@string/placeholder"
-            android:onClick="onSearch"
+            android:onClick="onRefresh"
             android:scaleType="fitCenter" />
 
     </LinearLayout>

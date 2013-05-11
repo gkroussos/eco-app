@@ -311,12 +311,15 @@ implements LocationListener
 
 	/**
 	 * Handle click on search button by launching search
-	 * @param v
+	 * @deprecated replaced by onRefresh(View)
 	 */
 	public void onSearch(View v){
 		onSearchRequested();
 	}
-
+	public void onRefresh(View v){
+		// Needs implementation  
+	}
+	
 
 	/********************************************************************************
 	 *                                                                              *

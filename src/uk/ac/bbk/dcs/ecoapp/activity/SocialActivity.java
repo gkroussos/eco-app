@@ -13,6 +13,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -38,6 +40,7 @@ public class SocialActivity  extends ListActivity  {
 	private ProgressBar progressBar;
 	private RelativeLayout progressLayout;
 	private TextView errorTextView;
+	private ImageButton refreshButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,11 @@ public class SocialActivity  extends ListActivity  {
 		progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
 		progressLayout = (RelativeLayout) this.findViewById(R.id.progressLayout);
 		errorTextView = (TextView) this.findViewById(R.id.errorTextView);
-
+		refreshButton = (ImageButton) this.findViewById(R.id.refresh_button);
+		
+		// Switch from default placeholder.png to the actual refresh icon
+		refreshButton.setBackgroundResource(R.drawable.refresh);
+		
 		
 		// Construct an adapter for the List  
 		//socialAdapter = new SocialAdapter(this, android.R.id.list, socialPosts);
@@ -347,11 +354,12 @@ public class SocialActivity  extends ListActivity  {
 	}
 
 	/**
-	 * Handle click on search button by launching search
+	 * Handle click on refresh button by launching updating posts from facebook
 	 * @param v
 	 */
-	public void onSearch(View v){
-		onSearchRequested();
+	public void onRefresh(View v){
+		Toast.makeText(this, "Refreshing posts", Toast.LENGTH_SHORT).show();
+		new SocialPostsTask(this).execute();
 	}
 
 	

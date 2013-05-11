@@ -33,7 +33,7 @@ ToDo
 + Time stamp smaller | post bigger
 - Add names to begining of Dev names
 + DB not closing properly
-- Far right icon remove OR change to refresh?
++ Far right icon remove OR change to refresh?
 + Catch social activity exception when no connection is available 
 
 Dave

@@ -121,11 +121,17 @@ public class MapViewActivity extends  MapActivity {
 		Toast.makeText(this, "Map", Toast.LENGTH_SHORT).show();
 	}
 
-	// Search Button Click
+	/**
+	 * Search Button Click
+	 * @deprecated replaced by onRefresh(View)
+	 */
 	public void onSearch(View v){
 		onSearchRequested();
 	}
-
+	public void onRefresh(View v){
+		// Needs implementation @deprecated replaced by onRefresh(View) 
+	}
+	
 	@Override
 	public boolean onSearchRequested() {
 		return super.onSearchRequested();
