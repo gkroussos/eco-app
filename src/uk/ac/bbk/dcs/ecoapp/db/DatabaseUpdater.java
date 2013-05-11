@@ -31,16 +31,16 @@ import android.util.Log;
 /**
  * This class is responsible for updating versions of the database held
  * locally on the device with that held remotely.
- * An instance is constructed with a set of Properties which reflect the lcoation
+ * An instance is constructed with a set of Properties which reflect the location
  * of a remote database.
  * Calling the checkAndUpdate( ) method will cause the class to compare local and
  * remote database versions and, where the remote version is at a more recent level, 
  * will synchronously download the new data and update the local store.
  *  
- * Calling checkAndUpdate with (force = true) will caue the data to be reloaded 
+ * Calling checkAndUpdate with (force = true) will cause the data to be reloaded 
  * regardless of whether the local database reports that it is up to date
  * 
- * @author Dave
+ * @author Dave Durbin
  */
 public class DatabaseUpdater {
 	/** Context used for accessing services */
@@ -280,7 +280,7 @@ public class DatabaseUpdater {
 		SQLiteDatabase sqlDB = eOpenHelper.getWritableDatabase();
 
 		if (sqlDB.isOpen()) {
-			//Ffetch the local sites version
+			//Fetch the local sites version
 			Cursor cursor = sqlDB.query(EcoDatabaseHelper.TABLE_SITES_VERSION, // table 
 					new String[] { EcoDatabaseHelper.SITE_VERSION }, // Columns 
 					null, // Where clause
@@ -298,6 +298,7 @@ public class DatabaseUpdater {
 				// Not a problem, there are no records so we don't have a version
 				Log.i( getClass().getCanonicalName(), "No records in database" );
 			}
+			sqlDB.close();
 		} else {
 			Log.e( getClass().getCanonicalName(), "Database not open" );
 		}
