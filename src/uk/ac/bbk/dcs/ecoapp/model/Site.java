@@ -40,7 +40,7 @@ public class Site {
 	@Getter @Setter
 	private double longitude;
 	
-	/** URL pointing to an ico for that Site */
+	/** URL pointing to an icon for that Site */
 	@Getter @Setter
 	private String	icon;
 	

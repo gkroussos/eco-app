@@ -83,7 +83,7 @@ public class SiteAdapter extends ArrayAdapter<Site> {
 			holder.siteDescriptionView_.setText(site.getDescription());
 			
 			// Set the site icon
-			Bitmap icon = BitmapFactory.decodeResource(context_.getResources(), R.drawable.site_icon_rounded);
+			Bitmap icon = BitmapFactory.decodeResource(context_.getResources(), R.drawable.site_icon);
 			holder.siteIconView_.setImageBitmap(icon);
 			
 			// Set the arrow button tag to be the site name

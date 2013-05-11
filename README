@@ -23,3 +23,24 @@ Potential Enhancements:
 - Enhance "Home" section Detail view
 - Add Facebook Comment integration (click a post, add comment - perhaps geotag | Add noise level | Smell?)
 
+ToDo
+----
+
++ But Bee Icon Back (make transparent version for maps)
+- Add more detailed Lombok Comment
+- Insert JAR for Eclipse install into source control (not in Libs)
+- Resume previous activity, don't recreate
+- Time stamp smaller | post bigger
+- Add names to beggining of Dev names
+- DB not closing properly
+- Far right icon remove OR change to refresh?
+
+Dave
+- like function incomplete
+- Carbon saving missing (They are in home)
+- Change from <description> to <summary>
+- Change view page to Toast dialouge
+
+ 
+
+

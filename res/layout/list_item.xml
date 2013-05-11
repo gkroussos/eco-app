@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/site_icon"
-        android:src="@drawable/site_icon_rounded" />
+        android:src="@drawable/site_icon" />
 
     <!-- Button linking to detail view -->
 
