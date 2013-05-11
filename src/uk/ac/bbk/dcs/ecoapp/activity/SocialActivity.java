@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.List;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
@@ -36,10 +37,11 @@ public class SocialActivity  extends ListActivity  {
 	// UI Elements
 	private ProgressBar progressBar;
 	private RelativeLayout progressLayout;
+	private TextView errorTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.i(TAG,"Creating SocialActivity");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.social_view);	
 		tracker = GoogleAnalyticsTracker.getInstance();
@@ -47,6 +49,9 @@ public class SocialActivity  extends ListActivity  {
 		tracker.trackPageView("UserAtSocialPage");
 		progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
 		progressLayout = (RelativeLayout) this.findViewById(R.id.progressLayout);
+		errorTextView = (TextView) this.findViewById(R.id.errorTextView);
+
+		
 		// Construct an adapter for the List  
 		//socialAdapter = new SocialAdapter(this, android.R.id.list, socialPosts);
 		
@@ -96,37 +101,31 @@ public class SocialActivity  extends ListActivity  {
 	        	}
 
 	@Override
-	protected void onResume()
-	{
-		Log.i(TAG,"Resuming SocialActivity");
-	   super.onResume();
+	protected void onResume() 	{
+		super.onResume();
+		// If currentSocialPosts is still null, try to connect and retrieve posts
+		if (currentSocialPosts == null ) {
+			new SocialPostsTask(this).execute();
+		}
 	}
 	
 	@Override
-	protected void onPause()
-	{
-		Log.i(TAG,"Pausung SocialActivity");
+	protected void onPause()	{
 	   super.onPause();
 	}
 	
 	@Override
-	protected void onStop()
-	{
-		Log.i(TAG,"Stopping SocialActivity");
+	protected void onStop()	{
 	   super.onStop();
 	}
 	
 	@Override
-	protected void onStart()
-	{
-		Log.i(TAG,"Starting SocialActivity");
+	protected void onStart() 	{
 	   super.onStart();
 	}
 	
 	@Override
-	protected void onRestart()
-	{
-		Log.i(TAG,"Restarting SocialActivity");
+	protected void onRestart()	{
 	   super.onRestart();
 	}
 	
@@ -171,6 +170,7 @@ public class SocialActivity  extends ListActivity  {
 
 		@Override
 		protected void onPreExecute(){
+			errorTextView.setVisibility(View.GONE);
 			progressLayout.setVisibility(View.VISIBLE);
 			progressBar.setVisibility(View.VISIBLE);
 		    }
@@ -181,45 +181,55 @@ public class SocialActivity  extends ListActivity  {
 		@Override
 		protected List<SocialPost> doInBackground(Void... params) {
 			
-			if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
+			//if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
+			//if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
 			
-				List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
-				return socialPosts;
-			}
+					List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
+					return socialPosts;
+			/*}
 			Log.i(TAG,"Skipping currentSocialPosts are already present");
 			return null;
+			*/
 		}
 
 		@Override
         protected void onPostExecute(List<SocialPost> socialPosts) {
 			// Construct an adapter for the List  only update if in bound List<SocialPost> has been updated ie not null
-			if (socialPosts != null) currentSocialPosts = socialPosts;
-			socialAdapter = new SocialAdapter(socialActivity, android.R.id.list, currentSocialPosts);
-			//
-			socialActivity.setListAdapter(socialAdapter);
-
-			//list item click
-			ListView lv = socialActivity.getListView();
-			lv.setTextFilterEnabled(true);
-			progressBar.setVisibility(View.GONE);
-			progressLayout.setVisibility(View.GONE);
-			
-			/* // ALSO Not registering clicks... 
-			lv.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-					String urltext = currentSocialPosts.get(position).getPermalink();
-					Log.i(TAG,"Entering onItemClick!!!!!!");
-					tracker.trackEvent(
-							"AtSocialPage", // category
-							"Click", // Action
-							"ListItem", // Label
-							position //value
-							);
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
-					startActivity(browserIntent); 
-				}
-			})*/;  		
+			if (socialPosts != null) {
+				currentSocialPosts = socialPosts;				
+				socialAdapter = new SocialAdapter(socialActivity, android.R.id.list, currentSocialPosts);
+				//
+				socialActivity.setListAdapter(socialAdapter);	
+				//list item click
+				ListView lv = socialActivity.getListView();
+				lv.setTextFilterEnabled(true);
+				progressBar.setVisibility(View.GONE);
+				progressLayout.setVisibility(View.GONE);
+				
+				/* // ALSO Not registering clicks... 
+				lv.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+						String urltext = currentSocialPosts.get(position).getPermalink();
+						Log.i(TAG,"Entering onItemClick!!!!!!");
+						tracker.trackEvent(
+								"AtSocialPage", // category
+								"Click", // Action
+								"ListItem", // Label
+								position //value
+								);
+						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
+						startActivity(browserIntent); 
+					}
+				});*/
+			}
+			// If we get a null object back, something went wrong, give the option to try again or return to app home screen
+			else {
+				//
+				progressBar.setVisibility(View.GONE);
+				errorTextView.setVisibility(View.VISIBLE);
+				//
+			}
 			
         }	
 	}
@@ -313,7 +323,9 @@ public class SocialActivity  extends ListActivity  {
 				);
 
 		// Flash a Toast notice
-		Toast.makeText(this, "Social", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Refreshing posts", Toast.LENGTH_SHORT).show();
+		// Refresh  posts
+		new SocialPostsTask(this).execute();
 		  
 	}
 	

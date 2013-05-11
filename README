@@ -30,11 +30,11 @@ ToDo
 + Add more detailed Lombok Comment
 + Insert JAR for Eclipse install into source control (not in Libs)
 + Resume previous activity, don't recreate
-- Time stamp smaller | post bigger
-- Add names to beggining of Dev names
-- DB not closing properly
++ Time stamp smaller | post bigger
+- Add names to begining of Dev names
++ DB not closing properly
 - Far right icon remove OR change to refresh?
-- Catch social activity exception when no connection is available 
++ Catch social activity exception when no connection is available 
 
 Dave
 - like function incomplete
@@ -42,6 +42,9 @@ Dave
 - Change from <description> to <summary>
 - Change view page to Toast dialouge
 
- 
+???
+---
+- Start up fails nastily when a connection error occurs (say with no wifi/ 3|4g). Could do with the same as done on socialActivity. 
+	Try/Catch exception handling and a refreshing mechanism hooked up to menu item and refresh button   
 
 

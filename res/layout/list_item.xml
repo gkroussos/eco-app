@@ -43,7 +43,9 @@
         android:layout_marginRight="@dimen/margin_small"
         android:layout_toLeftOf="@id/arrow_button"
         android:layout_toRightOf="@+id/site_icon"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:maxLines="@integer/OneLiner" 
+        />
 
     <TextView
         android:id="@+id/site_description"
@@ -57,6 +59,7 @@
         android:layout_toRightOf="@+id/site_icon"
         android:gravity="center_vertical"
         android:textColor="#0099CC"
+        android:maxLines="@integer/OneLiner"
         android:textSize="12sp" />
 
 </RelativeLayout>
