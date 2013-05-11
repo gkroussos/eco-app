@@ -6,7 +6,7 @@
   uk.ac.bbk.dcs.ecoapp.activity   - Key activities for the application
   uk.ac.bbk.dcs.ecoapp.db         - Database related classes
   uk.ac.bbk.dcs.ecoapp.db.xml     - XML parsing classes in support of the remote database reader
-  uk.ac.bbk.dcs.ecoapp.utility    - Utility support classes. Currently an asycnronous image loader
+  uk.ac.bbk.dcs.ecoapp.utility    - Utility support classes. Currently an asycnronous image loader & FaceBookAccessor a wrapper for facebook accessing
 
 Activities:
  SplashScreenActivity       - First activity. Displays splash screen and checks and possibly updates local database
@@ -14,6 +14,7 @@ Activities:
  MapViewActivity            - Displays Sites overlaid on a Map
  DetailViewActivity         - Shows detail view of a Site
  AboutUsActivity            - Static text content describing InMidtown organisation
+ SocialActivity             - Shows all recent InMidTown facebook posts  
 
 Dave Durbin Updates
 -------------------
@@ -42,5 +43,19 @@ Extracted XML parsing to separate set of classes in new package uk.ac.bbk.dcs.ec
  thought it should have continued to be OK)
  Site icons not being loaded - they never were. I've implemented an Async loader class but not put it to work yet
  
+ Notes on Lombok
+ ---------------
+ Lombok is used to generate boilerplate code, like getters & setters. 
+ A lightweight Lombok api has been generated and added into libs (libs/lombok-api.jar).
+ Generated as stated here for Android: 
+ http://projectlombok.org/setup/android.html  
+ 
+ For Eclipse to understand the Lombok anotations, it should work to simply download the latest jar from: 
+ http://projectlombok.org/download.html. Run the jar (it is an executable), it will try to detect any Eclipse installations, and select the installation 
+ that you would like to have Lombok installed into. If it finds no installations automatically, simply browse to your eclipse.exe file using 
+ the "Specify Location" button after running lombok.jar.
+ 
+ For convenience and in case of future compatibility issues, a working lombok.jar file has been added into res/raw.
+ This lomkob.jar file IS NOT part of the source code, it is only there for IDE updating.
  
  
