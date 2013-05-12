@@ -77,10 +77,10 @@ public class SiteItemizedOverlay extends ItemizedOverlay<SiteOverlayItem> {
 
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View bView = inflater.inflate(R.layout.detail_view, null);
-        TextView title = (TextView) bView.findViewById(R.id.social_type);
+        TextView title = (TextView) bView.findViewById(R.id.site_name);
         title.setText(bd.getName());
 
-        TextView atView = (TextView) bView.findViewById(R.id.social_message);
+        TextView atView = (TextView) bView.findViewById(R.id.site_description);
         atView.setText(bd.getDescription());
         TextView wtView = (TextView) bView.findViewById(R.id.site_url);
         wtView.setText(bd.getLink());

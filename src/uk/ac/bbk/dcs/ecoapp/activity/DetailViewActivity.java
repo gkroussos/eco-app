@@ -6,6 +6,7 @@ import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,8 +31,10 @@ public class DetailViewActivity extends Activity {
 	 */
 	private void bindFields( ) {
 		siteIconView_ = (ImageView) findViewById(R.id.site_icon);
-		siteNameView_ = (TextView) findViewById(R.id.social_type);
-		siteDescriptionView_ = (TextView) findViewById(R.id.social_message);
+		siteNameView_ = (TextView) findViewById(R.id.site_name);
+		Log.d("ECCOAPPERROR!!!", "PROOOOOBLEMMMMMSSSSSS : "  + siteNameView_);
+		siteDescriptionView_ = (TextView) findViewById(R.id.site_description);
+		Log.d("ECCOAPPERROR!!!", "PROOOOOBLEMMMMMSSSSSS : "  + siteDescriptionView_);
 		siteTypeView_ = (TextView) findViewById(R.id.site_type);
 		siteLinkView_ = (TextView) findViewById(R.id.site_url);
 	}

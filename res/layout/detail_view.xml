@@ -13,13 +13,13 @@
         android:src="@drawable/default_logo" />
 
     <TextView
-        android:id="@+id/social_type"
+        android:id="@+id/site_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" />
 
     <TextView
-        android:id="@+id/social_message"
+        android:id="@+id/site_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"

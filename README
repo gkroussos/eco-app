@@ -31,7 +31,7 @@ ToDo
 + Insert JAR for Eclipse install into source control (not in Libs)
 + Resume previous activity, don't recreate
 + Time stamp smaller | post bigger
-- Add names to begining of Dev names
++ Add names to begining of Dev names
 + DB not closing properly
 + Far right icon remove OR change to refresh?
 + Catch social activity exception when no connection is available 

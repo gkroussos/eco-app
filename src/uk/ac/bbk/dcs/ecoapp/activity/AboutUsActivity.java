@@ -12,7 +12,6 @@ import android.widget.Toast;
 /**
  * This Activity is simply an about screen displaying information about InMidtown
  * @author George Roussos - And Others from Birkbeck UK
- * @author William Linden
  * 
  */
 public class AboutUsActivity extends Activity  {

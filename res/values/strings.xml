@@ -35,7 +35,7 @@
         The Eco App has been designed and developed by the Mobile and Ubiquitous Computing students at the Department of Computer Science, Birkbeck College, University of London. 
     </string> 
     <string name="credits">
-        Concept and UI design: Hesseltje S van Goor and Tracey Field; Software Development: David Durbin, William Linden, Giorgio Huang, Chatitze Moumin , David McRobert; Analytics: Ray Su; Illustrations: William Jesus Maria Jose Bates; Sound: Philip Wickens; TAs: Richard Brownlow and Long Chen; Lecturer: George Roussos  
+        Concept and UI design: Hesseltje S van Goor and Tracey Field; Software Development: Dave Durbin, William Linden, Giorgio Huang, Chatitze Moumin , David McRobert; Analytics: Ray Su; Illustrations: William Jesus Maria Jose Bates; Sound: Philip Wickens; TAs: Richard Brownlow and Long Chen; Lecturer: George Roussos  
     </string>  
     <string name="placeholder">Place holder for content descripion</string>
     <string name="buttonSocial">Social</string>
