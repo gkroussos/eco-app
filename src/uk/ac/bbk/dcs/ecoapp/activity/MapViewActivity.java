@@ -21,7 +21,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
 /**
- * This class is an Activity representing recent Social posts (currently Facebook only) by InMidTown
+ * This class is a google map Activity showing a map with all InMidTown associated companies.
  * 
  * @author Georgio
  * @author Dave Durbin

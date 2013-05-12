@@ -2,45 +2,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/site_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/site_icon_text"
-        android:src="@drawable/default_logo" />
+	<!--  Including Header containing banner / logo / buttons -->
+    <include 	android:layout_width="wrap_content"
+  				android:layout_height="wrap_content" 
+  				layout="@layout/header_include" />
+    <ScrollView
+     	android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+   		android:background="@color/white"
+   		android:orientation="vertical">
+    		 
+        <LinearLayout
+            android:layout_width="match_parent"
+   			android:layout_height="wrap_content"
+    		android:background="@color/white"
+    		android:orientation="vertical">
+        
+               		    <ImageView
+		        android:id="@+id/site_icon"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_horizontal"
+		        android:contentDescription="@string/site_icon_text"
+		        android:src="@drawable/default_logo" />
+               		    
+		    <TextView
+		        android:id="@+id/site_name"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:gravity="center"
+		        android:textColor="@color/black"
+		        android:textSize="19sp" />
 
-    <TextView
-        android:id="@+id/site_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" />
 
-    <TextView
-        android:id="@+id/site_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine" />
-
-    <TextView
-        android:id="@+id/site_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" />
-
-    <TextView
-        android:id="@+id/site_telephone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" />
-
-    <TextView
-        android:id="@+id/site_url"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" />
+		    		
+		    <TextView
+		        android:id="@+id/site_description"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:gravity="center"
+		        android:inputType="textMultiLine"
+		        android:textColor="@color/black"  />
+		
+		    <TextView
+		        android:id="@+id/site_type"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:gravity="center"
+		        android:textColor="@color/black" />
+		
+		    <TextView
+		        android:id="@+id/site_telephone"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:gravity="center"
+		        android:textColor="@color/black" />
+		
+		    <TextView
+		        android:id="@+id/site_url"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:gravity="center"
+		        android:textColor="@color/black" />
+	    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

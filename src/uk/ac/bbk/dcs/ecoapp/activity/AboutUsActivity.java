@@ -106,6 +106,7 @@ public class AboutUsActivity extends Activity  {
 	/**
 	 * Handle click on search button by launching search
 	 * @param v
+	 * @deprecated Should be replaced by onRefresh()
 	 */
 	public void onSearch(View v){
 		onSearchRequested();

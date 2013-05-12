@@ -22,6 +22,8 @@ Potential Enhancements:
 - Better (Bee) Icons on Map view
 - Enhance "Home" section Detail view
 - Add Facebook Comment integration (click a post, add comment - perhaps geotag | Add noise level | Smell?)
+- Add direct link to individual site's social accounts (FB/Twitter/G+ etc..)
+- Make Site link from DetailView clickable -> open site URL
 
 ToDo
 ----
