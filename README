@@ -4,31 +4,31 @@ This is the eco app for android, a group class exercise for the Mobile and Ubiqu
 William Linden:
 
 Notes on InMidTown (04/2013)
+----------------------------
+* Using RestFB - Remember to add Jar or Source
+* Using Project Lombok for some boilerplate - Remember to add Jar
+* Changed layout to use includes and share some layout xml (see layout/header.xml
+* Had to compromise to get Social InMidTown list item clicks as event seems to not fire or is associated with the wrong Activity. Perhaps related to Async task. Might have been introduced before as some code has been copied from HEAD branch's list view xml and Activities.
+* Added in new header into about Activity - Not really needed but gives a consistent UI experience 
+* Update map_view.xml with development google maps ID (eg: android:apiKey="0KReFLib53XRzBbxuieJPOSTPmUT7KzwWnwUEmg")
+* Currently, the Social View/Activity will only check for Facebook wall updates when the app is opened. A refresh will only be triggered once the app is closed down by Android. It should get a timer for refreshing or some other refreshing mechanism
 
--. Using RestFB - Remember to add Jar or Source
--. Using Project Lombok for some boilerplate - Remember to add Jar
--. Changed layout to use includes and share some layout xml (see layout/header.xml
--. Had to compromise to get Social InMidTown list item clicks as event seems to not fire or is associated with the wrong Activity. Perhaps related to Async task. Might have been introduced before as some code has been copied from HEAD branch's list view xml and Activities.
--. Added in new header into about Activity - Not really needed but gives a consistent UI experience 
--. Update map_view.xml with development google maps ID (eg: android:apiKey="0KReFLib53XRzBbxuieJPOSTPmUT7KzwWnwUEmg")
--. Currently, the Social View/Activity will only check for Facebook wall updates when the app is opened. A refresh will only be triggered once the app is closed down by Android. It should get a timer for refreshing or some other refreshing mechanism
 
-Potential Enhancements:
+Potential Enhancements: (TODO - | DONE +)
+-----------------------------------------
 - Add Activity Helper (see rough idea activity.helper.ActivityStarter) to pull header.xml layout Intents to a single location without dupplicating onclicklistener code within seperate Activities (there is lots of dupplication) | Aspects might be the best way forward here - simply "Google Analytic" log via anotation but initiate Intent from individual Activiy as currently done
-- Rework Bee icon and Home view's lopsided list item images (button has more width than bee logo)
 - MapViewActivity has no Google Analytics hooked in, might be worth "completing the circle"
 - Add Google Analytic parameter variables to constants or resources (R)
 - Introduce JUnit / Testing
-- Better (Bee) Icons on Map view
-- Enhance "Home" section Detail view
 - Add Facebook Comment integration (click a post, add comment - perhaps geotag | Add noise level | Smell?)
 - Add direct link to individual site's social accounts (FB/Twitter/G+ etc..)
-- Make Site link from DetailView clickable -> open site URL
+- Make startup connection fail "friendly".... when no connection is available, show local DB only
 
-ToDo
-----
-
-+ But Bee Icon Back (make transparent version for maps)
++ Enhance "Home" section Detail view
++ Rework Bee icon and Home view's lopsided list item images (button has more width than bee logo)
++ Make Site link from DetailView clickable -> open site URL
++ Better (Bee) Icons on Map view
++ Put Bee Icon Back (make transparent version for maps)
 + Add more detailed Lombok Comment
 + Insert JAR for Eclipse install into source control (not in Libs)
 + Resume previous activity, don't recreate
@@ -39,14 +39,11 @@ ToDo
 + Catch social activity exception when no connection is available 
 
 Dave
+----
 - like function incomplete
 - Carbon saving missing (They are in home)
 - Change from <description> to <summary>
-- Change view page to Toast dialouge
-
-???
----
-- Start up fails nastily when a connection error occurs (say with no wifi/ 3|4g). Could do with the same as done on socialActivity. 
-	Try/Catch exception handling and a refreshing mechanism hooked up to menu item and refresh button   
+- Change view page to Toast dialouge (No longer needed. Activity/View has been given a facelift)
+   
 
 
