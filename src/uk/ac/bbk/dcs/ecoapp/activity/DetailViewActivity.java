@@ -167,7 +167,7 @@ public class DetailViewActivity extends Activity {
 	}
 	
 	/**
-	 * Handle click on Map button by navigating to the Map view
+	 * Handle click on URL, navigate to URL
 	 * @param v
 	 */
 	public void onFollowLink(View v){

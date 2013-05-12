@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
@@ -77,6 +78,19 @@ public class SiteItemizedOverlay extends ItemizedOverlay<SiteOverlayItem> {
 
         LayoutInflater inflater = LayoutInflater.from(this.context);
         View bView = inflater.inflate(R.layout.detail_view, null);
+        
+        /**
+         * HACK START
+         * Quick hack from down below added to, includes end up showing navigation banners, so hide them.
+         * @TODO All of this needs rewriting. 
+         */
+        LinearLayout bannerLayout=(LinearLayout) bView.findViewById(R.id.banner);
+        bannerLayout.setVisibility(LinearLayout.GONE);
+        
+        LinearLayout buttonBarLayout =(LinearLayout) bView.findViewById(R.id.button_bar);
+        buttonBarLayout.setVisibility(LinearLayout.GONE);
+        
+        
         TextView title = (TextView) bView.findViewById(R.id.site_name);
         title.setText(bd.getName());
 
@@ -87,7 +101,9 @@ public class SiteItemizedOverlay extends ItemizedOverlay<SiteOverlayItem> {
 
         new AlertDialog.Builder(this.context).setView(bView).setPositiveButton("Go to website",
             new DialogInterface.OnClickListener() {
+        	
 
+        	
                 public void onClick(DialogInterface di, int what) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(bd.getLink()));
                     // quick and dirty hack to set data on another activity
@@ -99,10 +115,17 @@ public class SiteItemizedOverlay extends ItemizedOverlay<SiteOverlayItem> {
             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface di, int what) {
+            	// Make visible...
                 di.dismiss();
             }
         }).show();
 
+        /**
+         * HACK END
+         * @TODO All of this needs rewriting. 
+         */
+        
+        
         return false;
     }
 

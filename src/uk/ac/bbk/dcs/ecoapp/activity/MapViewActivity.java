@@ -8,9 +8,12 @@ import uk.ac.bbk.dcs.ecoapp.SiteItemizedOverlay;
 import uk.ac.bbk.dcs.ecoapp.SiteOverlayItem;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
 import uk.ac.bbk.dcs.ecoapp.model.Site;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -131,6 +134,21 @@ public class MapViewActivity extends  MapActivity {
 	public void onRefresh(View v){
 		// Needs implementation @deprecated replaced by onRefresh(View) 
 	}
+	
+
+	/**
+	 * Handle click on URL, navigate to URL
+	 * @param v
+	 */
+	public void onFollowLink(View v){
+	      /**
+         * HACK from  eccoapp/SiteItemizedOverlay bleeding over
+         * Do nothing when the link is clicked on the detailView from within this MapActivity
+         * @TODO All of this needs rewriting. 
+         */
+	}
+
+	
 	
 	@Override
 	public boolean onSearchRequested() {
