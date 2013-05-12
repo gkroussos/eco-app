@@ -9,56 +9,79 @@
   				android:layout_height="wrap_content" 
   				layout="@layout/header_include" />
 		
-		<TextView
-        android:layout_width="fill_parent"
+        <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/aboutUs"
-        android:layout_marginLeft="5dp" 
-        android:layout_marginTop="7dp" 
-        android:textSize="15sp"/>
-		
-		<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/aboutUsDetail1"
-        android:layout_marginLeft="10dp" 
-        android:textSize="12sp"/>
-		
-		<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/aboutUsDetail2"
-        android:layout_marginLeft="10dp" 
-        android:layout_marginTop="8dp" 
-        android:textSize="12sp"/>
-		
-		<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/aboutUsDetail3"
-        android:layout_marginLeft="10dp" 
-        android:layout_marginTop="8dp" 
-        android:textSize="12sp"/>
-
-		<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/theAppTitle"
-        android:layout_marginLeft="5dp" 
-        android:layout_marginTop="7dp" 
-        android:textSize="15sp"/>
-		
-		<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/theApp"
-        android:layout_marginLeft="10dp" 
-        android:textSize="12sp"/>
-		
-		<TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/credits"
-        android:layout_marginLeft="10dp" 
-        android:textSize="12sp"/>		
+        android:background="@color/white"
+        android:clickable="true"
+        android:orientation="vertical" >
+    		 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical" 
+             >
+    
+			<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aboutUs"
+	        android:layout_marginLeft="5dp" 
+	        android:layout_marginTop="7dp" 
+	        android:textSize="15sp"
+			android:textColor="@color/black" />
+			
+			<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aboutUsDetail1"
+	        android:layout_marginLeft="10dp" 
+	        android:textSize="12sp"
+	        android:textColor="@color/darkGray"/>
+			
+			<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aboutUsDetail2"
+	        android:layout_marginLeft="10dp" 
+	        android:layout_marginTop="8dp" 
+	        android:textSize="12sp"
+	        android:textColor="@color/darkGray"/>
+			
+			<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/aboutUsDetail3"
+	        android:layout_marginLeft="10dp" 
+	        android:layout_marginTop="8dp" 
+	        android:textSize="12sp"
+	        android:textColor="@color/darkGray"/>
+	
+			<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/theAppTitle"
+	        android:layout_marginLeft="5dp" 
+	        android:layout_marginTop="7dp" 
+	        android:textSize="15sp"
+	        android:textColor="@color/darkGray"/>
+			
+			<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/theApp"
+	        android:layout_marginLeft="10dp" 
+	        android:textSize="12sp"
+	        android:textColor="@color/darkGray"/>
+			
+			<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/credits"
+	        android:layout_marginLeft="10dp" 
+	        android:textSize="12sp"
+	        android:textColor="@color/darkGray"/>	
+   	    </LinearLayout>
+    </ScrollView>	
 </LinearLayout>
