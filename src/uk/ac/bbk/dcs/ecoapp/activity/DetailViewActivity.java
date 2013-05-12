@@ -6,7 +6,9 @@ import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,7 @@ public class DetailViewActivity extends Activity {
 	TextView	siteLinkView_;
 
 	private GoogleAnalyticsTracker tracker;
+	protected static final String TAG =  "EcoApp:SocialDetailViewActivity";
 	
 	/**
 	 * Bind the local fields to layout components
@@ -163,5 +166,32 @@ public class DetailViewActivity extends Activity {
 		startActivity(intent);
 	}
 	
+	/**
+	 * Handle click on Map button by navigating to the Map view
+	 * @param v
+	 */
+	public void onFollowLink(View v){
+		tracker.trackEvent(
+				"AtSiteDetailPage", // category
+				"Click", // Action
+				"GoToSiteURL", // Label
+				0 //value
+				);
+		
+		/**
+		 *  Nasty little hack: adding scheme into URI depending on http: present or not,
+		 *  should make use of URI <-> URL to add scheme when missing 
+		 **/
+		String url = siteLinkView_.getText().toString();
+		if (!url.matches("^http.*")) { url = "http://" + url; }
+		// Wrap hack in try/catch for those unexpected bad URLs
+		try {
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( url ));
+			startActivity(browserIntent);
+		} catch (ActivityNotFoundException ae ) {
+			Log.i(TAG, "Bad URL, leading to un associated Activity for URI:" + url);
+		}
+	}
+
 	
 }

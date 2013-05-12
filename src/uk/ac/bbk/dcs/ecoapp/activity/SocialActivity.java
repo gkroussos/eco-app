@@ -72,7 +72,7 @@ public class SocialActivity  extends ListActivity  {
 		//new SocialPosts().execute("BAACEdEose0cBALlUe79sJLWISCZCr132MkMuMBWYbjBYFOvoffaBh21m8ETb0uMtQi2YIKEiz4AEjwJouEUxz9RE75zWwljRwVs1oxAMVciH7erEyqkJR9TvLK7b17eCVFs15DENCZBiup9HXREMvi2dZAXczPxNRUWXVqHluK0EXZCy1gBORZA2OtgxUEANkcARTYGziKwZDZD");
 		//new SocialPostsTask().execute();
 		
-		 ListView lv = getListView();
+		// ListView lv = getListView();
 	        //lv.setClickable(true);
 	        /* // Not registering clisk!!! 
 			lv.setOnItemClickListener(new OnItemClickListener() {
