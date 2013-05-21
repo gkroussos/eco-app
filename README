@@ -41,9 +41,10 @@ Potential Enhancements: (TODO - | DONE +)
 Dave
 ----
 - like function incomplete
-- Carbon saving missing (They are in home)
-- Change from <description> to <summary>
 - Change view page to Toast dialouge (No longer needed. Activity/View has been given a facelift)
    
++ Carbon saving missing (They are in home)
++ Change from <description> to <summary> NB Summary field only contains the company's name, I've created a defult summary showing the type of activity and/or carbon footprint reduction data whichever is available
+
 
 
