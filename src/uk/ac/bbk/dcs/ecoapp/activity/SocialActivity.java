@@ -1,5 +1,7 @@
 package uk.ac.bbk.dcs.ecoapp.activity;
 
+import java.util.List;
+
 import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SocialAdapter;
 import uk.ac.bbk.dcs.ecoapp.model.SocialPost;
@@ -11,16 +13,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.List;
+
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 
