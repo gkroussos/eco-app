@@ -22,7 +22,6 @@ Potential Enhancements: (TODO - | DONE +)
 - Introduce JUnit / Testing
 - Add Facebook Comment integration (click a post, add comment - perhaps geotag | Add noise level | Smell?)
 - Add direct link to individual site's social accounts (FB/Twitter/G+ etc..)
-- Make startup connection fail "friendly".... when no connection is available, show local DB only
 
 + Enhance "Home" section Detail view
 + Rework Bee icon and Home view's lopsided list item images (button has more width than bee logo)
@@ -45,6 +44,7 @@ Dave
    
 + Carbon saving missing (They are in home)
 + Change from <description> to <summary> NB Summary field only contains the company's name, I've created a defult summary showing the type of activity and/or carbon footprint reduction data whichever is available
++ Make startup connection fail "friendly".... when no connection is available, show local DB only
 
 
 
