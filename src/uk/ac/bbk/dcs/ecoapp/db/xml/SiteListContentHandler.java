@@ -46,7 +46,7 @@ public class SiteListContentHandler extends  DefaultHandler {
 	private boolean 	inRecognisedElement_;
 	
 	/** String value of the content of the last tag parsed */
-	private  String 	elementContent_;
+	private  StringBuffer 	elementContent_ = new StringBuffer( );
 	
 	/** The Site currently being read. Created at start of <site> element */
 	private Site		currentSite_;
@@ -101,12 +101,16 @@ public class SiteListContentHandler extends  DefaultHandler {
 	/**
 	 * Receive notification of character data inside an element.
 	 * If it's an element of interest, we store the String value, otherwise do nothing
+	 * NOTE: We must APPEND the text here to any existing elementContent as this method may be called 
+	 * a number of times for each character text:
+	 * <em>"The Parser will call this method to report each chunk of character data. SAX parsers may return all 
+	 * contiguous character data in a single chunk, or they may split it into several chunks ...".</em>
 	 */
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		// If we're in a tag, capture the characters as the contents of that tag
 		if( inRecognisedElement_ ) {
-			elementContent_ = new String( ch, start, length );
+			elementContent_.append(new String( ch, start, length ));
 		}
 	}
 
@@ -130,20 +134,20 @@ public class SiteListContentHandler extends  DefaultHandler {
 		else if ( inRecognisedElement_) {
 			// Set the appropriate field based on the element name
 			if( TAG_NAME.equals( localName) ) {
-				currentSite_.setName(elementContent_);
+				currentSite_.setName(elementContent_.toString());
 			} else if ( TAG_DESCRIPTION.equals(localName) ) {
-				currentSite_.setDescription(elementContent_);
+				currentSite_.setDescription(elementContent_.toString());
 			} else if ( TAG_LOCATION.equals(localName) ) {
 				// Parse latitude and longitude from Location String
-				setCurrentSiteLocationFromString( elementContent_ );
+				setCurrentSiteLocationFromString( elementContent_ .toString());
 			} else if ( TAG_TYPE.equals(localName) ) {
-				currentSite_.setType(elementContent_);
+				currentSite_.setType(elementContent_.toString());
 			} else if ( TAG_LINK.equals(localName) ) {
-				currentSite_.setLink(elementContent_);
+				currentSite_.setLink(elementContent_.toString());
 			} else if ( TAG_ICON.equals(localName) ) {
-				currentSite_.setIcon(elementContent_);
+				currentSite_.setIcon(elementContent_.toString());
 			} else if ( TAG_CARBON_SAVING.equals(localName) ) {
-				currentSite_.setCarbonSaving(  Float.valueOf(elementContent_).floatValue());
+				currentSite_.setCarbonSaving(  Float.valueOf(elementContent_.toString()).floatValue());
 			}
 			
 			// Clear the flag
@@ -173,7 +177,7 @@ public class SiteListContentHandler extends  DefaultHandler {
 		else if( isRecognisedElement( localName)) {
 			inRecognisedElement_ = true;
 			// Clear content read for read
-			elementContent_ = null;
+			elementContent_.setLength(0);
 		}
 		// Otherwise we're not intrerested
 		else {
