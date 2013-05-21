@@ -43,6 +43,9 @@ import android.util.Log;
  * @author Dave Durbin
  */
 public class DatabaseUpdater {
+	/** TAG for logging */
+	private final String TAG = getClass( ).getCanonicalName();
+	
 	/** Context used for accessing services */
 	private Context		context_;
 
@@ -109,26 +112,14 @@ public class DatabaseUpdater {
 	}
 
 	/**
-	 *
-	 * @return true if an update for the database is required
-	 */
-	private boolean updateIsRequired( ) {
-		// Get the remote database version
-		double remoteDBVersion, localDBVersion;
-		remoteDBVersion = getRemoteDatabaseVersion( );
-		localDBVersion = getLocalDatabaseVersion( );
-
-		// If there is a more recent DB version, we want to download it.
-		return( remoteDBVersion > localDBVersion );
-	}
-
-	/**
 	 * Perform a database update by downloading the new entries from 
 	 * the remote server and then dropping and creating he database anew
 	 * inserting the list of retrieved sites.
 	 * This method will also notify any listeners as the update progresses
 	 */
-	private void updateDatabase( ) {
+	private void updateDatabase( double newDbVersion ) {
+		Log.i(TAG, "Performing update to DB version " + newDbVersion);
+		
 		List<Site> siteList = readRemoteData( );
 
 		// Open the database
@@ -153,14 +144,22 @@ public class DatabaseUpdater {
 			cv.put(EcoDatabaseHelper.SITE_LATITUDE, site.getLatitude());
 			cv.put(EcoDatabaseHelper.SITE_LONGITUDE, site.getLongitude());
 			cv.put(EcoDatabaseHelper.SITE_ICON, site.getIcon());
+			cv.put(EcoDatabaseHelper.SITE_CARBON_SAVING, site.getCarbonSaving());
 
 			if( database.insert(EcoDatabaseHelper.TABLE_SITES, null, cv) == -1 ) {
-				Log.w(getClass( ).getCanonicalName(), "Failed to insert record" );
+				Log.w(TAG, "Failed to insert record" );
 			}
 
 			// Notify the listeners
 			notifyListenersSiteIndex( siteIndex );
 			++siteIndex;
+		}
+		
+		// Update the local DB version number
+		ContentValues cv = new ContentValues();
+		cv.put( EcoDatabaseHelper.SITE_VERSION, newDbVersion);
+		if( database.insert(EcoDatabaseHelper.TABLE_SITES_VERSION, null, cv) == -1) { 
+			Log.w(TAG, "Failed to update local database version number" );
 		}
 		database.close();
 	}
@@ -176,15 +175,29 @@ public class DatabaseUpdater {
 	public void checkAndUpdate( boolean forceUpdate ) {
 		// First of all check for network connectivity without which we can't update
 		if( isNetworkAvailable( ) ) {
+			
+			// Get the remote database version
+			double remoteDBVersion = getRemoteDatabaseVersion( );
+			Log.i(TAG, "Remote DB Version is " + remoteDBVersion );
 
 			// If we are forcing update, don't bother getting version for comparison
 			if( !forceUpdate ) {
-				forceUpdate = updateIsRequired( );
+				// If there is a more recent DB version, we want to download it.
+				double localDBVersion = getLocalDatabaseVersion();
+				Log.i(TAG, "Local DB Version is " + localDBVersion );
+				if( remoteDBVersion > localDBVersion) {
+					Log.i(TAG, "Update is required");
+					forceUpdate = true;
+				} else {
+					Log.i(TAG, "No update is required");
+				}
+			} else {
+				Log.i(TAG, "Forcing update");
 			}
 
 			// If we are forcing the update, do it
 			if( forceUpdate ) {
-				updateDatabase( );
+				updateDatabase( remoteDBVersion ) ;
 			}
 		} else {
 			Log.e( getClass( ).getCanonicalName(), "Network unavailable. Cannot update." );
@@ -296,11 +309,11 @@ public class DatabaseUpdater {
 				cursor.close();
 			} else {
 				// Not a problem, there are no records so we don't have a version
-				Log.i( getClass().getCanonicalName(), "No records in database" );
+				Log.i( getClass().getCanonicalName(), "No records in local version database" );
 			}
 			sqlDB.close();
 		} else {
-			Log.e( getClass().getCanonicalName(), "Database not open" );
+			Log.e( getClass().getCanonicalName(), "Local version database not open" );
 		}
 
 		return localVersion;
