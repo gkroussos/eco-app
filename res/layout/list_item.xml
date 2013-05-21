@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:baselineAlignBottom="true"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants">
 
     <!-- Site Icon -->
 
@@ -44,8 +45,7 @@
         android:layout_toLeftOf="@id/arrow_button"
         android:layout_toRightOf="@+id/site_icon"
         android:gravity="center_vertical"
-        android:maxLines="@integer/OneLiner" 
-        />
+        android:maxLines="@integer/OneLiner" />
 
     <TextView
         android:id="@+id/site_description"
@@ -58,8 +58,8 @@
         android:layout_toLeftOf="@id/arrow_button"
         android:layout_toRightOf="@+id/site_icon"
         android:gravity="center_vertical"
-        android:textColor="#0099CC"
         android:maxLines="@integer/OneLiner"
+        android:textColor="#0099CC"
         android:textSize="12sp" />
 
 </RelativeLayout>
