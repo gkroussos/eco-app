@@ -21,7 +21,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * 
  */
 public class EcoDatabaseHelper extends SQLiteOpenHelper {
-	public final static int VERSION = 1;
+	public final static int VERSION = 4;
 
 	/** Database name */
 	public final static String DB_NAME = "ecoapp.db";
@@ -41,18 +41,20 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 	public final static String SITE_LATITUDE = "latitude";
 	public final static String SITE_LONGITUDE = "longitude";
 	public final static String SITE_ICON = "icon";
+	public final static String SITE_CARBON_SAVING = "carbonSaving";
 	
 	/** Column names for sites_version table */
 	public final static String SITE_VERSION = "version";
 
 	// Column indices for cursors when retrieving records
 	private static final int NAME_COL_IDX = 0;
-	private static final int ICON_COL_IDX = 1;
-	private static final int DESCRIPTION_COL_IDX = 2;
-	private static final int TYPE_COL_IDX = 3;
-	private static final int LINK_COL_IDX = 4;
-	private static final int LATITUDE_COL_IDX = 5;
-	private static final int LONGITUDE_COL_IDX = 6;
+	private static final int DESCRIPTION_COL_IDX = 1;
+	private static final int TYPE_COL_IDX = 2;
+	private static final int LINK_COL_IDX = 3;
+	private static final int LATITUDE_COL_IDX = 4;
+	private static final int LONGITUDE_COL_IDX = 5;
+	private static final int ICON_COL_IDX = 6;
+	private static final int CARBON_SAVING_IDX = 7;
 	
 	/** Sites table creation SQL */
 	private static final String SITE_TABLE_CREATE_SQL = "create table " + TABLE_SITES + 
@@ -64,7 +66,8 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 				SITE_LINK + " link," +
 				SITE_LATITUDE + " double," +
 				SITE_LONGITUDE + " double," +
-				SITE_ICON + " text" +
+				SITE_ICON + " text," +
+				SITE_CARBON_SAVING + " long" +
 			");";
 	
 	/** Sites version table create SQL */
@@ -119,12 +122,13 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 	private Site getSiteFromRecordAtCursor( Cursor cursor ) {
 		Site site = new Site();
 		site.setName(cursor.getString( NAME_COL_IDX));
-		site.setIcon(cursor.getString(ICON_COL_IDX));
 		site.setDescription(cursor.getString(DESCRIPTION_COL_IDX));
 		site.setType(cursor.getString(TYPE_COL_IDX));
 		site.setLink(cursor.getString(LINK_COL_IDX));
 		site.setLatitude(cursor.getDouble(LATITUDE_COL_IDX));
 		site.setLongitude(cursor.getDouble(LONGITUDE_COL_IDX));
+		site.setIcon(cursor.getString(ICON_COL_IDX));
+		site.setCarbonSaving(cursor.getLong(CARBON_SAVING_IDX));
 
 		return site;
 	}
@@ -145,8 +149,9 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 		if (sqlDB.isOpen()) {
 			// query the sites data
 			String[] columnsToRetrieve = new String[] { 
-					SITE_NAME, SITE_ICON, SITE_DESCRIPTION, SITE_TYPE,
-					SITE_LINK, SITE_LATITUDE, SITE_LONGITUDE };
+					SITE_NAME, SITE_DESCRIPTION, SITE_TYPE,
+					SITE_LINK, SITE_LATITUDE, SITE_LONGITUDE, 
+					SITE_ICON, SITE_CARBON_SAVING };
 
 			Cursor cursor = sqlDB.query(TABLE_SITES, columnsToRetrieve, null, null, null, null, null);
 			// If the query succeeded
