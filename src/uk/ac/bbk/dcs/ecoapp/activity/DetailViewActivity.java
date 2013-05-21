@@ -1,7 +1,5 @@
 package uk.ac.bbk.dcs.ecoapp.activity;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-
 import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
@@ -14,7 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class DetailViewActivity extends Activity {
 	/** Logo */
