@@ -187,25 +187,29 @@ implements LocationListener
 	 */
 	@Override
 	protected void onListItemClick(ListView lv, View view,int position, long id) {
-		Log.d( TAG, "Item clicked");
 		Site site = listAdapter_.getItem(position);
-		String urltext = site.getLink();
-		
-		// URL text turns out to be unpredictable. It may or may not include a scheme
-		// If not, make one that does and assume it's http://
-		if( ! urltext.toLowerCase(Locale.US).startsWith("http")) {
-			urltext = "http://"+urltext;
+		// Get the site associated with this button
+
+		// Extract the Site name from the listItem
+		String siteName = "unknown";
+		if( site != null ) {
+			siteName = site.getName( );
 		}
-		
-		Uri siteUri = Uri.parse(urltext);
+
+		// Log it
 		tracker_.trackEvent(
 				"AtListPage", // category
 				"Click", // Action
-				"ListItem", // Label
-				position //value
+				"ListItem(" + siteName + ")", // Label
+				0 //value
 				);
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, siteUri);
-		startActivity(browserIntent); 
+
+		// Now navigate to the detail view - passing the selected site name
+		Intent intent =new Intent(this, DetailViewActivity.class);
+		ParcelableSite ps = new ParcelableSite( site );
+		intent.putExtra(ActivityConstants.EXTRA_SITE_NAME, ps);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		startActivity(intent);    
 	}
 
 
@@ -232,29 +236,29 @@ implements LocationListener
 	 * @param v
 	 */
 	public void onArrowBtn(View v){
-		// Get the site associated with this button
+		Log.d( TAG, "Arrow clicked");
+		
+		// Retrieve the Site to visit
 		Site site = (Site) v.getTag();
-
-		// Extract the Site name from the listItem
-		String siteName = "unknown";
-		if( site != null ) {
-			siteName = site.getName( );
+		String urltext = site.getLink();
+		
+		// URL text turns out to be unpredictable. It may or may not include a scheme
+		// If not, make one that does and assume it's http://
+		if( ! urltext.toLowerCase(Locale.US).startsWith("http")) {
+			urltext = "http://"+urltext;
 		}
-
+		
+		Uri siteUri = Uri.parse(urltext);
 		// Log it
 		tracker_.trackEvent(
 				"AtListPage", // category
-				"Click", // Action
-				"ListItem(" + siteName + ")", // Label
+				"ClickArrow", // Action
+				"ListItem(" + siteUri+ ")", // Label
 				0 //value
 				);
-
-		// Now navigate to the detail view - passing the selected site name
-		Intent intent =new Intent(this, DetailViewActivity.class);
-		ParcelableSite ps = new ParcelableSite( site );
-		intent.putExtra(ActivityConstants.EXTRA_SITE_NAME, ps);
-		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		startActivity(intent);    
+		
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, siteUri);
+		startActivity(browserIntent); 
 	}
 
 
