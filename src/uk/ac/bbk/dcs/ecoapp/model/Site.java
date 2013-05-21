@@ -50,7 +50,5 @@ public class Site {
 	
 	/** Carbon savings in last full quarter kg CO2e */
 	@Getter @Setter
-	private float	carbonSaving;
-
-	
+	private long	carbonSaving;
 }
