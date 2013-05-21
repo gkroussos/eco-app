@@ -3,6 +3,7 @@ package uk.ac.bbk.dcs.ecoapp.activity;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
@@ -10,7 +11,6 @@ import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SiteAdapter;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
 import uk.ac.bbk.dcs.ecoapp.model.Site;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +21,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,20 +39,23 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 public class ListViewActivity extends ListActivity
 implements LocationListener
 {
+	/** TAG for logging */
+	private final String TAG = getClass( ).getCanonicalName();
+
 	/** List of sites from the local database */
 	private List<Site> 					siteList_;
 
 	/** List adapter for the list of items */
-	SiteAdapter						listAdapter_;
+	private SiteAdapter					listAdapter_;
 
 	/** Last known latitude or 0.0 */
-	Location							lastKnownLocation_;
+	private Location					lastKnownLocation_;
 
 	/** semaphore for controlling access to location data */
-	String								locationMutex_ = "LocationMutex";
+	private String						locationMutex_ = "LocationMutex";
 
 	/** Google analytics */
-	GoogleAnalyticsTracker				tracker_;
+	private GoogleAnalyticsTracker		tracker_;
 
 	/**
 	 * Init the tracker and start a session
@@ -82,7 +83,7 @@ implements LocationListener
 
 		// Load sites from database
 		loadSitesFromDatabase( );
-		
+
 		// Now calculate distances and sort them
 		sortSitesAccordingToDistance(siteList_);
 
@@ -114,7 +115,7 @@ implements LocationListener
 			// For each site, calculate the distance from here
 			for (Site site : siteList) {
 				double distance = 0.0;
-				
+
 				// Calculate the distance of the site from the last known location
 				if( lastKnownLocation_ != null ) {
 					double dx   = currentLongitude - site.getLongitude();  // horizontal difference 
@@ -125,7 +126,7 @@ implements LocationListener
 				site.setDistance(distance);
 			}
 		}
-		
+
 
 		// Make a note of the existing sort order
 		int[] siteIds = new int[siteList_.size()];
@@ -146,7 +147,7 @@ implements LocationListener
 				return 0;
 			}
 		}) ;
-		
+
 		// Finally, check whether the sort order has changed
 		boolean sortOrderChanged = false;
 		i=0;
@@ -157,7 +158,7 @@ implements LocationListener
 			}
 			++i;
 		}
-		
+
 		return sortOrderChanged;
 	}
 
@@ -176,31 +177,35 @@ implements LocationListener
 	private void initListView() {
 		// Construct an adapter for the List  
 		listAdapter_ = new SiteAdapter(this, android.R.id.list, siteList_);
-		
+
 		setListAdapter(listAdapter_);
+//		getListView().setItemsCanFocus(false);
+	}
 
-		//list item click
-		ListView lv = getListView();
-		lv.setTextFilterEnabled(true);
-
-		// Enable item clicking and add listener
-		lv.setClickable(true);
-		lv.setOnItemClickListener(new OnItemClickListener() {
-
-			
-			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-				String urltext = siteList_.get(position).getLink();
-
-				tracker_.trackEvent(
-						"AtListPage", // category
-						"Click", // Action
-						"ListItem", // Label
-						position //value
-						);
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urltext));
-				startActivity(browserIntent); 
-			}
-		});
+	/*
+	 * 
+	 */
+	@Override
+	protected void onListItemClick(ListView lv, View view,int position, long id) {
+		Log.d( TAG, "Item clicked");
+		Site site = listAdapter_.getItem(position);
+		String urltext = site.getLink();
+		
+		// URL text turns out to be unpredictable. It may or may not include a scheme
+		// If not, make one that does and assume it's http://
+		if( ! urltext.toLowerCase(Locale.US).startsWith("http")) {
+			urltext = "http://"+urltext;
+		}
+		
+		Uri siteUri = Uri.parse(urltext);
+		tracker_.trackEvent(
+				"AtListPage", // category
+				"Click", // Action
+				"ListItem", // Label
+				position //value
+				);
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, siteUri);
+		startActivity(browserIntent); 
 	}
 
 
@@ -229,13 +234,13 @@ implements LocationListener
 	public void onArrowBtn(View v){
 		// Get the site associated with this button
 		Site site = (Site) v.getTag();
-		
+
 		// Extract the Site name from the listItem
 		String siteName = "unknown";
 		if( site != null ) {
 			siteName = site.getName( );
 		}
-		
+
 		// Log it
 		tracker_.trackEvent(
 				"AtListPage", // category
@@ -289,9 +294,9 @@ implements LocationListener
 		Intent intent = new Intent(this, SocialActivity.class);  
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
 		startActivity(intent);
-  
+
 	}
-	
+
 	/**
 	 * Handle click on Map button by navigating to the Map view
 	 * @param v
@@ -303,7 +308,7 @@ implements LocationListener
 				"Map", // Label
 				0 //value
 				);
-		
+
 		Intent intent = new Intent(ListViewActivity.this, MapViewActivity.class);  
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
 		startActivity(intent);
@@ -319,7 +324,7 @@ implements LocationListener
 	public void onRefresh(View v){
 		// Needs implementation  
 	}
-	
+
 
 	/********************************************************************************
 	 *                                                                              *
@@ -336,7 +341,8 @@ implements LocationListener
 			LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 
 			// Register with the Location Manager to receive location updates
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this );
+			// Every minute or 100 metres
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000l, 100.0f, this );
 		} catch (SecurityException e) {
 			// Handle exception by logging a warning. May want to use a dialog for this too to alert user
 			Log.w(getClass().getCanonicalName( ), "Failed to register with LocationManager", e);
