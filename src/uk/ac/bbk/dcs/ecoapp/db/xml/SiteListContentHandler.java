@@ -147,7 +147,7 @@ public class SiteListContentHandler extends  DefaultHandler {
 			} else if ( TAG_ICON.equals(localName) ) {
 				currentSite_.setIcon(elementContent_.toString());
 			} else if ( TAG_CARBON_SAVING.equals(localName) ) {
-				currentSite_.setCarbonSaving(  Float.valueOf(elementContent_.toString()).floatValue());
+				currentSite_.setCarbonSaving(  Long.valueOf(elementContent_.toString()).longValue());
 			}
 			
 			// Clear the flag
