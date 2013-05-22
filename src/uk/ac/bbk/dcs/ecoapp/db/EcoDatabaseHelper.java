@@ -42,6 +42,7 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 	public final static String SITE_LONGITUDE = "longitude";
 	public final static String SITE_ICON = "icon";
 	public final static String SITE_CARBON_SAVING = "carbonSaving";
+	public final static String SITE_FACEBOOK_ID = "facebookId";
 	
 	/** Column names for sites_version table */
 	public final static String SITE_VERSION = "version";
@@ -55,6 +56,7 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 	private static final int LONGITUDE_COL_IDX = 5;
 	private static final int ICON_COL_IDX = 6;
 	private static final int CARBON_SAVING_IDX = 7;
+	private static final int FACEBOOK_ID_IDX = 8;
 	
 	/** Sites table creation SQL */
 	private static final String SITE_TABLE_CREATE_SQL = "create table " + TABLE_SITES + 
@@ -67,7 +69,8 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 				SITE_LATITUDE + " double," +
 				SITE_LONGITUDE + " double," +
 				SITE_ICON + " text," +
-				SITE_CARBON_SAVING + " long" +
+				SITE_CARBON_SAVING + " long," +
+				SITE_FACEBOOK_ID + " text" +
 			");";
 	
 	/** Sites version table create SQL */
@@ -129,6 +132,7 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 		site.setLongitude(cursor.getDouble(LONGITUDE_COL_IDX));
 		site.setIcon(cursor.getString(ICON_COL_IDX));
 		site.setCarbonSaving(cursor.getLong(CARBON_SAVING_IDX));
+		site.setFacebookNodeId(cursor.getString(FACEBOOK_ID_IDX));
 
 		return site;
 	}
@@ -151,7 +155,7 @@ public class EcoDatabaseHelper extends SQLiteOpenHelper {
 			String[] columnsToRetrieve = new String[] { 
 					SITE_NAME, SITE_DESCRIPTION, SITE_TYPE,
 					SITE_LINK, SITE_LATITUDE, SITE_LONGITUDE, 
-					SITE_ICON, SITE_CARBON_SAVING };
+					SITE_ICON, SITE_CARBON_SAVING, SITE_FACEBOOK_ID };
 
 			Cursor cursor = sqlDB.query(TABLE_SITES, columnsToRetrieve, null, null, null, null, null);
 			// If the query succeeded
