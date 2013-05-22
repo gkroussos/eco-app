@@ -17,6 +17,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.db.xml.DataVersionContentHandler;
 import uk.ac.bbk.dcs.ecoapp.db.xml.SiteListContentHandler;
 import uk.ac.bbk.dcs.ecoapp.model.Site;
@@ -27,6 +28,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
+
+// FIXME implement facebook node ID's in the database
+// To 'like' a company we need to have the FB Open Graph node ID. This data
+// should properly be provided in the database feed and should be parsed and stored
+// like all the other company data.
+// As a hack to get the functionality working we have stored the FB data for those 
+// companies in v0.4 of the data stream in a properties file as part of the app.
+// The DatabaseUpdater class loads this file and applies the FB field to each business
+// in the database whenever it is run.
+// Once the FB IDs are in the data stream, code to support this hack should be removed,
+// All such code is tagged with FIXME and references this note. 
+
 
 /**
  * This class is responsible for updating versions of the database held
@@ -44,23 +58,26 @@ import android.util.Log;
  */
 public class DatabaseUpdater {
 	/** TAG for logging */
-	private final String TAG = getClass( ).getCanonicalName();
+	private final String					TAG = getClass( ).getCanonicalName();
 	
 	/** Context used for accessing services */
-	private Context		context_;
+	private Context							context_;
 
 	/** URL for version number */
-	private URL			versionURL_;
+	private URL								versionURL_;
 
 	/** URL for data */
-	private URL 		dataURL_;
+	private URL 							dataURL_;
 
 	/** List of Listeners */
-	private List<DatabaseUpdaterListener> listeners_;
+	private List<DatabaseUpdaterListener> 	listeners_;
+	
+	/** FIXME Properties object containing mapping from company name to FBID : see note at top of file*/
+	private Properties						fbNodeIdMap_;
 
 	/* Convenient constants */
-	private static final String PROP_VERSION_URL = "url.version";
-	private static final String PROP_DATA_URL = "url.data";
+	private static final String 			PROP_VERSION_URL = "url.version";
+	private static final String 			PROP_DATA_URL = "url.data";
 
 	/**
 	 * Construct an updater.
@@ -70,12 +87,14 @@ public class DatabaseUpdater {
 	 * @param properties
 	 */
 	public DatabaseUpdater( Context context, Properties properties ) throws Exception {
+		// Validate Context
 		if( context != null ) {
 			context_ = context;
 		} else {
 			throw new Exception( "Context cannot be null." ); 
 		}
 
+		// Validate properties
 		if( properties != null ) {
 			// Parse version URL
 			versionURL_ = readURLFromProperties( properties, PROP_VERSION_URL);
@@ -89,6 +108,17 @@ public class DatabaseUpdater {
 		} else {
 			throw new Exception( "Properties cannot be null." ); 
 		}
+		
+		// FIXME Load FBIDs from file. See comment at top of code
+		
+		// Load map from properties file
+		fbNodeIdMap_ = new Properties( );
+		try {
+			fbNodeIdMap_.load(context_.getResources().openRawResource(R.raw.facebook));
+		} catch ( IOException e ) {
+			Log.e( TAG, "Couldn't load facebook properties file", e);
+		}
+		// End of FIXME
 	}
 
 
@@ -145,6 +175,12 @@ public class DatabaseUpdater {
 			cv.put(EcoDatabaseHelper.SITE_LONGITUDE, site.getLongitude());
 			cv.put(EcoDatabaseHelper.SITE_ICON, site.getIcon());
 			cv.put(EcoDatabaseHelper.SITE_CARBON_SAVING, site.getCarbonSaving());
+			
+			// FIXME Add the FBID to the database record where it is available - see note at top of file
+			String faceBookNodeId = fbNodeIdMap_.getProperty(site.getName( ));
+			cv.put(EcoDatabaseHelper.SITE_FACEBOOK_ID, faceBookNodeId);
+			// End of FIXME
+			
 
 			if( database.insert(EcoDatabaseHelper.TABLE_SITES, null, cv) == -1 ) {
 				Log.w(TAG, "Failed to insert record" );
