@@ -51,4 +51,8 @@ public class Site {
 	/** Carbon savings in last full quarter kg CO2e */
 	@Getter @Setter
 	private long	carbonSaving;
+	
+	/** Facebook Open Graph node ID */
+	@Getter @Setter
+	private String	facebookNodeId;
 }
