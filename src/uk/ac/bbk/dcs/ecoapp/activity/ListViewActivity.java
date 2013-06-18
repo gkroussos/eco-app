@@ -10,6 +10,7 @@ import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.SiteAdapter;
 import uk.ac.bbk.dcs.ecoapp.db.EcoDatabaseHelper;
+import uk.ac.bbk.dcs.ecoapp.facebook.FacebookHelper;
 import uk.ac.bbk.dcs.ecoapp.model.Site;
 import android.app.ListActivity;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
+import com.restfb.DefaultFacebookClient;
 
 
 /**
@@ -56,6 +58,9 @@ implements LocationListener
 
 	/** Google analytics */
 	private GoogleAnalyticsTracker		tracker_;
+	
+	/** Facebook Helper */
+	private FacebookHelper				fbHelper_;
 
 	/**
 	 * Init the tracker and start a session
@@ -69,6 +74,14 @@ implements LocationListener
 				"AtListPage", // Label
 				0); // Value */
 	}
+	
+	
+	/**
+	 * Initialise the FBHelper
+	 */
+	private void initFBHelper( ) {
+		fbHelper_ = new FacebookHelper();
+	}
 
 
 
@@ -80,6 +93,9 @@ implements LocationListener
 
 		// Update analytics
 		initAnalytics();
+		
+		// Initialise Face Book
+		initFBHelper();
 
 		// Load sites from database
 		loadSitesFromDatabase( );
@@ -208,7 +224,6 @@ implements LocationListener
 		Intent intent =new Intent(this, DetailViewActivity.class);
 		ParcelableSite ps = new ParcelableSite( site );
 		intent.putExtra(ActivityConstants.EXTRA_SITE_NAME, ps);
-		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(intent);    
 	}
 
@@ -236,10 +251,10 @@ implements LocationListener
 	 * @param v
 	 */
 	public void onArrowBtn(View v){
-		Log.d( TAG, "Arrow clicked");
-		
 		// Retrieve the Site to visit
 		Site site = (Site) v.getTag();
+		Log.d( TAG, "Arrow clicked on " + site.getName( ));
+		
 		String urltext = site.getLink();
 		
 		// URL text turns out to be unpredictable. It may or may not include a scheme
@@ -253,7 +268,7 @@ implements LocationListener
 		tracker_.trackEvent(
 				"AtListPage", // category
 				"ClickArrow", // Action
-				"ListItem(" + siteUri+ ")", // Label
+				"ListItem(" + site.getName( ) + ")", // Label
 				0 //value
 				);
 		
@@ -317,6 +332,23 @@ implements LocationListener
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
 		startActivity(intent);
 	}
+	
+	
+	/**
+	 * Handle click on the Facebook 'like' button
+	 * by posting a like to FB
+	 */
+	public void onLikeBtn( View view ) {
+		// Retrieve the Site to visit
+		Site site = (Site) view.getTag();
+		Log.d( TAG, "Like clicked on " + site.getName());
+		
+		// Do the FB Like
+		fbHelper_.like(site.getFacebookNodeId());
+		
+		// Track it: Category, Action, Label, Value
+		tracker_.trackEvent("AtListPage", "ClickLike", "ListItem(" + site.getName( ) + ")",0);
+	}
 
 	/**
 	 * Handle click on search button by launching search
@@ -328,6 +360,8 @@ implements LocationListener
 	public void onRefresh(View v){
 		// Needs implementation  
 	}
+	
+	
 
 
 	/********************************************************************************
