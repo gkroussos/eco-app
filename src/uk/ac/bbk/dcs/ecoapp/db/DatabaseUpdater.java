@@ -2,20 +2,30 @@ package uk.ac.bbk.dcs.ecoapp.db;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+
+import com.restfb.json.JsonArray;
+import com.restfb.json.JsonObject;
+import com.restfb.json.JsonTokener;
 
 import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.db.xml.DataVersionContentHandler;
@@ -31,9 +41,9 @@ import android.util.Log;
 
 
 // FIXME implement facebook node ID's in the database
-// To 'like' a company we need to have the FB Open Graph node ID. This data
-// should properly be provided in the database feed and should be parsed and stored
-// like all the other company data.
+// To 'like' a company we need to have the FB Open Graph node ID. 
+// This data should properly be provided in the database feed and should be parsed and stored
+// like all the other company data in a local DB
 // As a hack to get the functionality working we have stored the FB data for those 
 // companies in v0.4 of the data stream in a properties file as part of the app.
 // The DatabaseUpdater class loads this file and applies the FB field to each business
@@ -73,7 +83,13 @@ public class DatabaseUpdater {
 	private List<DatabaseUpdaterListener> 	listeners_;
 	
 	/** FIXME Properties object containing mapping from company name to FBID : see note at top of file*/
-	private Properties						fbNodeIdMap_;
+	private Map<String,String>				fbNodeIdMap_;
+	
+	/** Keys for retrieving data form FBID JSON structure */
+	private static final String 			JSON_KEY_SITE_NAME = "site_name";
+	private static final String 			JSON_KEY_FB_NAME= "facebook_name";
+	private static final String 			JSON_KEY_FB_ID= "facebook_id";
+	// End of FIXME
 
 	/* Convenient constants */
 	private static final String 			PROP_VERSION_URL = "url.version";
@@ -110,15 +126,19 @@ public class DatabaseUpdater {
 		}
 		
 		// FIXME Load FBIDs from file. See comment at top of code
-		
-		// Load map from properties file
-		fbNodeIdMap_ = new Properties( );
-		try {
-			fbNodeIdMap_.load(context_.getResources().openRawResource(R.raw.facebook));
-		} catch ( IOException e ) {
-			Log.e( TAG, "Couldn't load facebook properties file", e);
+		// File is JSON format array
+		fbNodeIdMap_ = new HashMap<String,String>( );
+		InputStream is = context_.getResources().openRawResource(R.raw.facebook);
+		Reader reader = new InputStreamReader(is);
+		JsonTokener tokener = new JsonTokener(reader);
+		JsonArray array = new JsonArray(tokener);
+		for( int i=0; i<array.length(); i++ ) {
+			JsonObject jo = array.getJsonObject(i);
+			String siteName = (String) jo.get(JSON_KEY_SITE_NAME);
+			String facebookID= (String) jo.get(JSON_KEY_FB_ID);
+			fbNodeIdMap_.put(siteName, facebookID);
 		}
-		// End of FIXME
+		// END of FIXME
 	}
 
 
@@ -151,6 +171,17 @@ public class DatabaseUpdater {
 		Log.i(TAG, "Performing update to DB version " + newDbVersion);
 		
 		List<Site> siteList = readRemoteData( );
+		
+		// FIXME 
+		// Here we iterate over all sites read from remote DB and insert
+		// facebook data where we have it.
+		for( Site site : siteList ) {
+			String facebookId = fbNodeIdMap_.get(site.getName());
+			if( facebookId != null ) {
+				site.setFacebookNodeId(facebookId);
+			}
+		}
+		// End of FIXME
 
 		// Open the database
 		EcoDatabaseHelper helper = new EcoDatabaseHelper(context_);
@@ -175,12 +206,7 @@ public class DatabaseUpdater {
 			cv.put(EcoDatabaseHelper.SITE_LONGITUDE, site.getLongitude());
 			cv.put(EcoDatabaseHelper.SITE_ICON, site.getIcon());
 			cv.put(EcoDatabaseHelper.SITE_CARBON_SAVING, site.getCarbonSaving());
-			
-			// FIXME Add the FBID to the database record where it is available - see note at top of file
-			String faceBookNodeId = fbNodeIdMap_.getProperty(site.getName( ));
-			cv.put(EcoDatabaseHelper.SITE_FACEBOOK_ID, faceBookNodeId);
-			// End of FIXME
-			
+			cv.put(EcoDatabaseHelper.SITE_FACEBOOK_ID, site.getFacebookNodeId());
 
 			if( database.insert(EcoDatabaseHelper.TABLE_SITES, null, cv) == -1 ) {
 				Log.w(TAG, "Failed to insert record" );
@@ -314,6 +340,13 @@ public class DatabaseUpdater {
 		} else {
 			Log.e( getClass().getCanonicalName(), "inputStream was null");
 		}
+
+		// FIXME We're over reporting the local database version to force an update
+		// This will cause the Facebook data to be read and then written to DB
+		// Once FB data is included in the 'official' data stream, this code should be removed
+		// and the legal feed updated to any version > 0.45
+		version = 0.45;
+		// End of FIXME
 
 		return version;
 	}

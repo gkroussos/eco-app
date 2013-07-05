@@ -40,11 +40,11 @@ public class SocialActivity  extends ListActivity  {
 	private ProgressBar progressBar;
 	private RelativeLayout progressLayout;
 	private TextView errorTextView;
-	private ImageButton refreshButton;
+//	private ImageButton refreshButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.social_view);	
 		tracker = GoogleAnalyticsTracker.getInstance();
@@ -53,28 +53,28 @@ public class SocialActivity  extends ListActivity  {
 		progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
 		progressLayout = (RelativeLayout) this.findViewById(R.id.progressLayout);
 		errorTextView = (TextView) this.findViewById(R.id.errorTextView);
-		refreshButton = (ImageButton) this.findViewById(R.id.refresh_button);
-		
+//		refreshButton = (ImageButton) this.findViewById(R.id.refresh_button);
+
 		// Switch from default placeholder.png to the actual refresh icon
-		refreshButton.setBackgroundResource(R.drawable.refresh);
-		
-		
+//		refreshButton.setBackgroundResource(R.drawable.refresh);
+
+
 		// Construct an adapter for the List  
 		//socialAdapter = new SocialAdapter(this, android.R.id.list, socialPosts);
-		
+
 		setListAdapter(socialAdapter);
 
 		//list item click
 		//ListView lv = getListView();
 		//lv.setTextFilterEnabled(true);
-		
-		
+
+
 		//new SocialPosts().execute("BAACEdEose0cBALlUe79sJLWISCZCr132MkMuMBWYbjBYFOvoffaBh21m8ETb0uMtQi2YIKEiz4AEjwJouEUxz9RE75zWwljRwVs1oxAMVciH7erEyqkJR9TvLK7b17eCVFs15DENCZBiup9HXREMvi2dZAXczPxNRUWXVqHluK0EXZCy1gBORZA2OtgxUEANkcARTYGziKwZDZD");
 		//new SocialPostsTask().execute();
-		
+
 		// ListView lv = getListView();
-	        //lv.setClickable(true);
-	        /* // Not registering clisk!!! 
+		//lv.setClickable(true);
+		/* // Not registering clisk!!! 
 			lv.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
@@ -90,12 +90,12 @@ public class SocialActivity  extends ListActivity  {
 					startActivity(browserIntent); 
 				}
 			});
-			*/  
-			new SocialPostsTask(this).execute();
-		
+		 */  
+		new SocialPostsTask(this).execute();
+
 		// This bit to avoid activity / view problems with multi threading and re-orientation of device (Especially when dialog showing)
 		// Method is deprecated, should be using ActivityFragment | Leave for now 
-		 /*socialPostsTask = (SocialPostsTask) getLastNonConfigurationInstance();
+		/*socialPostsTask = (SocialPostsTask) getLastNonConfigurationInstance();
 	        if(socialPostsTask == null) {
 	            socialPostsTask = new SocialPostsTask();
 	        }
@@ -103,9 +103,9 @@ public class SocialActivity  extends ListActivity  {
 	        if(socialPostsTask.getStatus() == AsyncTask.Status.PENDING) {
 	            socialPostsTask.execute();
 	        }
-	    */
-	        
-	        	}
+		 */
+
+	}
 
 	@Override
 	protected void onResume() 	{
@@ -115,31 +115,31 @@ public class SocialActivity  extends ListActivity  {
 			new SocialPostsTask(this).execute();
 		}
 	}
-	
+
 	@Override
 	protected void onPause()	{
-	   super.onPause();
+		super.onPause();
 	}
-	
+
 	@Override
 	protected void onStop()	{
-	   super.onStop();
+		super.onStop();
 	}
-	
+
 	@Override
 	protected void onStart() 	{
-	   super.onStart();
+		super.onStart();
 	}
-	
+
 	@Override
 	protected void onRestart()	{
-	   super.onRestart();
+		super.onRestart();
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* // Not registering clicks... 
 	@Override
 	protected void onListItemClick (ListView lv, View view, int position, long id){
@@ -148,31 +148,31 @@ public class SocialActivity  extends ListActivity  {
 	        Log.i(TAG,"Position:" +position+"");
 		//Toast.makeText(getApplicationContext(), ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
     }
-	*/
+	 */
 
 	/*
     @Override
     public Object onRetainNonConfigurationInstance() {
         return socialPostsTask;
     }
-	*/
+	 */
 	/**
 	 * Inner class to create thread running in background of main UI thread
 	 * @author William Linden
 	 */
 	private class SocialPostsTask extends AsyncTask <Void, Void, List<SocialPost>> {
-		
+
 		public SocialPostsTask(SocialActivity socialActivity) {
 			this.socialActivity = socialActivity;
 		}
-		
+
 		private SocialActivity socialActivity;
 
 		private FacebookAccessor fbAccessor = new FacebookAccessor();
 		/*protected Connection<Post> doInBackground(String... token) {
 			final FacebookClient facebookClient = new DefaultFacebookClient(token[0]);
 			return facebookClient.fetchConnection("me/feed", Post.class, Parameter.with("limit", 100));
-			
+
 		}*/
 
 		@Override
@@ -180,27 +180,27 @@ public class SocialActivity  extends ListActivity  {
 			errorTextView.setVisibility(View.GONE);
 			progressLayout.setVisibility(View.VISIBLE);
 			progressBar.setVisibility(View.VISIBLE);
-		    }
-		 
-		
+		}
+
+
 		// Fork a thread off, hit social sites asynchronously to build 
 		// Build in progress indicator (spinning circle?)
 		@Override
 		protected List<SocialPost> doInBackground(Void... params) {
-			
+
 			//if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
 			//if (currentSocialPosts == null || currentSocialPosts.size() <= 0) {
-			
-					List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
-					return socialPosts;
+
+			List<SocialPost> socialPosts =  (List<SocialPost>) fbAccessor.getFBWallPosts();
+			return socialPosts;
 			/*}
 			Log.i(TAG,"Skipping currentSocialPosts are already present");
 			return null;
-			*/
+			 */
 		}
 
 		@Override
-        protected void onPostExecute(List<SocialPost> socialPosts) {
+		protected void onPostExecute(List<SocialPost> socialPosts) {
 			// Construct an adapter for the List  only update if in bound List<SocialPost> has been updated ie not null
 			if (socialPosts != null) {
 				currentSocialPosts = socialPosts;				
@@ -212,7 +212,7 @@ public class SocialActivity  extends ListActivity  {
 				lv.setTextFilterEnabled(true);
 				progressBar.setVisibility(View.GONE);
 				progressLayout.setVisibility(View.GONE);
-				
+
 				/* // ALSO Not registering clicks... 
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
@@ -237,12 +237,12 @@ public class SocialActivity  extends ListActivity  {
 				errorTextView.setVisibility(View.VISIBLE);
 				//
 			}
-			
-        }	
+
+		}	
 	}
-	
+
 	/* Action Listeners / UI callbacks */
-	
+
 	/**
 	 * Respond to ArrowButton click on a list item by showing that item in a details view
 	 * @param view
@@ -253,7 +253,7 @@ public class SocialActivity  extends ListActivity  {
 
 		// Extract the permalink and use for analytics 
 		String link = (post != null) ? post.getPermalink() : "unknown";
-		
+
 		// Log it
 		tracker.trackEvent(
 				"AtSocialPage", // category
@@ -261,28 +261,28 @@ public class SocialActivity  extends ListActivity  {
 				"ListItem(" + link + ")", // Label
 				0 //value
 				);
-		
+
 		// No need for an entire Activity/View here. Simply use a Dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(post.getMessage())
-		       .setTitle(post.getCreated_time())
-		       .setPositiveButton(R.string.closeBtnText, null) // don't require an actionListner 
-		       .setNegativeButton(R.string.openFacebookText, new DialogInterface.OnClickListener() {
-		    	   public void onClick(DialogInterface dialog, int id) {
-		    		   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getPermalink()));
-		    			startActivity(browserIntent); 
-		    	   }
-        });
+		.setTitle(post.getCreated_time())
+		.setPositiveButton(R.string.closeBtnText, null) // don't require an actionListner 
+		.setNegativeButton(R.string.openFacebookText, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getPermalink()));
+				startActivity(browserIntent); 
+			}
+		});
 		AlertDialog dialog = builder.create();
 		dialog.show();
 
 	}
 
-	
+
 	/***
 	 * OnClickListeners / UI interaction
 	 * */
-	
+
 	public void onSetHome(View v){
 		tracker.trackEvent(
 				"AtSocialPage", // category
@@ -291,7 +291,7 @@ public class SocialActivity  extends ListActivity  {
 				0 //value
 				);
 		// Go to "home" ie ListViewActivity
-		
+
 		Intent intent = new Intent(this, ListViewActivity.class);  
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
 		startActivity(intent);
@@ -333,9 +333,9 @@ public class SocialActivity  extends ListActivity  {
 		Toast.makeText(this, "Refreshing posts", Toast.LENGTH_SHORT).show();
 		// Refresh  posts
 		new SocialPostsTask(this).execute();
-		  
+
 	}
-	
+
 	/**
 	 * Handle click on Map button by navigating to the Map view
 	 * @param v
@@ -347,7 +347,7 @@ public class SocialActivity  extends ListActivity  {
 				"Map", // Label
 				0 //value
 				);
-		
+
 		Intent intent = new Intent(this, MapViewActivity.class);  
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
 		startActivity(intent);
@@ -362,6 +362,6 @@ public class SocialActivity  extends ListActivity  {
 		new SocialPostsTask(this).execute();
 	}
 
-	
-	
+
+
 }

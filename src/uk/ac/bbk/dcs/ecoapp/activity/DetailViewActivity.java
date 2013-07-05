@@ -3,6 +3,8 @@ package uk.ac.bbk.dcs.ecoapp.activity;
 import uk.ac.bbk.dcs.ecoapp.R;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ActivityConstants;
 import uk.ac.bbk.dcs.ecoapp.activity.helper.ParcelableSite;
+import uk.ac.bbk.dcs.ecoapp.model.Site;
+import uk.ac.bbk.dcs.ecoapp.utility.FacebookAccessor;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,6 +72,8 @@ public class DetailViewActivity extends Activity {
 	public void onCreate( Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		Log.e("onCreate","Called");
 		setContentView(R.layout.detail_view);
 		
 		tracker = GoogleAnalyticsTracker.getInstance();
@@ -89,7 +94,20 @@ public class DetailViewActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * 
+	 */
+	public void onStart(  )
+	{
+		super.onStart();
+		Log.e("onStart","Called");
+	}
 	
+	public void onResume(  )
+	{
+		super.onResume();
+		Log.e("onResume","Called");
+	}
 
 	
 	/***
@@ -104,7 +122,7 @@ public class DetailViewActivity extends Activity {
 				0 //value
 				);
 		// Go to "Home" (ListViewActivity)
-		Intent intent = new Intent(this, ListViewActivity.class);  
+		Intent intent = new Intent(this, ListViewActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT); 
 		startActivity(intent);
   
@@ -192,5 +210,12 @@ public class DetailViewActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Handle click on the Like button
+	 * @param v
+	 */
+	public void onLike( View v ) {
+		new FacebookAccessor().like((Site) v.getTag( ));
+	}
 	
 }

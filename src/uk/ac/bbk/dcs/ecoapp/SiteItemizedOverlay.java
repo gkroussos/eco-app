@@ -28,13 +28,9 @@ import com.google.android.maps.Projection;
 
 public class SiteItemizedOverlay extends ItemizedOverlay<SiteOverlayItem> {
 	
-    private static final String CLASSTAG = SiteItemizedOverlay.class.getSimpleName();
 
 	private GeoPoint geopoint;
 	private Drawable marker;
-	private String locationName;
-	private String iconLoc;
-	private Context appContext;
 
     private final List<SiteOverlayItem> items;
     private final Context context;

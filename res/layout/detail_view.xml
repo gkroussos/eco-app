@@ -11,8 +11,10 @@
   				layout="@layout/header_include" />
 
   	<!--  Including Header containing banner / logo / buttons -->
-    <include 	android:layout_width="wrap_content"
-  				android:layout_height="wrap_content" 
-  				layout="@layout/detail_view_include" /> 
+
+    <include
+        android:layout_width="wrap_content"
+        android:layout_height="375dp"
+        layout="@layout/detail_view_include" />
 
 </LinearLayout>

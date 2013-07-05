@@ -31,6 +31,20 @@
         android:baselineAlignBottom="true"
         android:onClick="onArrowBtn" />
 
+    <!-- Button linking to detail view -->
+
+    <ImageButton
+        android:id="@+id/like_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/site_description"
+        android:layout_toLeftOf="@id/arrow_button"
+        android:layout_gravity="right"
+        android:background="@drawable/fb_icon"
+        android:contentDescription="@string/likeButtonText"
+        android:baselineAlignBottom="true"
+        android:onClick="onLikeBtn" />
+    
     
     
     <!-- Two rows of text -->
@@ -42,7 +56,7 @@
         android:layout_alignTop="@id/site_icon"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
-        android:layout_toLeftOf="@id/arrow_button"
+        android:layout_toLeftOf="@id/like_button"
         android:layout_toRightOf="@+id/site_icon"
         android:gravity="center_vertical"
         android:maxLines="@integer/OneLiner" />
@@ -55,7 +69,7 @@
         android:layout_below="@id/site_name"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
-        android:layout_toLeftOf="@id/arrow_button"
+        android:layout_toLeftOf="@id/like_button"
         android:layout_toRightOf="@+id/site_icon"
         android:gravity="center_vertical"
         android:maxLines="@integer/OneLiner"

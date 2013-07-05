@@ -25,13 +25,25 @@
         android:src="@drawable/title_bar" />
 
     <!-- Finally the list view itself -->
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/nearby_button"
+        android:adjustViewBounds="true"
         android:background="#FFFFF9"
-        android:cacheColorHint="#00000000"/>
+        android:cacheColorHint="#00000000" />
     
+    <!-- Finally, finaly, a login to facebook button -->
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/fb_login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="20px"
+        android:layout_below="@android:id/list"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/fb_login_btn_txt" />
 
 </RelativeLayout>

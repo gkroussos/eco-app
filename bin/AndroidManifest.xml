@@ -1,70 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="uk.ac.bbk.dcs.ecoapp"
-      android:versionCode="3"
-      android:versionName="2.0">
-    <uses-sdk 
-        android:targetSdkVersion="11"
-        android:minSdkVersion="10"/>
-    
+    package="uk.ac.bbk.dcs.ecoapp"
+    android:versionCode="3"
+    android:versionName="2.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="11" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
+
     <application
-        android:icon="@drawable/icon"
-        android:label="@string/app_name" 
         android:allowBackup="true"
-        android:theme="@android:style/Theme.NoTitleBar">
-        
-        <uses-library android:name="com.google.android.maps"/>
-        
-        <receiver android:name=".BootStateReceiver">
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar" >
+        <uses-library android:name="com.google.android.maps" />
+
+        <receiver android:name=".BootStateReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        
-        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.SplashScreenActivity"
-                  android:label="@string/app_name"
-                  android:screenOrientation="portrait"
-                  android:noHistory="true">
+
+        <!-- Required for FB - not that they *tell* you that anywhere! -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebookAppId" />
+
+        <activity
+            android:name="uk.ac.bbk.dcs.ecoapp.activity.SplashScreenActivity"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.ListViewActivity" 
-            android:label="@string/app_name" 
+        <activity
+            android:name="uk.ac.bbk.dcs.ecoapp.activity.ListViewActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait" />
-
-        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.MapViewActivity" 
-            android:label="@string/app_name" 
+        <activity android:name="com.facebook.LoginActivity" >
+        </activity>
+        <activity
+            android:name="uk.ac.bbk.dcs.ecoapp.activity.MapViewActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait" />
-        
-        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.AboutUsActivity" 
-            android:label="@string/app_name" 
+        <activity
+            android:name="uk.ac.bbk.dcs.ecoapp.activity.AboutUsActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait" />
-        
-        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.SocialActivity" 
-            android:label="@string/app_name" 
+        <activity
+            android:name="uk.ac.bbk.dcs.ecoapp.activity.SocialActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait" />
-        
-        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.DetailViewActivity" 
-            android:label="@string/app_name" 
+        <activity
+            android:name="uk.ac.bbk.dcs.ecoapp.activity.DetailViewActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait" />
-        
-        <activity android:name="uk.ac.bbk.dcs.ecoapp.activity.SearchActivity" 
+        <activity
+            android:name="uk.ac.bbk.dcs.ecoapp.activity.SearchActivity"
             android:launchMode="singleTop" >
-             <intent-filter>
-                 <action android:name="android.intent.action.SEARCH" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
 
-        <service android:name=".LocationLoggingService" android:enabled="true" />
-        
+        <service
+            android:name=".LocationLoggingService"
+            android:enabled="true" />
     </application>
-    
+
 </manifest>

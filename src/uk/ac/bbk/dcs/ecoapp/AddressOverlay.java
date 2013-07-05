@@ -22,13 +22,9 @@ public class AddressOverlay extends ItemizedOverlay<OverlayItem> {
 
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	
-	private static final int CONTAINER_RADIUS				= 4;
-	private static final int CONTAINER_SHADOW_OFFSET		= 1;
 	
 	private GeoPoint geopoint;
 	private Drawable marker;
-	private String locationName;
-	private String iconLoc;
 	private Context appContext;
 	
 	public AddressOverlay(Site site) {
@@ -57,8 +53,8 @@ public class AddressOverlay extends ItemizedOverlay<OverlayItem> {
 		this.marker = setMarker;
 		Double convertedLongitude = (site.getLongitude()) * 1E6;
 		Double convertedLatitude = site.getLatitude() * 1E6;
-		iconLoc = site.getIcon();
-		locationName =  site.getName();
+		site.getIcon();
+		site.getName();
 		appContext = context;
 		setGeopoint(new GeoPoint(
 				convertedLatitude.intValue(),

@@ -49,6 +49,9 @@ public class SiteAdapter extends ArrayAdapter<Site> {
 		
 		/** Separate button linked to a detail page */
 		public ImageButton	siteButton_;	
+		
+		/** Separate button linked to FB like */
+		public ImageButton	likeButton_;	
 	}
 
 	/**
@@ -87,6 +90,7 @@ public class SiteAdapter extends ArrayAdapter<Site> {
 			holder.siteNameView_= (TextView) v.findViewById(R.id.site_name);
 			holder.siteSummary_ = (TextView) v.findViewById(R.id.site_description);
 			holder.siteButton_ = (ImageButton) v.findViewById(R.id.arrow_button);
+			holder.likeButton_ = (ImageButton) v.findViewById(R.id.like_button);
 			holder.siteIconView_ = (ImageView) v.findViewById(R.id.site_icon);
 			
 			// Set the view's tag to be the holder
@@ -124,6 +128,7 @@ public class SiteAdapter extends ArrayAdapter<Site> {
 			
 			// Set the arrow button tag to be the site
 			holder.siteButton_.setTag(site);
+			holder.likeButton_.setTag(site);
 		} else {
 			Log.w(TAG, "Site was null for position "+position+" in list");
 		}
